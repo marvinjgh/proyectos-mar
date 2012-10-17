@@ -36,58 +36,32 @@
     <ClInclude Include="src\triangulo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\AntTweakBar.h">
+    <ClInclude Include="..\colectivo\include\AntTweakBar.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\FreeImage.h">
+    <ClInclude Include="..\colectivo\include\FreeImage.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\GL\freeglut.h">
+    <ClInclude Include="..\colectivo\include\GL\freeglut.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\GL\freeglut_ext.h">
+    <ClInclude Include="..\colectivo\include\GL\freeglut_ext.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\GL\freeglut_std.h">
+    <ClInclude Include="..\colectivo\include\GL\freeglut_std.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\GL\glew.h">
+    <ClInclude Include="..\colectivo\include\GL\glew.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\GL\glut.h">
+    <ClInclude Include="..\colectivo\include\GL\glut.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\GL\glxew.h">
+    <ClInclude Include="..\colectivo\include\GL\glxew.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\GL\wglew.h">
+    <ClInclude Include="..\colectivo\include\GL\wglew.h">
       <Filter>Include</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="lib\AntTweakBar.lib">
-      <Filter>Library Files</Filter>
-    </Library>
-    <Library Include="lib\AntTweakBar64.lib">
-      <Filter>Library Files</Filter>
-    </Library>
-    <Library Include="lib\freeglut.lib">
-      <Filter>Library Files</Filter>
-    </Library>
-    <Library Include="lib\glew32.lib">
-      <Filter>Library Files</Filter>
-    </Library>
-    <Library Include="lib\glew32mx.lib">
-      <Filter>Library Files</Filter>
-    </Library>
-    <Library Include="lib\glew32mxs.lib">
-      <Filter>Library Files</Filter>
-    </Library>
-    <Library Include="lib\glew32s.lib">
-      <Filter>Library Files</Filter>
-    </Library>
-    <Library Include="lib\FreeImage.lib">
-      <Filter>Library Files</Filter>
-    </Library>
   </ItemGroup>
 </Project>
