@@ -36,12 +36,6 @@
     <ClInclude Include="src\triangulo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\colectivo\include\AntTweakBar.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\colectivo\include\FreeImage.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\colectivo\include\GL\freeglut.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -63,5 +57,37 @@
     <ClInclude Include="..\colectivo\include\GL\wglew.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\colectivo\include\AntTweakBar.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\colectivo\include\FreeImage.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\colectivo\lib\AntTweakBar.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\AntTweakBar64.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\freeglut.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\FreeImage.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\glew32.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\glew32mx.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\glew32mxs.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\glew32s.lib">
+      <Filter>Library Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>

@@ -76,8 +76,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -142,6 +141,16 @@
     <ClInclude Include="..\colectivo\include\GL\glxew.h" />
     <ClInclude Include="..\colectivo\include\GL\wglew.h" />
     <ClInclude Include="src\triangulo.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\colectivo\lib\AntTweakBar.lib" />
+    <Library Include="..\colectivo\lib\AntTweakBar64.lib" />
+    <Library Include="..\colectivo\lib\freeglut.lib" />
+    <Library Include="..\colectivo\lib\FreeImage.lib" />
+    <Library Include="..\colectivo\lib\glew32.lib" />
+    <Library Include="..\colectivo\lib\glew32mx.lib" />
+    <Library Include="..\colectivo\lib\glew32mxs.lib" />
+    <Library Include="..\colectivo\lib\glew32s.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

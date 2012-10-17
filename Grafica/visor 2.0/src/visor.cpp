@@ -42,9 +42,6 @@ int main(int argc, char *argv[])
 	
 	glutDisplayFunc(display);
 	//glutReshapeFunc(reshape);
-
-	
-
 	//glutMouseFunc((GLUTmousebuttonfun)TwEventMouseButtonGLUT);
     //glutMotionFunc((GLUTmousemotionfun)TwEventMouseMotionGLUT);
     //glutPassiveMotionFunc((GLUTmousemotionfun)TwEventMouseMotionGLUT);
