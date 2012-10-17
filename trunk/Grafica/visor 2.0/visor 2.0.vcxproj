@@ -132,6 +132,15 @@
   <ItemGroup>
     <ClInclude Include="src\triangulo.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\AntTweakBar.lib" />
+    <Library Include="lib\AntTweakBar64.lib" />
+    <Library Include="lib\freeglut.lib" />
+    <Library Include="lib\glew32.lib" />
+    <Library Include="lib\glew32mx.lib" />
+    <Library Include="lib\glew32mxs.lib" />
+    <Library Include="lib\glew32s.lib" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

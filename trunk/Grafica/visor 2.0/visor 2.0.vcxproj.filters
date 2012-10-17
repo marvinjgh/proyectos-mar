@@ -13,6 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Library Files">
+      <UniqueIdentifier>{32156848-0fa5-4056-85e0-5dec9278839d}</UniqueIdentifier>
+      <Extensions>lib</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -29,5 +33,28 @@
     <ClInclude Include="src\triangulo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\AntTweakBar.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="lib\AntTweakBar64.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="lib\freeglut.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="lib\glew32.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="lib\glew32mx.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="lib\glew32mxs.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="lib\glew32s.lib">
+      <Filter>Library Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>
