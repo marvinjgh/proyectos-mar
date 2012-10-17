@@ -17,6 +17,9 @@
       <UniqueIdentifier>{32156848-0fa5-4056-85e0-5dec9278839d}</UniqueIdentifier>
       <Extensions>lib</Extensions>
     </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{f20e67ee-ba91-4e11-8eab-d3fbdfe5bf96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -32,6 +35,33 @@
   <ItemGroup>
     <ClInclude Include="src\triangulo.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AntTweakBar.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FreeImage.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\freeglut.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\freeglut_ext.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\freeglut_std.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\glew.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\glut.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\glxew.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\wglew.h">
+      <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +84,9 @@
       <Filter>Library Files</Filter>
     </Library>
     <Library Include="lib\glew32s.lib">
+      <Filter>Library Files</Filter>
+    </Library>
+    <Library Include="lib\FreeImage.lib">
       <Filter>Library Files</Filter>
     </Library>
   </ItemGroup>
