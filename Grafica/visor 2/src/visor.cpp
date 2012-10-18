@@ -5,6 +5,74 @@
 
 GLuint positionBufferObject;
 
+GLhandleARB v,f,p;
+
+void CheckSLError(GLhandleARB &object)
+{
+	int infologLength = 0;
+	int charsWritten  = 0;
+	char *infoLog;
+
+	glGetObjectParameterivARB(object, GL_OBJECT_INFO_LOG_LENGTH_ARB, &infologLength);
+
+	if (infologLength > 0)
+	{
+    infoLog = (char *)malloc(infologLength);
+    glGetInfoLogARB(object, infologLength, &charsWritten, infoLog);
+    free(infoLog);
+	}
+}
+
+char* readTextFile( char *f ){
+
+	FILE *file;
+	char *shaderReaded = NULL;
+	int byteCount = 0;
+
+	fopen_s( &file, f, "rt" );
+	if( file != NULL ){
+		fseek(file, 0, SEEK_END);
+		byteCount = ftell( file );
+		rewind( file );
+
+		if( byteCount ){
+			shaderReaded = (char *) malloc( sizeof(char)*( byteCount+1 ) );
+			byteCount = (int)fread( shaderReaded, sizeof(char), byteCount, file );
+			shaderReaded[ byteCount ] = '\0';
+		}
+		fclose(file);
+	}
+
+	return shaderReaded;
+} 
+
+void setShaders() 
+{
+	char *vs,*fs;
+
+	v = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);CheckSLError(v);
+	f = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);CheckSLError(f);
+
+	vs = readTextFile("files/t1.vert");
+	fs = readTextFile("files/t1.frac");
+
+	const char * ff = fs;
+	const char * vv = vs;
+
+	glShaderSourceARB(v, 1, &vv,NULL);CheckSLError(v);
+	glShaderSourceARB(f, 1, &ff,NULL);CheckSLError(f);
+
+	free(vs);
+	free(fs);
+
+	glCompileShaderARB(v); CheckSLError(v);
+	glCompileShaderARB(f); CheckSLError(f);
+
+	p = glCreateProgramObjectARB();CheckSLError(p);
+	glAttachObjectARB(p,f);CheckSLError(p);
+	glAttachObjectARB(p,v);CheckSLError(p);
+	glLinkProgramARB(p);CheckSLError(p);
+}
 
 const float vertexPositions[] = 
 {
@@ -23,9 +91,10 @@ glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void display (void){
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 glClear(GL_COLOR_BUFFER_BIT);
-//glUseProgram(theProgram);
+glUseProgram(p);
 glColor3f(1.0,1.0,1.0);
 glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
 glEnableVertexAttribArray(0);
@@ -107,8 +176,9 @@ int main(int argc, char **argv)
 		printf("No GLSL support\n");
 		exit(1);
 	}
-	Mat4x4 t;
+
 	init();
+	setShaders();
 	glutMainLoop();
 
 	return 0;
