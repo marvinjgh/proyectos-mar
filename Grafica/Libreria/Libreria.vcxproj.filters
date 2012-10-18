@@ -15,19 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Geom\Punto3D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Geom\Punto2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="Geom\Defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Geom\mat4x4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Geom\Punto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geom\mat4x4.h">
+    <ClInclude Include="Geom\Punto2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Geom\Punto3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Geom\Punto4D.h">
@@ -38,22 +41,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Geom\Punto3D.cpp">
+    <ClCompile Include="Geom\mat4x4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Geom\Punto2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Geom\Punto3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Geom\Punto4D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Geom\mat4x4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Geom\Vec4D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
