@@ -20,12 +20,14 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -83,6 +85,7 @@
     <ClInclude Include="Geom\Punto2D.h" />
     <ClInclude Include="Geom\Punto3D.h" />
     <ClInclude Include="Geom\Punto4D.h" />
+    <ClInclude Include="Geom\Vec3D.h" />
     <ClInclude Include="Geom\Vec4D.h" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +93,7 @@
     <ClCompile Include="Geom\Punto2D.cpp" />
     <ClCompile Include="Geom\Punto3D.cpp" />
     <ClCompile Include="Geom\Punto4D.cpp" />
+    <ClCompile Include="Geom\Vec3D.cpp" />
     <ClCompile Include="Geom\Vec4D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -6,7 +6,7 @@ enum Type_MAT {MAT_T,MAT_E,MAT_R};
 class Mat4x4{
 
 public:
-	double mat[16];
+	float mat[16];
 
 	// Constructores
 	Mat4x4(void);
@@ -14,11 +14,13 @@ public:
 
 
 	void Identidad(void);
-	Mat4x4 MatTranslation(double x, double y, double z);	//crea una matriz de traslacion
-	Mat4x4 MatTranslation(const Punto3D& p);	//crea una matriz de traslacion
-	Mat4x4 MatScale(double x, double y, double z);	//crea una matriz de traslacion
+	static Mat4x4 MatTranslate(float x, float y, float z);	//crea una matriz de traslacion
+	Mat4x4 MatTranslate(const Punto3D& p);	//crea una matriz de traslacion
+	Mat4x4 MatScale(float x, float y, float z);	//crea una matriz de traslacion
 	Mat4x4 MatScale(const Punto3D& p);	//crea una matriz de traslacion
- 
+	Mat4x4 MatRotar(const float* quat);
+	Mat4x4 buildPerpectiva(float angulo,float aspect, float near, float far);
+
 	Mat4x4 operator* (const Mat4x4& M);
 	Mat4x4 operator= (const Mat4x4& M);
 	void operator*=(const Mat4x4& M);
