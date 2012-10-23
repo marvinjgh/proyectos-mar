@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visor v1.1", "Tarea 4\Tarea 4.vcxproj", "{FF6900EB-74EE-428E-BC1B-64CB51E8B10C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "paint v1", "Tarea 1\Tarea1.vcxproj", "{FC9EC582-9ED2-4330-89C6-5A7CA71A7C76}"

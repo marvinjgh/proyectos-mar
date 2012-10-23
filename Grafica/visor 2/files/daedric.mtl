@@ -1,0 +1,51 @@
+# Blender MTL File: 'daedric.blend'
+# Material Count: 5
+newmtl mandoble_daedricsword.dds
+Ns 29.411765
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures\daedricsword.jpg
+
+newmtl casco_daedrichelmet.dds
+Ns 29.411765
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures\daedrichelmet.jpg
+
+newmtl guantes_daedricgloves.dds
+Ns 29.411765
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures\daedricgloves.jpg
+
+newmtl bota_daedricboots.dds
+Ns 29.411765
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures\daedricboots.jpg
+
+newmtl armor_daedricarmor.dds
+Ns 29.411765
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures\daedricarmor.jpg
