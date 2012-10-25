@@ -1,5 +1,7 @@
 #include <cmath>
 #include <iostream>
+#include <GL\glew.h>
+#include <Gl\freeglut.h>
 using namespace std;
 #define PI      3.141592654
 #define _2PI    6.283185308     // 2 * PI

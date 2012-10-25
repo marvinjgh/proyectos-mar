@@ -149,10 +149,10 @@ Mat4x4 Mat4x4::MatRotar(const float* quat){
 	return r;
 }
 
-Mat4x4 Mat4x4::buildPerpectiva(float angulo, float aspect, float near, float far)
+Mat4x4 Mat4x4::buildPerpectiva(float angulo, float aspect, float znear, float zfar)
 {
 	const float h = 1.0f/tan(angulo*PI_OVER_360);
-	float neg_depth = near-far;
+	float neg_depth = znear-zfar;
 
 	Mat4x4 a;
 
@@ -166,11 +166,11 @@ Mat4x4 Mat4x4::buildPerpectiva(float angulo, float aspect, float near, float far
 	a.mat[7]  = 0;
 	a.mat[8]  = 0;
 	a.mat[9]  = 0;
-	a.mat[10] = (far + near)/neg_depth;;
+	a.mat[10] = (zfar + znear)/neg_depth;;
 	a.mat[11] = -1;
 	a.mat[12] = 0;
 	a.mat[13] = 0;
-	a.mat[14] = 2.0f*(near*far)/neg_depth;
+	a.mat[14] = 2.0f*(znear*zfar)/neg_depth;
 	a.mat[15] = 0;
 
 	return a;
