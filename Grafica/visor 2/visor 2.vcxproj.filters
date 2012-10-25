@@ -13,13 +13,13 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Libreria">
-      <UniqueIdentifier>{cb8ab6ac-dfdf-496f-b678-07c4c70032f9}</UniqueIdentifier>
-      <Extensions>lib</Extensions>
-    </Filter>
     <Filter Include="Shader files">
       <UniqueIdentifier>{aec3617d-8834-436d-a708-dc0af4bc587b}</UniqueIdentifier>
       <Extensions>vert;frag</Extensions>
+    </Filter>
+    <Filter Include="Librerias">
+      <UniqueIdentifier>{cb8ab6ac-dfdf-496f-b678-07c4c70032f9}</UniqueIdentifier>
+      <Extensions>lib</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -35,16 +35,16 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\colectivo\lib\AntTweakBar.lib">
-      <Filter>Libreria</Filter>
+      <Filter>Librerias</Filter>
     </Library>
     <Library Include="..\colectivo\lib\freeglut.lib">
-      <Filter>Libreria</Filter>
+      <Filter>Librerias</Filter>
     </Library>
     <Library Include="..\colectivo\lib\FreeImage.lib">
-      <Filter>Libreria</Filter>
+      <Filter>Librerias</Filter>
     </Library>
     <Library Include="..\colectivo\lib\glew32.lib">
-      <Filter>Libreria</Filter>
+      <Filter>Librerias</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>
