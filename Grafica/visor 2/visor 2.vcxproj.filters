@@ -26,9 +26,6 @@
     <ClCompile Include="src\visor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Modelo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -56,9 +53,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Modelo.h">
       <Filter>Header Files</Filter>
     </ClInclude>

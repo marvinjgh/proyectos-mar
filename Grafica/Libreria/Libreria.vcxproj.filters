@@ -18,48 +18,54 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Geom\Defs.h">
+    <ClInclude Include="include\Geom\Defs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geom\mat4x4.h">
+    <ClInclude Include="include\Geom\mat4x4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geom\Punto.h">
+    <ClInclude Include="include\Geom\Punto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geom\Punto2D.h">
+    <ClInclude Include="include\Geom\Punto2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geom\Punto3D.h">
+    <ClInclude Include="include\Geom\Punto3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geom\Punto4D.h">
+    <ClInclude Include="include\Geom\Punto4D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geom\Vec4D.h">
+    <ClInclude Include="include\Geom\Vec3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geom\Vec3D.h">
+    <ClInclude Include="include\Geom\Vec4D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\glsl\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Geom\mat4x4.cpp">
+    <ClCompile Include="src\mat4x4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Geom\Punto2D.cpp">
+    <ClCompile Include="src\Punto2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Geom\Punto3D.cpp">
+    <ClCompile Include="src\Punto3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Geom\Punto4D.cpp">
+    <ClCompile Include="src\Punto4D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Geom\Vec4D.cpp">
+    <ClCompile Include="src\Vec3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Geom\Vec3D.cpp">
+    <ClCompile Include="src\Vec4D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
