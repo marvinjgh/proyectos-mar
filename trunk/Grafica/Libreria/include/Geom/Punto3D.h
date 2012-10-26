@@ -1,5 +1,5 @@
 #pragma once
-#include "Punto.h"
+#include "Punto2D.h"
 class Punto3D: public Punto
 {
 public:

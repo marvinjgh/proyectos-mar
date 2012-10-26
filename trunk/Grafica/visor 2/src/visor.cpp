@@ -53,8 +53,9 @@ void display (void){
 
 	glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-	//MVP
-	m = p *m.MatTranslate(0,0,-3)* m.MatTranslate(traslacion[0],traslacion[1],traslacion[2])* m.MatScale(zoom,zoom,zoom) *m.MatRotar(q_rotate)*mod.centro ;
+	//Model
+	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
+	m =( p * (MatTranslate(0,0,-3)* m));
 	//MVP
 	t.enable();
 	glUniformMatrix4fv(t["m"],1,0,m.mat);
@@ -108,8 +109,7 @@ void reshape (int width, int height)
 	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
 
 	// Set the correct perspective.
-	p=p.buildPerpectiva(45.0,ratio,1.0,100.0);
-	cout<<p;
+	p=buildPerpectiva(45.0,ratio,1.0,100.0);
 	TwWindowSize(width, height);
 	glutSwapBuffers();
 }
