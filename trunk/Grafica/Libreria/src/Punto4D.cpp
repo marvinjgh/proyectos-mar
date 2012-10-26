@@ -1,4 +1,4 @@
-#include "Punto4D.h"
+#include "Geom\Punto4D.h"
 
 
 Punto4D::Punto4D(void)

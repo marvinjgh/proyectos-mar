@@ -1,4 +1,4 @@
-#include "Punto2D.h"
+#include "Geom\Punto2D.h"
 
 Punto2D::Punto2D(void)
 {

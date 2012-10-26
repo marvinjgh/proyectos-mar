@@ -43,7 +43,7 @@
     <OutDir>$(ProjecDir)$lib\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(ProjecDir)$lib\</OutDir>
+    <OutDir>$(ProjecDir)lib\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -68,7 +68,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjecDir)include;$(SolutionDir)colectivo\include;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -82,22 +82,24 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Geom\Defs.h" />
-    <ClInclude Include="Geom\mat4x4.h" />
-    <ClInclude Include="Geom\Punto.h" />
-    <ClInclude Include="Geom\Punto2D.h" />
-    <ClInclude Include="Geom\Punto3D.h" />
-    <ClInclude Include="Geom\Punto4D.h" />
-    <ClInclude Include="Geom\Vec3D.h" />
-    <ClInclude Include="Geom\Vec4D.h" />
+    <ClInclude Include="include\Geom\Defs.h" />
+    <ClInclude Include="include\Geom\mat4x4.h" />
+    <ClInclude Include="include\Geom\Punto.h" />
+    <ClInclude Include="include\Geom\Punto2D.h" />
+    <ClInclude Include="include\Geom\Punto3D.h" />
+    <ClInclude Include="include\Geom\Punto4D.h" />
+    <ClInclude Include="include\Geom\Vec3D.h" />
+    <ClInclude Include="include\Geom\Vec4D.h" />
+    <ClInclude Include="include\glsl\Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Geom\mat4x4.cpp" />
-    <ClCompile Include="Geom\Punto2D.cpp" />
-    <ClCompile Include="Geom\Punto3D.cpp" />
-    <ClCompile Include="Geom\Punto4D.cpp" />
-    <ClCompile Include="Geom\Vec3D.cpp" />
-    <ClCompile Include="Geom\Vec4D.cpp" />
+    <ClCompile Include="src\mat4x4.cpp" />
+    <ClCompile Include="src\Punto2D.cpp" />
+    <ClCompile Include="src\Punto3D.cpp" />
+    <ClCompile Include="src\Punto4D.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\Vec3D.cpp" />
+    <ClCompile Include="src\Vec4D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

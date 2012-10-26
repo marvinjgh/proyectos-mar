@@ -1,4 +1,4 @@
-#include "Mat4x4.h"
+#include "Geom\Mat4x4.h"
 
 Mat4x4::Mat4x4()
 {
@@ -15,47 +15,6 @@ void Mat4x4::Identidad()
 {
 	for(int i=0; i<16; i++)
 		mat[i] = (i%5 == 0) ? 1.f : 0.f;
-}
-
-Mat4x4 Mat4x4::MatTranslate(float x, float y, float z)
-{
-
-	Mat4x4 tem;
-	tem.mat[12]=x;
-	tem.mat[13]=y;
-	tem.mat[14]=z;
-
-	return tem;
-}
-
-Mat4x4 Mat4x4::MatTranslate(const Punto3D& p)
-{
-	Mat4x4 tem;
-	tem.mat[12]=p.coord[0];
-	tem.mat[13]=p.coord[1];
-	tem.mat[14]=p.coord[2];
-
-	return tem;
-}
-
-Mat4x4 Mat4x4::MatScale(float x, float y, float z)
-{
-	Mat4x4 tem;
-	tem.mat[0]=x;
-	tem.mat[5]=y;
-	tem.mat[10]=z;
-
-	return tem;
-}
-
-Mat4x4 Mat4x4::MatScale(const Punto3D& p)
-{
-	Mat4x4 tem;
-	tem.mat[0]=p.coord[0];
-	tem.mat[5]=p.coord[1];
-	tem.mat[10]=p.coord[2];
-
-	return tem;
 }
 
 Mat4x4 Mat4x4::operator*(const Mat4x4& M)
@@ -116,7 +75,48 @@ ostream& operator <<(ostream& os, const Mat4x4& M)
 		<< M.mat[3] << ", " << M.mat[7] << ", " << M.mat[11] << ", " << M.mat[15] << "\n";
 }
 
-Mat4x4 Mat4x4::MatRotar(const float* quat){
+Mat4x4 MatTranslate(float x, float y, float z)
+{
+
+	Mat4x4 tem;
+	tem.mat[12]=x;
+	tem.mat[13]=y;
+	tem.mat[14]=z;
+
+	return tem;
+}
+
+Mat4x4 MatTranslate(const Punto3D& p)
+{
+	Mat4x4 tem;
+	tem.mat[12]=p.coord[0];
+	tem.mat[13]=p.coord[1];
+	tem.mat[14]=p.coord[2];
+
+	return tem;
+}
+
+Mat4x4 MatScale(float x, float y, float z)
+{
+	Mat4x4 tem;
+	tem.mat[0]=x;
+	tem.mat[5]=y;
+	tem.mat[10]=z;
+
+	return tem;
+}
+
+Mat4x4 MatScale(const Punto3D& p)
+{
+	Mat4x4 tem;
+	tem.mat[0]=p.coord[0];
+	tem.mat[5]=p.coord[1];
+	tem.mat[10]=p.coord[2];
+
+	return tem;
+}
+
+Mat4x4 MatRotar(const float* quat){
 	float yy2 = 2.0f * quat[1] * quat[1];
 	float xy2 = 2.0f * quat[0] * quat[1];
 	float xz2 = 2.0f * quat[0] * quat[2];
@@ -149,9 +149,9 @@ Mat4x4 Mat4x4::MatRotar(const float* quat){
 	return r;
 }
 
-Mat4x4 Mat4x4::buildPerpectiva(float angulo, float aspect, float znear, float zfar)
+Mat4x4 buildPerpectiva(float angulo, float aspect, float znear, float zfar)
 {
-	const float h = 1.0f/tan(angulo*PI_OVER_360);
+	const float h = (float)(1.0f/tan(angulo*PI_OVER_360));
 	float neg_depth = znear-zfar;
 
 	Mat4x4 a;

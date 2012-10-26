@@ -58,7 +58,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)Libreria\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)Libreria\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -74,7 +74,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Modelo.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\visor.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +93,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Modelo.h" />
-    <ClInclude Include="src\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />
