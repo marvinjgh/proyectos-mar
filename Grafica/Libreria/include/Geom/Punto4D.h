@@ -14,7 +14,7 @@ public:
 	/*Destructor base*/
 	~Punto4D(void);
 
-	double distancia(Punto4D p);
+	float distancia(Punto4D p);
 
 	Punto4D operator+ (const Punto4D& p);
 	Punto4D operator- (const Punto4D& p);

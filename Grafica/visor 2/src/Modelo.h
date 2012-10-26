@@ -1,6 +1,5 @@
 #pragma once
-#include "Shader.h"
-#include <Geom\Punto2D.h>
+#include "glsl\Shader.h"
 #include <Geom\Vec3D.h>
 #include <Geom\Vec4D.h>
 #include <Geom\mat4x4.h>

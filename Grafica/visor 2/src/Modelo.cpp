@@ -21,7 +21,7 @@ void Modelo::centrar(){
 	Punto3D y = (this->maxp-this->minp);
 	float d = max(max(y.coord[0],y.coord[1]),y.coord[2]);
 
-	centro = centro.MatScale(2/d,2/d,2/d)*centro.MatTranslate(-x);
+	centro = MatScale(2/d,2/d,2/d)*MatTranslate(-x);
 }
 
 void Modelo::cargarModelo(const char* file){

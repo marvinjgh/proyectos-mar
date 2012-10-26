@@ -9,7 +9,7 @@ Punto4D::Punto4D(void)
 	coord[3]=0;
 }
 
-Punto4D::Punto4D(double x, double y, double z, double w)
+Punto4D::Punto4D(float x, float y, float z, float w)
 {
 	coord[0]=x;
 	coord[1]=y;
@@ -30,8 +30,8 @@ Punto4D::~Punto4D(void)
 {
 }
 
-double Punto4D::distancia(Punto4D p){
-	double a = p.coord[0] - coord[0], b = p.coord[1] - coord[1], c = p.coord[2] - coord[2], d = p.coord[3] - coord[3];
+float Punto4D::distancia(Punto4D p){
+	float a = p.coord[0] - coord[0], b = p.coord[1] - coord[1], c = p.coord[2] - coord[2], d = p.coord[3] - coord[3];
 	a=a*a;b=b*b,c=c*c;d=d*d;
 	return sqrt(a+b+c+d);
 }
@@ -51,7 +51,7 @@ Punto4D Punto4D::operator* (const Punto4D& p)
 	return Punto4D(coord[0]*p.coord[0],coord[1]*p.coord[1],coord[2]*p.coord[2],coord[3]*p.coord[3]);
 }
 
-Punto4D Punto4D::operator/ (double valor)
+Punto4D Punto4D::operator/ (float valor)
 {
 	Punto4D a;
 	a.coord[0]=coord[0]/valor;
@@ -86,7 +86,7 @@ void Punto4D::operator-= (const Punto4D& p)
 	this->coord[3]-=p.coord[3];
 }
 
-void Punto4D::operator*= (double f)
+void Punto4D::operator*= (float f)
 {
 	this->coord[0]*=f;
 	this->coord[1]*=f;
@@ -94,7 +94,7 @@ void Punto4D::operator*= (double f)
 	this->coord[3]*=f;
 }
 
-void Punto4D::operator/= (double f)
+void Punto4D::operator/= (float f)
 {
 	this->coord[0]/=f;
 	this->coord[1]/=f;
@@ -106,12 +106,12 @@ bool Punto4D::operator== (const Punto4D& p){
 	return (coord[0]==p.coord[0])&&(coord[1]==p.coord[1])&&(coord[2]==p.coord[2])&&(coord[3]==p.coord[3]);
 }
 
-Punto4D operator* (double valor, const Punto4D& p)
+Punto4D operator* (float valor, const Punto4D& p)
 {
   return Punto4D(p.coord[0] * valor, p.coord[1] * valor, p.coord[2] * valor, p.coord[3] * valor);
 }
 
-Punto4D operator* (const Punto4D& p, double valor)
+Punto4D operator* (const Punto4D& p, float valor)
 {
   return Punto4D(p.coord[0] * valor, p.coord[1] * valor, p.coord[2] * valor, p.coord[3] * valor);
 }
