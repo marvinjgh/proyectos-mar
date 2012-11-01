@@ -29,6 +29,5 @@ public:
 	Punto3D minp,maxp;
 	vector<triangulo*> faces;
 	Mat4x4 centro;
-
 };
 

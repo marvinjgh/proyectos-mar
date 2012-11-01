@@ -1,4 +1,4 @@
-#include "Geom\Punto3D.h"
+#include "..\include\Geom\Punto3D.h"
 
 
 Punto3D::Punto3D(void)

@@ -13,6 +13,7 @@ public:
 	Vec3D(const float* v);
 	Vec3D(const Vec3D &v);
 	Vec3D(const Punto3D &v);
+	Vec3D(const Punto3D &p0,const Punto3D &p1);
 
 	float Magnitud(void) const;
 

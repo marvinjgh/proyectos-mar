@@ -1,6 +1,5 @@
 #pragma once
-#include <GL\glew.h>
-#include <Geom\Defs.h>
+#include "..\Geom\Defs.h"
 #include <map>
 #include <string>
 #include <cstdio>
@@ -16,6 +15,8 @@ public:
 	Shader(void);
 	/*Destructor*/
 	~Shader(void);
+	/*verifico si hay error*/
+	void CheckSLError(GLhandleARB &object);
 	/*Carga y compila el shader del archivo dado en source
 	@param type tipo de shader
 	@param source ubicacion del shader
@@ -41,11 +42,11 @@ public:
 	GLuint getLocation(const string location);
 	//sobreecarga del operador [] para un acceso mas transparente
 	GLuint operator[](const string attribute);
-	GLuint	program;
+	
 private:
 
-	
-	GLuint shaders[2];//0->vertexshader, 1->fragmentshader
+	GLhandleARB	program;
+	GLhandleARB shaders[2];//0->vertexshader, 1->fragmentshader
 	map<string,GLuint> locationList;
 };
 
