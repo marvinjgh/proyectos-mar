@@ -1,4 +1,4 @@
-#include "Geom\Vec3D.h"
+#include "..\include\Geom\Vec3D.h"
 
 
 Vec3D::Vec3D(void)
@@ -37,6 +37,10 @@ Vec3D::Vec3D(const Punto3D& p)
 	coord[1]=p.coord[1];
 	coord[2]=p.coord[2];
 	
+}
+
+Vec3D::Vec3D(const Punto3D &p0,const Punto3D &p1){
+
 }
 
 float Vec3D::Magnitud(void) const

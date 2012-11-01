@@ -1,17 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visor v1.1", "Tarea 4\Tarea 4.vcxproj", "{FF6900EB-74EE-428E-BC1B-64CB51E8B10C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visor 1.1", "Tarea 4\Tarea 4.vcxproj", "{FF6900EB-74EE-428E-BC1B-64CB51E8B10C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "paint v1", "Tarea 1\Tarea1.vcxproj", "{FC9EC582-9ED2-4330-89C6-5A7CA71A7C76}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "paint v2", "Tarea 2\Tarea2.vcxproj", "{0BF55C60-671D-4205-B2A1-0FBBCA722509}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visor v1.0", "Tarea 3\Tarea3.vcxproj", "{EE0EBF7F-E06C-4DC6-A424-4C7FBC6630A6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visor 1.0", "Tarea 3\Tarea3.vcxproj", "{EE0EBF7F-E06C-4DC6-A424-4C7FBC6630A6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visor 2", "visor 2\visor 2.vcxproj", "{5A4CF97F-7C8B-4882-8B11-DAD17F1A5D05}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Libreria", "Libreria\Libreria.vcxproj", "{4AD08F4F-F8F1-4B18-AC49-94D0FA81B502}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simplificacion", "simplificacion\simplificacion.vcxproj", "{56FD7A90-2BD7-4D5A-93EA-6F5F091B67E4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shading", "shading\shading.vcxproj", "{5DA9C1C5-1489-4F2A-B546-671D6612C79A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +47,14 @@ Global
 		{4AD08F4F-F8F1-4B18-AC49-94D0FA81B502}.Debug|Win32.Build.0 = Debug|Win32
 		{4AD08F4F-F8F1-4B18-AC49-94D0FA81B502}.Release|Win32.ActiveCfg = Release|Win32
 		{4AD08F4F-F8F1-4B18-AC49-94D0FA81B502}.Release|Win32.Build.0 = Release|Win32
+		{56FD7A90-2BD7-4D5A-93EA-6F5F091B67E4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{56FD7A90-2BD7-4D5A-93EA-6F5F091B67E4}.Debug|Win32.Build.0 = Debug|Win32
+		{56FD7A90-2BD7-4D5A-93EA-6F5F091B67E4}.Release|Win32.ActiveCfg = Release|Win32
+		{56FD7A90-2BD7-4D5A-93EA-6F5F091B67E4}.Release|Win32.Build.0 = Release|Win32
+		{5DA9C1C5-1489-4F2A-B546-671D6612C79A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5DA9C1C5-1489-4F2A-B546-671D6612C79A}.Debug|Win32.Build.0 = Debug|Win32
+		{5DA9C1C5-1489-4F2A-B546-671D6612C79A}.Release|Win32.ActiveCfg = Release|Win32
+		{5DA9C1C5-1489-4F2A-B546-671D6612C79A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

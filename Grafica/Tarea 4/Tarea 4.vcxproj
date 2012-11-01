@@ -23,7 +23,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FF6900EB-74EE-428E-BC1B-64CB51E8B10C}</ProjectGuid>
     <RootNamespace>Tarea4</RootNamespace>
-    <ProjectName>visor v1.1</ProjectName>
+    <ProjectName>visor 1.1</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

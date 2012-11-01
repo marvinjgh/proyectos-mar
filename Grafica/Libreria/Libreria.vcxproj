@@ -52,12 +52,16 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(ProjecDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -91,9 +95,11 @@
     <ClInclude Include="include\Geom\Vec3D.h" />
     <ClInclude Include="include\Geom\Vec4D.h" />
     <ClInclude Include="include\glsl\Shader.h" />
+    <ClInclude Include="include\mod\ModeloOff.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mat4x4.cpp" />
+    <ClCompile Include="src\ModeloOff.cpp" />
     <ClCompile Include="src\Punto2D.cpp" />
     <ClCompile Include="src\Punto3D.cpp" />
     <ClCompile Include="src\Punto4D.cpp" />
