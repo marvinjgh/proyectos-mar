@@ -34,7 +34,6 @@ void ModeloOff::cargarOff(const char* file){
 		triangulos  = new Triangulo_off[nVert];
 		for (aux=0;aux<nVert;aux++){
 			f>>vertices[aux].posicion.coord[0]>>vertices[aux].posicion.coord[1]>>vertices[aux].posicion.coord[2];
-			vertices[aux].posicion.coord[3]=1.0f;
 			minp.minp(vertices[aux].posicion.coord);
 			minp.maxp(vertices[aux].posicion.coord);
 		}
@@ -53,6 +52,9 @@ void ModeloOff::cargarOff(const char* file){
 	f.close();
 }
 
-void calcularNormal(GLuint t){
-	
+void ModeloOff::calcularNormal(GLuint t){
+	Vec3D u(vertices[triangulos[t].vertices[0]].posicion,vertices[triangulos[t].vertices[1]].posicion);
+	Vec3D v(vertices[triangulos[t].vertices[0]].posicion,vertices[triangulos[t].vertices[2]].posicion);
+
+
 }
