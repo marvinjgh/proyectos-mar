@@ -10,7 +10,7 @@ class ModeloOff
 {
 public:
 	struct Vector_off{
-		Punto4D posicion;
+		Punto3D posicion;
 		Vec3D normal;
 	} *vertices;
 	
