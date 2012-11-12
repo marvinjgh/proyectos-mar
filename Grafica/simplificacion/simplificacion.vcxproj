@@ -54,6 +54,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)Libreria\include</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -99,6 +100,13 @@
     <Library Include="..\colectivo\lib\glew32.lib">
       <FileType>Document</FileType>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="color.frag" />
+    <None Include="color.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\arista.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

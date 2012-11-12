@@ -1,32 +1,49 @@
 #pragma once
-#include "..\Geom\Defs.h"
-#include "..\Geom\Punto4D.h"
+#include "..\glsl\Shader.h"
 #include "..\Geom\Vec3D.h"
+#include "..\Geom\mat4x4.h"
 #include <fstream>
-#include <string>
+#include <vector>
+#include <stack>
 #include <cfloat>
+#include <omp.h>
+
+enum Sombreado 
+{ FLAT , GOURAUD };
 
 class ModeloOff
 {
 public:
-	struct Vector_off{
-		Punto3D posicion;
-		Vec3D normal;
-	} *vertices;
-	
-	struct Triangulo_off
-	{
+	struct triangulo{
 		GLuint vertices[3];
 		Vec3D normal;
-	} *triangulos;
-	
+		bool activo;
+	};
+	struct vertice{
+		Punto3D posicion;
+		Vec3D normal;
+		vector<int> trians;
+	};
+
 	ModeloOff(void);
 	~ModeloOff(void);
-	void cargarOff(const char* file);
-	void calcularNormal(GLuint t);
+	void cargarModelo(const char* file);
+	void centrar(void);
+	void updateBuffer(Sombreado x);
+	void calcularNormal(triangulo* t);
+	void colapse();
 
-	GLuint BufferObject, index;
-	GLuint nVert, nTrian;
+	size_t total;
+	GLsizeiptr datasize;
+	GLuint BufferObject;
+	GLfloat* buffer;
 	Punto3D minp,maxp;
-};
+	vector<triangulo*> faces;
+	vector<vertice*> vert;
+	stack<GLuint> recover;
+	
 
+	Mat4x4 centro;
+
+
+};

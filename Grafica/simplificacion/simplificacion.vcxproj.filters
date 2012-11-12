@@ -16,6 +16,9 @@
     <Filter Include="Librerias">
       <UniqueIdentifier>{65e7084f-16d6-4fed-a13a-b2661695fc01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader files">
+      <UniqueIdentifier>{8c213241-8b51-4c8d-9749-ad112dff0492}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\simplificacion.cpp">
@@ -35,5 +38,18 @@
     <Library Include="..\colectivo\lib\glew32.lib">
       <Filter>Librerias</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="color.frag">
+      <Filter>Shader files</Filter>
+    </None>
+    <None Include="color.vert">
+      <Filter>Shader files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\arista.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

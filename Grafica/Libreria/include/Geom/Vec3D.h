@@ -28,7 +28,7 @@ public:
 	Vec3D operator/= (float f);
   
 	float  operator*  (const Vec3D& v) const;   // Producto Escalar
-	Vec3D operator^  (const Vec3D& v) const;   // Producto Cruz (el ultimo valor es 1)
+	Vec3D operator^  (const Vec3D& v) const;   // Producto Cruz
 	Vec3D operator-  (void) const;
 	Vec3D operator=  (const Vec3D& v);
 
