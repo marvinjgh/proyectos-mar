@@ -88,14 +88,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="files\t1.frag" />
-    <None Include="files\t1.vert" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="src\Modelo.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="files\t1.frag">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="files\t1.vert">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
