@@ -56,6 +56,7 @@ void ModeloOff::cargarModelo(const char* file){
 			faces.push_back(t);
 		}
 		#pragma endregion cargar los triangulos
+
 	}else{
 		puts("El archivo no es un off");
 		f.close();
@@ -73,7 +74,6 @@ void ModeloOff::cargarModelo(const char* file){
 	buffer = new GLfloat[total*(18)];
 	datasize=(total*(18))*sizeof(float);
 	
-
 	glGenBuffers(1, &BufferObject);
 	glBindBuffer(GL_ARRAY_BUFFER, BufferObject);
 	glBufferDataARB(GL_ARRAY_BUFFER_ARB, datasize, 0, GL_STREAM_DRAW_ARB);
@@ -92,6 +92,14 @@ void ModeloOff::calcularNormal(triangulo* t){
 	vert[t->vertices[0]]->normal+=t->normal;
 	vert[t->vertices[1]]->normal+=t->normal;
 	vert[t->vertices[2]]->normal+=t->normal;
+}
+
+Vec3D ModeloOff::calcularNormal(Punto3D a, Punto3D b, Punto3D c){
+	Vec3D u(a,b);
+	Vec3D v(a,c);
+	u=u^v;
+	u.Normalizar();
+	return u;
 }
 
 void ModeloOff::updateBuffer(Sombreado x){
@@ -125,5 +133,7 @@ void ModeloOff::updateBuffer(Sombreado x){
 }
 
 void ModeloOff::colapse(){
+	double a1=0.0, a2=0.0,a3=0.0;
+
 
 }
