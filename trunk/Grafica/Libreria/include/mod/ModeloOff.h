@@ -19,10 +19,12 @@ public:
 		Vec3D normal;
 		bool activo;
 	};
+
 	struct vertice{
 		Punto3D posicion;
 		Vec3D normal;
 		vector<int> trians;
+		bool activo;
 	};
 
 	ModeloOff(void);
@@ -31,6 +33,7 @@ public:
 	void centrar(void);
 	void updateBuffer(Sombreado x);
 	void calcularNormal(triangulo* t);
+	Vec3D calcularNormal(Punto3D a, Punto3D b, Punto3D c);
 	void colapse();
 
 	size_t total;
