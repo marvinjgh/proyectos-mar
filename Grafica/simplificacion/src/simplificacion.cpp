@@ -10,7 +10,7 @@ GLfloat q_rotate[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat traslacion[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat c_line[]={ 1.0f, 0.0f, 0.0f,1.0f };
 GLfloat zoom;
-bool bools[]={false,false,false};
+bool bools[]={true,false,false};
 
 void init(void)
 {   
@@ -25,8 +25,8 @@ void init(void)
 	t.AddUniform("incolor");
 	t.disable();
 
-	mod.cargarModelo("dragon.off");
-
+	//mod.cargarModelo("dragon.off");
+	mod.cargarModelo("cubo.off");
 }
 
 void display (void){
@@ -82,6 +82,10 @@ void reshape (int width, int height)
 	glutSwapBuffers();
 }
 
+void TW_CALL next(void *clientData){
+	mod.colapse();
+}
+
 void genMenu(TwBar *bar)
 {
 	//bloque de la rotacion
@@ -103,19 +107,8 @@ void genMenu(TwBar *bar)
 		" label='Activar' help='Activa dibujar las lineas del objeto.' key=l group='Lineas' ");
 	TwAddVarRW(bar, "c1", TW_TYPE_COLOR4F, &c_line, 
 		"label='Color' help='Cambia el color de las lineas.' group='Lineas' ");
-	/*
-	//bloque box
-	TwAddVarRW(bar, "a4", TW_TYPE_BOOLCPP, &bools[1], 
-		" label='Activar' help='Activa dibujar las lineas del objeto.' key=b group='Bounding box' ");
-	TwAddVarRW(bar, "c4", TW_TYPE_COLOR3F, &c_box, 
-		"label='Color' help='Cambia el color de las lineas.' group='Bounding box' ");
-
-	//bloque del background
-	TwAddVarRW(bar, "BgTop", TW_TYPE_COLOR3F, c_bgtop, 
-               " group='Background' help='Cambia el color de superior del background.' ");  // 'BgTop' and 'BgBottom' are put in the group 'Background' (which is then created)
-    TwAddVarRW(bar, "BgBottom", TW_TYPE_COLOR3F, c_bgbottom, 
-               " group='Background' help='Cambia el color inferior del background.' ");
-	*/
+	TwAddButton(bar, "c", next, NULL, 
+                " label='boton' key=n help='' ");
 }
 
 int main(int argc, char **argv) 
