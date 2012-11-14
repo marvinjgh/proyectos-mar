@@ -11,6 +11,8 @@
 enum Sombreado 
 { FLAT , GOURAUD };
 
+double calcularAngulo(Vec3D a, Vec3D b);
+
 class ModeloOff
 {
 public:
@@ -27,6 +29,10 @@ public:
 		bool activo;
 	};
 
+	struct arista{
+		int a, b, t1, t2;
+	};
+
 	ModeloOff(void);
 	~ModeloOff(void);
 	void cargarModelo(const char* file);
@@ -35,6 +41,7 @@ public:
 	void calcularNormal(triangulo* t);
 	Vec3D calcularNormal(Punto3D a, Punto3D b, Punto3D c);
 	void colapse();
+	void agregarArista(arista* a, int t);
 
 	size_t total;
 	GLsizeiptr datasize;
@@ -43,6 +50,8 @@ public:
 	Punto3D minp,maxp;
 	vector<triangulo*> faces;
 	vector<vertice*> vert;
+	vector<arista*> aristas;
+	vector<arista*>::iterator ar;
 	stack<GLuint> recover;
 	
 

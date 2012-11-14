@@ -47,9 +47,4 @@
       <Filter>Shader files</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\arista.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
 </Project>
