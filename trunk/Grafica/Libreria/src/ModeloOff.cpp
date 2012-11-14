@@ -141,6 +141,8 @@ void ModeloOff::updateBuffer(Sombreado x){
 		asd=j*18;
 		t = faces[j];
 
+		if (!t->activo) continue;
+
 		for (int k = 0; k < 3; k++)
 		{
 			p3=vert[t->vertices[k]]->posicion;
@@ -271,7 +273,18 @@ void ModeloOff::colapse(){
 			c=3;
 			mejor=ar;
 		}
+		if (am == 0.0) break;
 	}
+
+	//backup
+
+	if (c==-1){return;}
+
+	if (c==1){}
+
+	if (c==2){}
+
+	if (c==3){}
 
 	cout<<vert[(*mejor)->a]->posicion<<vert[(*mejor)->b]->posicion;
 }
