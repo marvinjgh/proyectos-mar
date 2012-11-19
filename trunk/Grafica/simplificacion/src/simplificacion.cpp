@@ -5,18 +5,20 @@ GLuint positionBufferObject,p2,p3;
 Shader t;
 Mat4x4 m,p;
 ModeloOff mod;
-
+Sombreado shadow;
 GLfloat q_rotate[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat traslacion[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat c_line[]={ 1.0f, 0.0f, 0.0f,1.0f };
-GLfloat zoom;
-bool bools[]={true,false,false};
+GLfloat c_fill[]={ 0.0f, 0.0f, 1.0f,1.0f };
+GLfloat zoom,angulo;
+bool bools[]={true,false};
 
 void init(void)
 {   
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	zoom=1.0f;
+	angulo=5.0;
 	t.loadShader(VERTEX_SHADER,"color.vert");
 	t.loadShader(FRAGMENT_SHADER,"color.frag");
 	t.create_Link();
@@ -26,7 +28,7 @@ void init(void)
 	t.disable();
 
 	//mod.cargarModelo("dragon.off");
-	mod.cargarModelo("cubo.off");
+	mod.cargarModelo("file/cubo2.off");
 }
 
 void display (void){
@@ -36,11 +38,11 @@ void display (void){
 	float color1[4]={0.0,0.0,1.0,1.0};
 	//Model
 	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
-	m =( p * (MatTranslate(0,0,-3)* m));
+	m =( p * (MatTranslate(0,0,-5)* m));
 	//MVP
 	t.enable();
 	glUniformMatrix4fv(t["m"],1,0,m.mat);
-	glUniform4fv(t["incolor"],1,color1);
+	glUniform4fv(t["incolor"],1,c_fill);
 	glBindBuffer(GL_ARRAY_BUFFER, mod.BufferObject);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -83,7 +85,8 @@ void reshape (int width, int height)
 }
 
 void TW_CALL next(void *clientData){
-	mod.colapse();
+	mod.colapse(angulo);
+	mod.updateBuffer(shadow);
 }
 
 void genMenu(TwBar *bar)
@@ -91,24 +94,35 @@ void genMenu(TwBar *bar)
 	//bloque de la rotacion
 	TwAddVarRW(bar, "ObjRotation", TW_TYPE_QUAT4F, &q_rotate, 
 		" label='Object rotation' opened=true help='Change the object orientation.' ");
-	
+	TwAddSeparator(bar,"s1","");
 	//traslacion
 	TwAddVarRW(bar, "x", TW_TYPE_FLOAT, &traslacion[0], 
-		"label='Mover en x' step=0.08 keyIncr='d' keyDecr='a' help='Permite mover el objeto en el eje x.'");
+		"label='Mover en x' step=0.08 keyIncr='d' keyDecr='a' help='Permite mover el objeto en el eje x.' group='Traslacion'");
 	TwAddVarRW(bar, "y", TW_TYPE_FLOAT, &traslacion[1], 
-		"label='Mover en y' step=0.08 keyIncr='q' keyDecr='e' help='Permite mover el objeto en el eje y.'");
+		"label='Mover en y' step=0.08 keyIncr='q' keyDecr='e' help='Permite mover el objeto en el eje y.' group='Traslacion'");
 	TwAddVarRW(bar, "z", TW_TYPE_FLOAT, &traslacion[2], 
-		"label='Mover en z' step=0.08 keyIncr='w' keyDecr='s' help='Permite mover el objeto en el eje z.'");
+		"label='Mover en z' step=0.08 keyIncr='w' keyDecr='s' help='Permite mover el objeto en el eje z.' group='Traslacion'");
+	TwAddSeparator(bar,"s2","");
 	//zoom
 	TwAddVarRW(bar, "zoom", TW_TYPE_FLOAT, &zoom, 
 		"label='Zoom' min=0.01 max=2.5 step=0.01 keyIncr='+' keyDecr='-' help='Escalamiento de la figura.'");
 	//bloque linea*/
 	TwAddVarRW(bar, "a1", TW_TYPE_BOOLCPP, &bools[0],
-		" label='Activar' help='Activa dibujar las lineas del objeto.' key=l group='Lineas' ");
+		" label='Activar' help='Activa dibujar las lineas del objeto.' key=l group='Line' ");
 	TwAddVarRW(bar, "c1", TW_TYPE_COLOR4F, &c_line, 
-		"label='Color' help='Cambia el color de las lineas.' group='Lineas' ");
-	TwAddButton(bar, "c", next, NULL, 
-                " label='boton' key=n help='' ");
+		"label='Color' help='Cambia el color de las lineas.' group='Line' ");
+	TwAddVarRW(bar, "c2", TW_TYPE_COLOR3F, &c_fill, 
+		"label='Color' help='Cambia el color del relleno.' group='Fill' ");
+	TwAddSeparator(bar,"s3","");
+	TwAddButton(bar, "c", next, NULL, " label='Colapso' key=n help='Colapso' ");
+	TwAddVarRW(bar, "ang", TW_TYPE_FLOAT, &angulo, 
+		"label='Offset para el colapso' max=45.0 min=5.0 step=1.00 keyIncr='d' keyDecr='a' help='Angulo para la comprobacion'");
+	TwAddSeparator(bar,"s4","");
+	
+	
+	TwEnumVal sombra[2] = { { FLAT , "Flat"}, { GOURAUD, "Gouraud"} };
+	TwType shadowType = TwDefineEnum("shadowType", sombra, 2);
+	TwAddVarRW (bar, "sombra", shadowType, &shadow, " label=' Tipo de sombra' keyIncr='<' keyDecr='>' help='Cambia el tipo de sombreado.' ");
 }
 
 int main(int argc, char **argv) 
@@ -137,7 +151,7 @@ int main(int argc, char **argv)
 	TwBar *bar;
 	bar = TwNewBar("Barra");
 	TwDefine(" GLOBAL help='Aqui se encuentra .' ");
-	TwDefine(" Barra label='Barra' refresh=0.5 position='16 16' size='230 250' alpha=0 color='0 0 0'");
+	TwDefine(" Barra label='Barra' refresh=0.5 position='16 16' size='230 450' alpha=0 color='0 0 0'");
 
 	if (GLEW_ARB_vertex_shader && GLEW_ARB_fragment_shader)
 		printf("Ready for GLSL\n");
