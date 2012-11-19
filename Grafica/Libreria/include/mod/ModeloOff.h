@@ -18,6 +18,7 @@ class ModeloOff
 public:
 	struct triangulo{
 		GLuint vertices[3];
+		GLuint aristas[3];
 		Vec3D normal;
 		bool activo;
 	};
@@ -33,6 +34,11 @@ public:
 		int a, b, t1, t2;
 	};
 
+	struct backup{
+		vertice a;
+		arista* b;
+	};
+
 	ModeloOff(void);
 	~ModeloOff(void);
 	void cargarModelo(const char* file);
@@ -40,8 +46,9 @@ public:
 	void updateBuffer(Sombreado x);
 	void calcularNormal(triangulo* t);
 	Vec3D calcularNormal(Punto3D a, Punto3D b, Punto3D c);
-	void colapse();
-	void agregarArista(arista* a, int t);
+	void colapse(double offSetAngle);
+	int agregarArista(arista* a, int t);
+	int buscarArista(int a, int b);
 
 	size_t total;
 	GLsizeiptr datasize;

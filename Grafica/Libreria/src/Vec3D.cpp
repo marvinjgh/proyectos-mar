@@ -56,6 +56,7 @@ void Vec3D::Normalizar(void)
 	float n;
 
 	n = Magnitud();
+	if (n<=0.0) return;
 	coord[0] = coord[0]/n;
 	coord[1] = coord[1]/n;
 	coord[2] = coord[2]/n;

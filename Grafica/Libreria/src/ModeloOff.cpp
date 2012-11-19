@@ -68,17 +68,20 @@ void ModeloOff::cargarModelo(const char* file){
 			a->a=(int)t->vertices[0];
 			a->b=(int)t->vertices[1];
 			a->t1=(int)faces.size()-1;
-			agregarArista(a,faces.size()-1);//arista 1
+			a->t2=-1;
+			t->aristas[0]=agregarArista(a,faces.size()-1);//arista 1
 			a = new arista;
 			a->a=(int)t->vertices[1];
 			a->b=(int)t->vertices[2];
 			a->t1=(int)faces.size()-1;
-			agregarArista(a,faces.size()-1);//arista 2
+			a->t2=-1;
+			t->aristas[1]=agregarArista(a,faces.size()-1);//arista 2
 			a = new arista;
 			a->a=(int)t->vertices[2];
 			a->b=(int)t->vertices[0];
 			a->t1=(int)faces.size()-1;
-			agregarArista(a,faces.size()-1);//arista 3
+			a->t2=-1;
+			t->aristas[2]=agregarArista(a,faces.size()-1);//arista 3
 
 #pragma endregion agrego las aristas del triangulo
 
@@ -94,7 +97,7 @@ void ModeloOff::cargarModelo(const char* file){
 	vector<vertice*>::iterator i;
 	for (i = vert.begin(); i != vert.end(); i++)
 	{
-		(*i)->normal/((float)(*i)->trians.size());
+		(*i)->normal/=((float)(*i)->trians.size());
 	}
 
 	total=faces.size();
@@ -135,11 +138,12 @@ void ModeloOff::updateBuffer(Sombreado x){
 	Vec3D v3;
 	Punto3D p3;
 
-
-	for (int j = 0; j < total; j++)
+	vector<triangulo*>::iterator i;
+	asd=0;
+	for ( i = faces.begin(); i < faces.end(); i++)
 	{
-		asd=j*18;
-		t = faces[j];
+
+		t = *i;
 
 		if (!t->activo) continue;
 
@@ -155,18 +159,16 @@ void ModeloOff::updateBuffer(Sombreado x){
 			asd+=6;
 		} 
 	}
-
+	//	datasize=(total*(18))*sizeof(float);
 	glBindBuffer(GL_ARRAY_BUFFER, BufferObject);
 	glBufferSubDataARB(GL_ARRAY_BUFFER,0, datasize,buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void ModeloOff::colapse(){
+void ModeloOff::colapse(double offSetAngle){
 	double a1=0.0, a2=0.0, a3=0.0, am=10000.0;
 	arista *b;
 	int c=-1;
-
-	double offSetAngle = 5;
 
 	double unbral = (PI * offSetAngle) / 180.0;
 
@@ -180,19 +182,22 @@ void ModeloOff::colapse(){
 
 	vector<arista*>::iterator mejor;
 
-
+	#pragma region
 	for (ar = aristas.begin(); ar < aristas.end(); ar++){
 		b=*ar;
 		a1=0.0; a2=0.0; a3=0.0;
-
+		s[0]=false;s[1]=false;s[2]=false;
 		if (!vert[b->a]->activo || !vert[b->b]->activo) continue;
+		if (b->t2<0) continue;
+		if(!faces[b->t1]->activo && !faces[b->t2]->activo) continue;
 		angulos.clear();
 
 		//for de los triangulos de a
+		#pragma region
 		for (i = vert[b->a]->trians.begin(); i < vert[b->a]->trians.end(); i++)
 		{
 			if (*i == b->t1 || *i == b->t2 ) continue;
-
+			if (!faces[*i]->activo) continue;
 			tr=faces[*i];
 			//calcular nueva normal para cada triangulo
 
@@ -207,21 +212,17 @@ void ModeloOff::colapse(){
 
 
 			//calculo el punto medio
-			medio = (vert[b->a]->posicion - vert[b->b]->posicion)/2;
-			medio+=vert[b->a]->posicion;
-			n=	calcularNormal(//el vertice a se sustituido por el medio
-				(tr->vertices[0]==b->a)?medio:vert[tr->vertices[0]]->posicion,
-				(tr->vertices[1]==b->a)?medio:vert[tr->vertices[1]]->posicion,
-				(tr->vertices[2]==b->a)?medio:vert[tr->vertices[2]]->posicion);
-			angulos.push_back(calcularAngulo(n,tr->normal));
+			
 			//fin calculo
 		}
+		#pragma endregion calculo el angulo de los triangulos de a
 
 		//for de los triangulos de b
+		#pragma region
 		for (i = vert[b->b]->trians.begin(); i < vert[b->b]->trians.end(); i++)
 		{
 			if (*i == b->t1 || *i == b->t2 ) continue;
-
+			if (!faces[*i]->activo) continue;
 			tr=faces[*i];
 			//calcular nueva normal para cada triangulo
 
@@ -233,29 +234,17 @@ void ModeloOff::colapse(){
 
 			angulos.push_back(0);//como a no tiene interaccion con este triangulo lo coloco tal cual
 
-			//calculo el punto medio
-			medio = (vert[b->a]->posicion - vert[b->b]->posicion)/2;
-			medio+=vert[b->a]->posicion;
-			n = calcularNormal(//el vertice a se sustituido por el medio
-				(tr->vertices[0]==b->a)?medio:vert[tr->vertices[0]]->posicion,
-				(tr->vertices[1]==b->a)?medio:vert[tr->vertices[1]]->posicion,
-				(tr->vertices[2]==b->a)?medio:vert[tr->vertices[2]]->posicion);
-
-			angulos.push_back(calcularAngulo(n,tr->normal));
-
 			//fin calculo
 		}
+		#pragma endregion calculo el angulo de los triangulos de b
 
 		//calcualar el error
 		for (vector<double>::iterator j = angulos.begin(); j < angulos.end(); j++)
 		{
-
 			a1+=*j;//acumulo el angulo de los a
 			if (*j > unbral) s[0]=true;
 			a2+=*(++j);//acumulo el angulo de los b
 			if (*j > unbral) s[1]=true;
-			a3+=*(++j);//acumulo el angulo del medio
-			if (*j > unbral) s[2]=true;
 		}
 
 		if (a1<am && !s[0]){
@@ -268,49 +257,217 @@ void ModeloOff::colapse(){
 			c=2;
 			mejor=ar;
 		}
-		if (a3<am && !s[2]){
-			am = a3;
-			c=3;
-			mejor=ar;
-		}
 		if (am == 0.0) break;
 	}
-
+	#pragma endregion verificacion de posible colapso
+	
 	//backup
 
 	if (c==-1){return;}
+	cout<<(*mejor)->a<<" "<<(*mejor)->b<<" "<<(*mejor)->t1<<" "<<(*mejor)->t2<<endl;
+	backup ba;
+	b=*mejor;
+	ba.b=*mejor;
 
-	if (c==1){}
+	
 
-	if (c==2){}
+	if (angulos.size()>2){
+	if (faces[b->t1]->activo) total--;
+	faces[b->t1]->activo=false;
+	if (faces[b->t2]->activo) total--;
+	faces[b->t2]->activo=false;
+	ba.a = *vert[b->a];
+	vert[b->b]->activo=false;
+	}else{
+		return;
+	}
+	vector<int> asdf;
+	if (c==1){
+		//nada
+	}
+	if (c==2){
+		vert[b->a]->posicion = vert[b->b]->posicion;
+	}
 
-	if (c==3){}
+	for(i = vert[b->a]->trians.begin(); i < vert[b->a]->trians.end(); i++){
+		if (*i == b->t1 || *i == b->t2 ) continue;
+		if (!faces[*i]->activo) continue;
+		asdf.push_back(*i);
+	}
+	for(i = vert[b->b]->trians.begin(); i < vert[b->b]->trians.end(); i++){
+		if (*i == b->t1 || *i == b->t2 ) continue;
+		if (!faces[*i]->activo) continue;
 
-	cout<<vert[(*mejor)->a]->posicion<<vert[(*mejor)->b]->posicion;
+		asdf.push_back(*i);
+		if (faces[*i]->vertices[0] == b->b){
+			faces[*i]->vertices[0] = b->a;
+			if (aristas[faces[*i]->aristas[0]]->a == b->b)
+				aristas[faces[*i]->aristas[0]]->a = b->a;
+			else
+				aristas[faces[*i]->aristas[0]]->b = b->a;
+		}
+		if (faces[*i]->vertices[1] == b->b){
+			faces[*i]->vertices[1] = b->a;
+			if (aristas[faces[*i]->aristas[1]]->a == b->b)
+				aristas[faces[*i]->aristas[1]]->a = b->a;
+			else
+				aristas[faces[*i]->aristas[1]]->b = b->a;
+		}
+		if (faces[*i]->vertices[2] == b->b){
+			faces[*i]->vertices[2] = b->a;
+			if (aristas[faces[*i]->aristas[2]]->a == b->b)
+				aristas[faces[*i]->aristas[2]]->a = b->a;
+			else
+				aristas[faces[*i]->aristas[2]]->b = b->a;
+		}
+	}
+
+	int aux,aux2;
+		if (aristas[faces[b->t1]->aristas[0]]==b)
+		{
+			aux = faces[b->t1]->aristas[1];
+			aux2= faces[b->t1]->aristas[2];
+			if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+				if (aristas[aux2]->t1==b->t1){
+					aristas[aux2]->t1= aristas[aux]->t2;
+				}else
+					aristas[aux2]->t2= aristas[aux]->t1;
+			}else{
+				if (aristas[aux2]->t1==b->t1)
+					aristas[aux]->t1= aristas[aux2]->t2;
+				else
+					aristas[aux]->t2= aristas[aux2]->t1;
+			}
+		}
+		if (aristas[faces[b->t1]->aristas[1]]==b)
+		{
+			aux = faces[b->t1]->aristas[0];
+			aux2= faces[b->t1]->aristas[2];
+			if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+				if (aristas[aux2]->t1==b->t1)
+					aristas[aux2]->t1= aristas[aux]->t2;
+				else
+					aristas[aux2]->t2= aristas[aux]->t1;
+			}else{
+				if (aristas[aux2]->t1==b->t1)
+					aristas[aux]->t1= aristas[aux2]->t2;
+				else
+					aristas[aux]->t2= aristas[aux2]->t1;
+			}
+		}
+		if (aristas[faces[b->t1]->aristas[2]]==b)
+		{
+			aux = faces[b->t1]->aristas[0];
+			aux2= faces[b->t1]->aristas[1];
+			if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+				if (aristas[aux2]->t1==b->t1)
+					aristas[aux2]->t1= aristas[aux]->t2;
+				else
+					aristas[aux2]->t2= aristas[aux]->t1;
+			}else{
+				if (aristas[aux2]->t1==b->t1)
+					aristas[aux]->t1= aristas[aux2]->t2;
+				else
+					aristas[aux]->t2= aristas[aux2]->t1;
+			}
+		}
+
+		if (aristas[faces[b->t2]->aristas[0]]==b)
+		{
+			aux = faces[b->t2]->aristas[1];
+			aux2= faces[b->t2]->aristas[2];
+			if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+				if (aristas[aux2]->t1==b->t2)
+					aristas[aux2]->t1= aristas[aux]->t2;
+				else
+					aristas[aux2]->t2= aristas[aux]->t1;
+			}else{
+				if (aristas[aux2]->t1==b->t2)
+					aristas[aux]->t1= aristas[aux2]->t2;
+				else
+					aristas[aux]->t2= aristas[aux2]->t1;
+			}
+		}
+		if (aristas[faces[b->t2]->aristas[1]]==b)
+		{
+			aux = faces[b->t2]->aristas[0];
+			aux2= faces[b->t2]->aristas[2];
+			if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+				if (aristas[aux2]->t1==b->t2)
+					aristas[aux2]->t1= aristas[aux]->t2;
+				else
+					aristas[aux2]->t2= aristas[aux]->t1;
+			}else{
+				if (aristas[aux2]->t1==b->t2)
+					aristas[aux]->t1= aristas[aux2]->t2;
+				else
+					aristas[aux]->t2= aristas[aux2]->t1;
+			}
+		}
+		if (aristas[faces[b->t2]->aristas[2]]==b)
+		{
+			aux = faces[b->t2]->aristas[1];
+			aux2= faces[b->t2]->aristas[2];
+			if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+				if (aristas[aux2]->t1==b->t2)
+					aristas[aux2]->t1= aristas[aux]->t2;
+				else
+					aristas[aux2]->t2= aristas[aux]->t1;
+			}else{
+				if (aristas[aux2]->t1==b->t2)
+					aristas[aux]->t1= aristas[aux2]->t2;
+				else
+					aristas[aux]->t2= aristas[aux2]->t1;
+			}
+		}
+
+	vert[b->a]->trians = asdf;
+	//total=total-2;
+
+	//updateBuffer(GOURAUD);
+
+	
 }
 
-void ModeloOff::agregarArista(arista *a, int t){
+int ModeloOff::agregarArista(arista *a, int t){
 
-	arista *b;
+	arista *b;int i=0;
 	if (aristas.empty()){
 		aristas.push_back(a);
+		return 0;
 	}else{
-		for (ar = aristas.begin(); ar < aristas.end(); ar++)
+		for (ar = aristas.begin(); ar < aristas.end(); ar++,i++)
 		{
 			b=*ar;
 
 			if ((b->a == a->a && b->b == a->b) || (b->a == a->b && b->b == a->a)){
 				b->t2=t;
-				return;
+				return i;
 			}else
 				continue;
 		}
 		aristas.push_back(a);
+		return i;
 	}
+}
+
+int ModeloOff::buscarArista(int a, int b){
+	int i=0;
+	arista *p;
+	for (vector<arista*>::iterator at = aristas.begin(); at < aristas.end(); at++,i++)
+	{
+		p=*at;
+
+		if ((p->a == a && p->b == b) || (p->a == b && p->b == a)){
+			return i;
+		}else
+			continue;
+	}
+	return -1;
 }
 
 double calcularAngulo(Vec3D a, Vec3D b){
 	double ma=a.Magnitud(), mb=b.Magnitud();
 	double p= a*b;
-	return acos(p/(ma*mb));
+	return (ma*mb<=0.0)?0.0:acos(p/(ma*mb));
 }

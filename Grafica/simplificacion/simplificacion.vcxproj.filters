@@ -19,6 +19,9 @@
     <Filter Include="Shader files">
       <UniqueIdentifier>{8c213241-8b51-4c8d-9749-ad112dff0492}</UniqueIdentifier>
     </Filter>
+    <Filter Include="off">
+      <UniqueIdentifier>{b574c371-5ee7-4bd8-8610-ca1ffd40c7ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\simplificacion.cpp">
@@ -45,6 +48,18 @@
     </None>
     <None Include="color.vert">
       <Filter>Shader files</Filter>
+    </None>
+    <None Include="file\cubo.off">
+      <Filter>off</Filter>
+    </None>
+    <None Include="file\cubo2.off">
+      <Filter>off</Filter>
+    </None>
+    <None Include="file\dragon.off">
+      <Filter>off</Filter>
+    </None>
+    <None Include="file\plano.off">
+      <Filter>off</Filter>
     </None>
   </ItemGroup>
 </Project>
