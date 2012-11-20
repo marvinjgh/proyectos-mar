@@ -264,7 +264,7 @@ void ModeloOff::colapse(double offSetAngle){
 	//backup
 
 	if (c==-1){return;}
-	cout<<(*mejor)->a<<" "<<(*mejor)->b<<" "<<(*mejor)->t1<<" "<<(*mejor)->t2<<endl;
+	cout<<(*mejor)->a<<" "<<(*mejor)->b<<" "<<(*mejor)->t1<<" "<<(*mejor)->t2<<" "<<c <<endl;
 	backup ba;
 	b=*mejor;
 	ba.b=*mejor;
