@@ -49,7 +49,7 @@ public:
 	void colapse(double offSetAngle);
 	int agregarArista(arista* a, int t);
 	int buscarArista(int a, int b);
-
+	size_t tra, vea;
 	size_t total;
 	GLsizeiptr datasize;
 	GLuint BufferObject;
@@ -61,7 +61,7 @@ public:
 	vector<arista*>::iterator ar;
 	stack<GLuint> recover;
 	
-
+	
 	Mat4x4 centro;
 
 

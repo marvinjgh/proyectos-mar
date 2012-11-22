@@ -4,6 +4,8 @@ ModeloOff::ModeloOff(void)
 {
 	minp = Punto3D(FLT_MAX,FLT_MAX,FLT_MAX);
 	maxp = Punto3D(FLT_MIN,FLT_MIN,FLT_MIN);
+	tra =0;
+	vea=0;
 }
 
 ModeloOff::~ModeloOff(void)
@@ -110,7 +112,7 @@ void ModeloOff::cargarModelo(const char* file){
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 	updateBuffer(GOURAUD);
 	centrar();
-
+	tra=nTrian;vea=nVert;
 }
 
 void ModeloOff::calcularNormal(triangulo* t){
@@ -264,7 +266,7 @@ void ModeloOff::colapse(double offSetAngle){
 	//backup
 
 	if (c==-1){return;}
-	cout<<(*mejor)->a<<" "<<(*mejor)->b<<" "<<(*mejor)->t1<<" "<<(*mejor)->t2<<" "<<c <<endl;
+	
 	backup ba;
 	b=*mejor;
 	ba.b=*mejor;
@@ -272,15 +274,17 @@ void ModeloOff::colapse(double offSetAngle){
 	
 
 	if (angulos.size()>2){
-	if (faces[b->t1]->activo) total--;
+	if (faces[b->t1]->activo){ total--; tra--;}
 	faces[b->t1]->activo=false;
-	if (faces[b->t2]->activo) total--;
+	if (faces[b->t2]->activo){ total--; tra--;}
 	faces[b->t2]->activo=false;
 	ba.a = *vert[b->a];
 	vert[b->b]->activo=false;
+	vea--;
 	}else{
 		return;
 	}
+	cout<<(*mejor)->a<<" "<<(*mejor)->b<<" "<<(*mejor)->t1<<" "<<(*mejor)->t2<<" "<<c <<" "<<vea<<" "<<tra<<" "<<endl;
 	vector<int> asdf;
 	if (c==1){
 		//nada
