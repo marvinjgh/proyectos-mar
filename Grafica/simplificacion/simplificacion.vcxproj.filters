@@ -52,13 +52,16 @@
     <None Include="file\cubo.off">
       <Filter>off</Filter>
     </None>
-    <None Include="file\dragon.off">
-      <Filter>off</Filter>
-    </None>
     <None Include="file\plano.off">
       <Filter>off</Filter>
     </None>
     <None Include="file\cubo2.off">
+      <Filter>off</Filter>
+    </None>
+    <None Include="file\dragon_head.off">
+      <Filter>off</Filter>
+    </None>
+    <None Include="file\dragon.off">
       <Filter>off</Filter>
     </None>
   </ItemGroup>
