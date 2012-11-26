@@ -32,8 +32,8 @@ public:
 	Punto3D operator/= (float f);
 	bool operator== (const Punto3D& p);
 	
-	Punto3D minp(const float* p);
-	Punto3D maxp(const float* p);
+	void min(const float* p);
+	void max(const float* p);
 
 	friend Punto3D operator* (float valor, const Punto3D& p);
 	friend Punto3D operator* (const Punto3D& p, float valor);

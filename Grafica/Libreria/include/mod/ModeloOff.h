@@ -17,8 +17,8 @@ class ModeloOff
 {
 public:
 	struct triangulo{
-		GLuint vertices[3];
-		GLuint aristas[3];
+		int vertices[3];
+		int aristas[3];
 		Vec3D normal;
 		bool activo;
 	};
@@ -27,11 +27,13 @@ public:
 		Punto3D posicion;
 		Vec3D normal;
 		vector<int> trians;
+		vector<int> aris;
 		bool activo;
 	};
 
 	struct arista{
 		int a, b, t1, t2;
+		bool activo;
 	};
 
 	struct backup{
@@ -49,18 +51,17 @@ public:
 	void colapse(double offSetAngle);
 	int agregarArista(arista* a, int t);
 	int buscarArista(int a, int b);
+	
 	size_t tra, vea;
 	size_t total;
 	GLsizeiptr datasize;
 	GLuint BufferObject;
 	GLfloat* buffer;
 	Punto3D minp,maxp;
-	vector<triangulo*> faces;
-	vector<vertice*> vert;
-	vector<arista*> aristas;
-	vector<arista*>::iterator ar;
-	stack<GLuint> recover;
 	
+	vector<triangulo*> triangulos;
+	vector<vertice*> vertices;
+	vector<arista*> aristas;
 	
 	Mat4x4 centro;
 
