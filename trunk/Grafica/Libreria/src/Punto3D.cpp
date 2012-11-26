@@ -20,7 +20,7 @@ Punto3D::Punto3D(const Punto3D& p)
 	coord[0]=p.coord[0];
 	coord[1]=p.coord[1];
 	coord[2]=p.coord[2];
-	
+
 }
 
 Punto3D::~Punto3D(void)
@@ -101,26 +101,30 @@ bool Punto3D::operator== (const Punto3D& p){
 	return (coord[0]==p.coord[0])&&(coord[1]==p.coord[1])&&(coord[2]==p.coord[2]);
 }
 
-Punto3D Punto3D::minp(const float* p){
-	return Punto3D(min(coord[0],p[0]),min(coord[1],p[1]),min(coord[2],p[2]));
+void Punto3D::min(const float* p){
+	coord[0]=std::min<float>(coord[0],p[0]);
+	coord[1]=std::min<float>(coord[1],p[1]);
+	coord[2]=std::min<float>(coord[2],p[2]);
 }
 
-Punto3D Punto3D::maxp(const float* p){
-	return Punto3D(max(coord[0],p[0]),max(coord[1],p[1]),max(coord[2],p[2]));
+void Punto3D::max(const float* p){
+	coord[0]=std::max<float>(coord[0],p[0]);
+	coord[1]=std::max<float>(coord[1],p[1]);
+	coord[2]=std::max<float>(coord[2],p[2]);
 }
 
 
 Punto3D operator* (float valor, const Punto3D& p)
 {
-  return Punto3D(p.coord[0] * valor, p.coord[1] * valor, p.coord[2] * valor);
+	return Punto3D(p.coord[0] * valor, p.coord[1] * valor, p.coord[2] * valor);
 }
 
 Punto3D operator* (const Punto3D& p, float valor)
 {
-  return Punto3D(p.coord[0] * valor, p.coord[1] * valor, p.coord[2] * valor);
+	return Punto3D(p.coord[0] * valor, p.coord[1] * valor, p.coord[2] * valor);
 }
 
 ostream& operator <<(ostream& os, const Punto3D& p)
 {
-  return os << "Punto·D(" << p.coord[0] << ", " << p.coord[1] <<", " << p.coord[2] <<  ")\n" ; 
+	return os << "Punto·D(" << p.coord[0] << ", " << p.coord[1] <<", " << p.coord[2] <<  ")\n" ; 
 }
