@@ -1,5 +1,8 @@
 #include <mod\ModeloOff.h>
 #include <AntTweakBar.h>
+#include <Commdlg.h>
+#include <windows.h>
+
 GLuint positionBufferObject,p2,p3;
 
 Shader t;
@@ -28,7 +31,7 @@ void init(void)
 	t.disable();
 
 	//mod.cargarModelo("dragon.off");
-	mod.cargarModelo("file/cubo2.off");
+	
 }
 
 void display (void){
@@ -89,12 +92,37 @@ void TW_CALL next(void *clientData){
 	mod.updateBuffer(shadow);
 }
 
+void TW_CALL cargar(void *clientData){
+	OPENFILENAME ofn;
+	char Path[512]="";
+	memset(&ofn, 0, sizeof(ofn));
+
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = NULL;
+	ofn.lpstrFile = Path;
+	ofn.nMaxFile = 255;
+	ofn.lpstrTitle = "Load Model...";
+    ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+	ofn.lpstrFilter = "OFF Files\0*.off\0OBJ Files\0*.obj\0\0";//hago que solo muestre archivos .off
+    ofn.lpstrDefExt = "off";
+	
+	if (GetOpenFileName(&ofn)){
+
+		mod.cargarModelo(Path);
+	}
+		
+}
+
 void genMenu(TwBar *bar)
 {
 	//bloque de la rotacion
 	TwAddVarRW(bar, "ObjRotation", TW_TYPE_QUAT4F, &q_rotate, 
 		" label='Object rotation' opened=true help='Change the object orientation.' ");
 	TwAddSeparator(bar,"s1","");
+	//cargar
+	TwAddButton(bar, "ca", cargar, NULL, 
+                " label='Cargar Modelo' key=o help='Carga el archivo off que contiene al model.' ");
+	TwAddSeparator(bar,"s5","");
 	//traslacion
 	TwAddVarRW(bar, "x", TW_TYPE_FLOAT, &traslacion[0], 
 		"label='Mover en x' step=0.08 keyIncr='d' keyDecr='a' help='Permite mover el objeto en el eje x.' group='Traslacion'");
@@ -114,7 +142,7 @@ void genMenu(TwBar *bar)
 	TwAddVarRW(bar, "c2", TW_TYPE_COLOR3F, &c_fill, 
 		"label='Color' help='Cambia el color del relleno.' group='Fill' ");
 	TwAddSeparator(bar,"s3","");
-	TwAddButton(bar, "c", next, NULL, " label='Colapso' key=n help='Colapso' ");
+	TwAddButton(bar, "co", next, NULL, " label='Colapso' key=n help='Colapso' ");
 	TwAddVarRW(bar, "ang", TW_TYPE_FLOAT, &angulo, 
 		"label='Offset para el colapso' max=45.0 min=5.0 step=1.00 keyIncr='d' keyDecr='a' help='Angulo para la comprobacion'");
 	TwAddSeparator(bar,"s4","");
