@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simplificacion", "simplific
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shading", "shading\shading.vcxproj", "{5DA9C1C5-1489-4F2A-B546-671D6612C79A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "marching cube", "marching cube\marching cube.vcxproj", "{BABF30C7-FC9A-424C-B610-BFEC4C800CF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -55,6 +57,10 @@ Global
 		{5DA9C1C5-1489-4F2A-B546-671D6612C79A}.Debug|Win32.Build.0 = Debug|Win32
 		{5DA9C1C5-1489-4F2A-B546-671D6612C79A}.Release|Win32.ActiveCfg = Release|Win32
 		{5DA9C1C5-1489-4F2A-B546-671D6612C79A}.Release|Win32.Build.0 = Release|Win32
+		{BABF30C7-FC9A-424C-B610-BFEC4C800CF3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BABF30C7-FC9A-424C-B610-BFEC4C800CF3}.Debug|Win32.Build.0 = Debug|Win32
+		{BABF30C7-FC9A-424C-B610-BFEC4C800CF3}.Release|Win32.ActiveCfg = Release|Win32
+		{BABF30C7-FC9A-424C-B610-BFEC4C800CF3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

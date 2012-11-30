@@ -199,7 +199,7 @@ void ModeloOff::colapse(double offSetAngle){
 		b=aristas[t];
 		a1=0.0; a2=0.0; a3=0.0;
 		s[0]=false;s[1]=false;s[2]=false;
-		if (b->activo) continue;
+		if (!b->activo) continue;
 		//if(!faces[b->t1]->activo && !faces[b->t2]->activo) continue;
 		angulos.clear();
 
@@ -283,13 +283,14 @@ void ModeloOff::colapse(double offSetAngle){
 
 	cout<<b->a<<" "<<b->b<<" "<<b->t1<<" "<<b->t2<<" "<<c <<" "<<vea<<" "<<tra<<" "<<mejor<<endl;
 	if (angulos.size()>2){
-		if (faces[b->t1]->activo){ total--; tra--;}
-		faces[b->t1]->activo=false;
-		if (faces[b->t2]->activo){ total--; tra--;}
-		faces[b->t2]->activo=false;
-		ba.a = *vert[b->a];
-		vert[b->b]->activo=false;
-		vea--;
+		if (triangulos[b->t1]->activo){ total--; tra--;}
+		triangulos[b->t1]->activo=false;
+		if (triangulos[b->t2]->activo){ total--; tra--;}
+		triangulos[b->t2]->activo=false;
+		//ba.a = *VERTRES[b->a];
+		if (vertices[b->b]->activo)	vea--;
+		vertices[b->b]->activo=false;
+		b->activo=false;
 	}else{
 		return;
 	}
@@ -299,147 +300,153 @@ void ModeloOff::colapse(double offSetAngle){
 		//nada
 	}
 	if (c==2){
-		vert[b->a]->posicion = vert[b->b]->posicion;
+		vertices[b->a]->posicion = vertices[b->b]->posicion;
 	}
 
-	for(i = vert[b->a]->trians.begin(); i < vert[b->a]->trians.end(); i++){
+
+	for(i = vertices[b->a]->trians.begin(); i < vertices[b->a]->trians.end(); i++){
 		if (*i == b->t1 || *i == b->t2 ) continue;
-		if (!faces[*i]->activo) continue;
+		if (!triangulos[*i]->activo) continue;
 		asdf.push_back(*i);
 	}
-	for(i = vert[b->b]->trians.begin(); i < vert[b->b]->trians.end(); i++){
+
+
+
+	for(i = vertices[b->b]->trians.begin(); i < vertices[b->b]->trians.end(); i++){
 		if (*i == b->t1 || *i == b->t2 ) continue;
-		if (!faces[*i]->activo) continue;
+		//if (!vertices[*i]->activo) continue;
 
 		asdf.push_back(*i);
-		if (faces[*i]->vertices[0] == b->b){
-			faces[*i]->vertices[0] = b->a;
-			if (aristas[faces[*i]->aristas[0]]->a == b->b)
-				aristas[faces[*i]->aristas[0]]->a = b->a;
-			else
-				aristas[faces[*i]->aristas[0]]->b = b->a;
+		if (triangulos[*i]->vertices[0] == b->b){
+			triangulos[*i]->vertices[0] = b->a;
+			if (aristas[triangulos[*i]->aristas[0]]->a == b->b){
+				aristas[triangulos[*i]->aristas[0]]->a = b->a;
+			}else{
+				aristas[triangulos[*i]->aristas[0]]->b = b->a;
+			}
 		}
-		if (faces[*i]->vertices[1] == b->b){
-			faces[*i]->vertices[1] = b->a;
-			if (aristas[faces[*i]->aristas[1]]->a == b->b)
-				aristas[faces[*i]->aristas[1]]->a = b->a;
-			else
-				aristas[faces[*i]->aristas[1]]->b = b->a;
+		if (triangulos[*i]->vertices[1] == b->b){
+			triangulos[*i]->vertices[1] = b->a;
+			if (aristas[triangulos[*i]->aristas[1]]->a == b->b){
+				aristas[triangulos[*i]->aristas[1]]->a = b->a;
+			}else{
+				aristas[triangulos[*i]->aristas[1]]->b = b->a;
+			}
 		}
-		if (faces[*i]->vertices[2] == b->b){
-			faces[*i]->vertices[2] = b->a;
-			if (aristas[faces[*i]->aristas[2]]->a == b->b)
-				aristas[faces[*i]->aristas[2]]->a = b->a;
-			else
-				aristas[faces[*i]->aristas[2]]->b = b->a;
+		if (triangulos[*i]->vertices[2] == b->b){
+			triangulos[*i]->vertices[2] = b->a;
+			if (aristas[triangulos[*i]->aristas[2]]->a == b->b){
+				aristas[triangulos[*i]->aristas[2]]->a = b->a;
+			}else{
+				aristas[triangulos[*i]->aristas[2]]->b = b->a;
+			}
 		}
 	}
-	/*
+	
 	int aux,aux2;
 	if (aristas[faces[b->t1]->aristas[0]]==b)
 	{
-		aux = faces[b->t1]->aristas[1];
-		aux2= faces[b->t1]->aristas[2];
-		if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
-			if (aristas[aux2]->t1==b->t1){
-				aristas[aux2]-e>t1= aristas[aux]->t2;
-			}else
-				aristas[aux2]->t2= aristas[aux]->t1;
-		}else{
-			if (aristas[aux2]->t1==b->t1)
-				aristas[aux]->t1= aristas[aux2]->t2;
-			else
-				aristas[aux]->t2= aristas[aux2]->t1;
-		}
+	aux = faces[b->t1]->aristas[1];
+	aux2= faces[b->t1]->aristas[2];
+	if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+	if (aristas[aux2]->t1==b->t1){
+	aristas[aux2]->t1= aristas[aux]->t2;
+	}else
+	aristas[aux2]->t2= aristas[aux]->t1;
+	}else{
+	if (aristas[aux2]->t1==b->t1)
+	aristas[aux]->t1= aristas[aux2]->t2;
+	else
+	aristas[aux]->t2= aristas[aux2]->t1;
+	}
 	}
 	if (aristas[faces[b->t1]->aristas[1]]==b)
 	{
-		aux = faces[b->t1]->aristas[0];
-		aux2= faces[b->t1]->aristas[2];
-		if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
-			if (aristas[aux2]->t1==b->t1)
-				aristas[aux2]->t1= aristas[aux]->t2;
-			else
-				aristas[aux2]->t2= aristas[aux]->t1;
-		}else{
-			if (aristas[aux2]->t1==b->t1)
-				aristas[aux]->t1= aristas[aux2]->t2;
-			else
-				aristas[aux]->t2= aristas[aux2]->t1;
-		}
+	aux = faces[b->t1]->aristas[0];
+	aux2= faces[b->t1]->aristas[2];
+	if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+	if (aristas[aux2]->t1==b->t1)
+	aristas[aux2]->t1= aristas[aux]->t2;
+	else
+	aristas[aux2]->t2= aristas[aux]->t1;
+	}else{
+	if (aristas[aux2]->t1==b->t1)
+	aristas[aux]->t1= aristas[aux2]->t2;
+	else
+	aristas[aux]->t2= aristas[aux2]->t1;
+	}
 	}
 	if (aristas[faces[b->t1]->aristas[2]]==b)
 	{
-		aux = faces[b->t1]->aristas[0];
-		aux2= faces[b->t1]->aristas[1];
-		if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
-			if (aristas[aux2]->t1==b->t1)
-				aristas[aux2]->t1= aristas[aux]->t2;
-			else
-				aristas[aux2]->t2= aristas[aux]->t1;
-		}else{
-			if (aristas[aux2]->t1==b->t1)
-				aristas[aux]->t1= aristas[aux2]->t2;
-			else
-				aristas[aux]->t2= aristas[aux2]->t1;
-		}
+	aux = faces[b->t1]->aristas[0];
+	aux2= faces[b->t1]->aristas[1];
+	if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+	if (aristas[aux2]->t1==b->t1)
+	aristas[aux2]->t1= aristas[aux]->t2;
+	else
+	aristas[aux2]->t2= aristas[aux]->t1;
+	}else{
+	if (aristas[aux2]->t1==b->t1)
+	aristas[aux]->t1= aristas[aux2]->t2;
+	else
+	aristas[aux]->t2= aristas[aux2]->t1;
+	}
 	}
 
 	if (aristas[faces[b->t2]->aristas[0]]==b)
 	{
-		aux = faces[b->t2]->aristas[1];
-		aux2= faces[b->t2]->aristas[2];
-		if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
-			if (aristas[aux2]->t1==b->t2)
-				aristas[aux2]->t1= aristas[aux]->t2;
-			else
-				aristas[aux2]->t2= aristas[aux]->t1;
-		}else{
-			if (aristas[aux2]->t1==b->t2)
-				aristas[aux]->t1= aristas[aux2]->t2;
-			else
-				aristas[aux]->t2= aristas[aux2]->t1;
-		}
+	aux = faces[b->t2]->aristas[1];
+	aux2= faces[b->t2]->aristas[2];
+	if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+	if (aristas[aux2]->t1==b->t2)
+	aristas[aux2]->t1= aristas[aux]->t2;
+	else
+	aristas[aux2]->t2= aristas[aux]->t1;
+	}else{
+	if (aristas[aux2]->t1==b->t2)
+	aristas[aux]->t1= aristas[aux2]->t2;
+	else
+	aristas[aux]->t2= aristas[aux2]->t1;
+	}
 	}
 	if (aristas[faces[b->t2]->aristas[1]]==b)
 	{
-		aux = faces[b->t2]->aristas[0];
-		aux2= faces[b->t2]->aristas[2];
-		if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
-			if (aristas[aux2]->t1==b->t2)
-				aristas[aux2]->t1= aristas[aux]->t2;
-			else
-				aristas[aux2]->t2= aristas[aux]->t1;
-		}else{
-			if (aristas[aux2]->t1==b->t2)
-				aristas[aux]->t1= aristas[aux2]->t2;
-			else
-				aristas[aux]->t2= aristas[aux2]->t1;
-		}
+	aux = faces[b->t2]->aristas[0];
+	aux2= faces[b->t2]->aristas[2];
+	if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+	if (aristas[aux2]->t1==b->t2)
+	aristas[aux2]->t1= aristas[aux]->t2;
+	else
+	aristas[aux2]->t2= aristas[aux]->t1;
+	}else{
+	if (aristas[aux2]->t1==b->t2)
+	aristas[aux]->t1= aristas[aux2]->t2;
+	else
+	aristas[aux]->t2= aristas[aux2]->t1;
+	}
 	}
 	if (aristas[faces[b->t2]->aristas[2]]==b)
 	{
-		aux = faces[b->t2]->aristas[0];
-		aux2= faces[b->t2]->aristas[1];
-		if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
-			if (aristas[aux2]->t1==b->t2)
-				aristas[aux2]->t1= aristas[aux]->t2;
-			else
-				aristas[aux2]->t2= aristas[aux]->t1;
-		}else{
-			if (aristas[aux2]->t1==b->t2)
-				aristas[aux]->t1= aristas[aux2]->t2;
-			else
-				aristas[aux]->t2= aristas[aux2]->t1;
-		}
+	aux = faces[b->t2]->aristas[0];
+	aux2= faces[b->t2]->aristas[1];
+	if (aristas[aux]->a==b->b || aristas[aux]->b==b->b){//arista duplicada
+	if (aristas[aux2]->t1==b->t2)
+	aristas[aux2]->t1= aristas[aux]->t2;
+	else
+	aristas[aux2]->t2= aristas[aux]->t1;
+	}else{
+	if (aristas[aux2]->t1==b->t2)
+	aristas[aux]->t1= aristas[aux2]->t2;
+	else
+	aristas[aux]->t2= aristas[aux2]->t1;
 	}
-
-	vert[b->a]->trians = asdf;
-	//total=total-2;
-
-	//updateBuffer(GOURAUD);
-	*/
+	}
 	
+
+	vertices[b->a]->trians = asdf;
+
+
+
 }
 
 int ModeloOff::agregarArista(arista *a, int t){
