@@ -78,10 +78,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="casos.h" />
-    <ClCompile Include="marching.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="example.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +102,12 @@
   <ItemGroup>
     <None Include="files\cube64x64x64.raw" />
     <None Include="files\mri.raw" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\casos.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\marching.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
