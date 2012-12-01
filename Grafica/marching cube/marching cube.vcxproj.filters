@@ -13,16 +13,44 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Librerias">
+      <UniqueIdentifier>{f11d2bf2-05fe-4076-ab37-00d7966252e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Raw Files">
+      <UniqueIdentifier>{d1887324-d00e-48ec-8969-b0f99e8420da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="marching.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="casos.cpp">
+    <ClCompile Include="casos.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="example.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\colectivo\lib\AntTweakBar.lib">
+      <Filter>Librerias</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\freeglut.lib">
+      <Filter>Librerias</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\FreeImage.lib">
+      <Filter>Librerias</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\glew32.lib">
+      <Filter>Librerias</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="files\cube64x64x64.raw">
+      <Filter>Raw Files</Filter>
+    </None>
+    <None Include="files\mri.raw">
+      <Filter>Raw Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

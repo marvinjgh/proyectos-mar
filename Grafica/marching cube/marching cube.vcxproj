@@ -78,11 +78,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="casos.cpp" />
+    <ClCompile Include="casos.h" />
     <ClCompile Include="marching.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="example.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\colectivo\lib\AntTweakBar.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\colectivo\lib\freeglut.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\colectivo\lib\FreeImage.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\colectivo\lib\glew32.lib">
+      <FileType>Document</FileType>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libreria\Libreria.vcxproj">
+      <Project>{4ad08f4f-f8f1-4b18-ac49-94d0fa81b502}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="files\cube64x64x64.raw" />
+    <None Include="files\mri.raw" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
