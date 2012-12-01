@@ -344,7 +344,7 @@ void ModeloOff::colapse(double offSetAngle){
 	}
 	
 	int aux,aux2;
-	if (aristas[faces[b->t1]->aristas[0]]==b)
+/*	if (aristas[faces[b->t1]->aristas[0]]==b)
 	{
 	aux = faces[b->t1]->aristas[1];
 	aux2= faces[b->t1]->aristas[2];
@@ -446,7 +446,7 @@ void ModeloOff::colapse(double offSetAngle){
 	vertices[b->a]->trians = asdf;
 
 
-
+	*/
 }
 
 int ModeloOff::agregarArista(arista *a, int t){
