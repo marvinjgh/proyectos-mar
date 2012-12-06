@@ -19,6 +19,10 @@
     <Filter Include="Raw Files">
       <UniqueIdentifier>{d1887324-d00e-48ec-8969-b0f99e8420da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader files">
+      <UniqueIdentifier>{ed89a832-1645-47db-986a-f8e820188d09}</UniqueIdentifier>
+      <Extensions>vert;frag</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="example.txt" />
@@ -41,8 +45,11 @@
     <None Include="files\cube64x64x64.raw">
       <Filter>Raw Files</Filter>
     </None>
-    <None Include="files\mri.raw">
-      <Filter>Raw Files</Filter>
+    <None Include="files\iluminacion.frag">
+      <Filter>Shader files</Filter>
+    </None>
+    <None Include="files\iluminacion.vert">
+      <Filter>Shader files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
