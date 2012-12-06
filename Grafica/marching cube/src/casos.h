@@ -1,4 +1,38 @@
 #pragma once
+
+/*
+   int edgeTable[256].  It corresponds to the 2^8 possible combinations of
+   of the eight (n) vertices either existing inside or outside (2^n) of the
+   surface.  A vertex is inside of a surface if the value at that vertex is
+   less than that of the surface you are scanning for.  The table index is
+   constructed bitwise with bit 0 corresponding to vertex 0, bit 1 to vert
+   1.. bit 7 to vert 7.  The value in the table tells you which edges of
+   the table are intersected by the surface.  Once again bit 0 corresponds
+   to edge 0 and so on, up to edge 12.
+   Constructing the table simply consisted of having a program run thru
+   the 256 cases and setting the edge bit if the vertices at either end of
+   the edge had different values (one is inside while the other is out).
+   The purpose of the table is to speed up the scanning process.  Only the
+   edges whose bit's are set contain vertices of the surface.
+   Vertex 0 is on the bottom face, back edge, left side.
+   The progression of vertices is clockwise around the bottom face
+   and then clockwise around the top face of the cube.  Edge 0 goes from
+   vertex 0 to vertex 1, Edge 1 is from 2->3 and so on around clockwise to
+   vertex 0 again. Then Edge 4 to 7 make up the top face, 4->5, 5->6, 6->7
+   and 7->4.  Edge 8 thru 11 are the vertical edges from vert 0->4, 1->5,
+   2->6, and 3->7.
+       4--------5     *---4----*
+      /|       /|    /|       /|
+     / |      / |   7 |      5 |
+    /  |     /  |  /  8     /  9
+   7--------6   | *----6---*   |
+   |   |    |   | |   |    |   |
+   |   0----|---1 |   *---0|---*
+   |  /     |  /  11 /     10 /
+   | /      | /   | 3      | 1
+   |/       |/    |/       |/
+   3--------2     *---2----*
+*/
 static int edgeTable[256]={
 0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,
 0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,
@@ -34,6 +68,29 @@ static int edgeTable[256]={
 0x70c, 0x605, 0x50f, 0x406, 0x30a, 0x203, 0x109, 0x0   
 };
 
+/*
+   int triTable[256][16] also corresponds to the 256 possible combinations
+   of vertices.
+   The [16] dimension of the table is again the list of edges of the cube
+   which are intersected by the surface.  This time however, the edges are
+   enumerated in the order of the vertices making up the triangle mesh of
+   the surface.  Each edge contains one vertex that is on the surface.
+   Each triple of edges listed in the table contains the vertices of one
+   triangle on the mesh.  The are 16 entries because it has been shown that
+   there are at most 5 triangles in a cube and each "edge triple" list is
+   terminated with the value -1.
+   For example triTable[3] contains
+   {1, 8, 3, 9, 8, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
+   This corresponds to the case of a cube whose vertex 0 and 1 are inside
+   of the surface and the rest of the verts are outside (00000001 bitwise
+   OR'ed with 00000010 makes 00000011 == 3).  Therefore, this cube is
+   intersected by the surface roughly in the form of a plane which cuts
+   edges 8,9,1 and 3.  This quadrilateral can be constructed from two
+   triangles: one which is made of the intersection vertices found on edges
+   1,8, and 3; the other is formed from the vertices on edges 9,8, and 1.
+   Remember, each intersected edge contains only one surface vertex.  The
+   vertex triples are listed in counter clockwise order for proper facing.
+*/
 static int triTable[256][16] ={
 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
 {0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
