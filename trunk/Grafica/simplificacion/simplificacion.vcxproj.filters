@@ -16,15 +16,18 @@
     <Filter Include="Librerias">
       <UniqueIdentifier>{65e7084f-16d6-4fed-a13a-b2661695fc01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader files">
-      <UniqueIdentifier>{8c213241-8b51-4c8d-9749-ad112dff0492}</UniqueIdentifier>
-    </Filter>
     <Filter Include="off">
       <UniqueIdentifier>{b574c371-5ee7-4bd8-8610-ca1ffd40c7ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader files">
+      <UniqueIdentifier>{1c9a2da6-f64e-466b-a36f-71b8f5595ca8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\simplificacion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Off.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -43,12 +46,6 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <None Include="color.frag">
-      <Filter>Shader files</Filter>
-    </None>
-    <None Include="color.vert">
-      <Filter>Shader files</Filter>
-    </None>
     <None Include="file\cubo.off">
       <Filter>off</Filter>
     </None>
@@ -64,5 +61,16 @@
     <None Include="file\dragon.off">
       <Filter>off</Filter>
     </None>
+    <None Include="file\color.frag">
+      <Filter>Shader files</Filter>
+    </None>
+    <None Include="file\color.vert">
+      <Filter>Shader files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Off.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

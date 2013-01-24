@@ -1,36 +1,58 @@
-#include <mod\ModeloOff.h>
+#include "Off.h"
 #include <AntTweakBar.h>
 #include <Commdlg.h>
 #include <windows.h>
+#include <glm\gtc\quaternion.hpp>
 
 GLuint positionBufferObject,p2,p3;
 
-Shader t;
-Mat4x4 m,p;
-ModeloOff mod;
-Sombreado shadow;
-GLfloat q_rotate[] = {0.0f, 0.0f, 0.0f, 0.0f};
-GLfloat traslacion[] = {0.0f, 0.0f, 0.0f, 0.0f};
-GLfloat c_line[]={ 1.0f, 0.0f, 0.0f,1.0f };
-GLfloat c_fill[]={ 0.0f, 0.0f, 1.0f,1.0f };
+Shader s;
+
+glm::mat4 modelview;
+glm::mat4 Projection;
+glm::fquat q;
+
+Off mod;
+
+Sombreado shadow,actual;
+
+glm::vec3 trasla, luz;
+glm::vec4 c_line, c_fill;
 GLfloat zoom,angulo;
+GLuint asdf;
+
 bool bools[]={true,false};
 
 void init(void)
 {   
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
+
+	trasla=glm::vec3(0.0f);
+	luz = glm::vec3(-0.57735f);
+	c_line = glm::vec4(1.0f, 0.0f, 0.0f,1.0f);
+	c_fill = glm::vec4(0.0f, 0.0f, 1.0f,1.0f);
+
 	zoom=1.0f;
 	angulo=5.0;
-	t.loadShader(VERTEX_SHADER,"color.vert");
-	t.loadShader(FRAGMENT_SHADER,"color.frag");
-	t.create_Link();
-	t.enable();
-	t.AddUniform("m");
-	t.AddUniform("incolor");
-	t.disable();
 
-	//mod.cargarModelo("dragon.off");
+	s.loadShader(VERTEX_SHADER,"file/color.vert");
+	s.loadShader(FRAGMENT_SHADER,"file/color.frag");
+
+	s.create_Link();
+	s.enable();
+	s.AddUniform("modelview");
+	s.AddUniform("proyect");
+	s.AddUniform("normalmatriz");
+	s.AddUniform("incolor");
+	//luz
+	s.AddUniform("sol.ambiental");
+	s.AddUniform("sol.direccion");
+	s.AddUniform("sol.intensidad");
+
+	s.disable();
+
+	modelview = glm::translate(glm::mat4(),glm::vec3(0,0,-5));
 	
 }
 
@@ -40,33 +62,47 @@ void display (void){
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	float color1[4]={0.0,0.0,1.0,1.0};
 	//Model
-	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
-	m =( p * (MatTranslate(0,0,-5)* m));
-	//MVP
-	t.enable();
-	glUniformMatrix4fv(t["m"],1,0,m.mat);
-	glUniform4fv(t["incolor"],1,c_fill);
-	glBindBuffer(GL_ARRAY_BUFFER, mod.BufferObject);
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float)*6, 0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float)*6, (void*)12);
-
-	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-	#pragma region
-	glDrawArrays(GL_TRIANGLES,0,mod.total*3);
-	if (bools[0]){
-		glUniform4fv(t["incolor"],1,c_line);
-		glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-	}
-	glDrawArrays(GL_TRIANGLES,0,mod.total*3);
-	#pragma endregion pinto
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
+	glm::mat4 m;
+	glm::mat4 n;
+	m = glm::translate(m,trasla);
+	m =	glm::scale(m,glm::vec3(zoom));
+	m = m*glm::mat4_cast(q);
 	
-	t.disable();
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+
+	m = modelview*m*mod.centro;
+	n=glm::transpose(glm::inverse(m));
+	
+	
+	if (mod.isLoad()){
+		s.enable();
+		glUniformMatrix4fv(s["modelview"],1,GL_FALSE,glm::value_ptr(m));
+		glUniformMatrix4fv(s["proyect"],1,GL_FALSE,glm::value_ptr(Projection));
+		glUniformMatrix4fv(s["normalmatriz"],1,GL_FALSE,glm::value_ptr(n));
+		
+		
+		glUniform4fv(s["incolor"],1,glm::value_ptr(c_fill));
+
+		glUniform3fv(s["sol.direccion"],1,glm::value_ptr(luz));
+		glUniform1f(s["sol.intensidad"],0.0f);
+
+		#pragma region
+		if (actual!=shadow){
+			mod.updateBuffer(shadow);
+			actual = shadow;
+		}
+		glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+	
+		mod.pintar(asdf);
+		if (bools[0]){
+			glUniform4fv(s["incolor"],1,glm::value_ptr(c_line));
+			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+			mod.pintar(asdf);
+		}
+		#pragma endregion pinto
+	
+	
+		s.disable();
+	}
 	TwDraw();
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -82,13 +118,13 @@ void reshape (int width, int height)
 	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
 
 	// Set the correct perspective.
-	p=buildPerpectiva(45.0,ratio,1.0,100.0);
+	Projection = glm::perspective(45.0f, ratio, 0.1f, 100.0f);
 	TwWindowSize(width, height);
 	glutSwapBuffers();
 }
 
 void TW_CALL next(void *clientData){
-	mod.colapse(angulo);
+	mod.simplificar(angulo);
 	mod.updateBuffer(shadow);
 }
 
@@ -109,6 +145,9 @@ void TW_CALL cargar(void *clientData){
 	if (GetOpenFileName(&ofn)){
 
 		mod.cargarModelo(Path);
+		mod.updateBuffer(shadow);
+		actual=shadow;
+		asdf = mod.nTri;
 	}
 		
 }
@@ -116,19 +155,20 @@ void TW_CALL cargar(void *clientData){
 void genMenu(TwBar *bar)
 {
 	//bloque de la rotacion
-	TwAddVarRW(bar, "ObjRotation", TW_TYPE_QUAT4F, &q_rotate, 
+	TwAddVarRW(bar, "ObjRotation", TW_TYPE_QUAT4F, &q, 
 		" label='Object rotation' opened=true help='Change the object orientation.' ");
+	TwAddVarRW(bar,"luz", TW_TYPE_DIR3F, glm::value_ptr(luz), "label='luz' help='Direccion de la luz.'");
 	TwAddSeparator(bar,"s1","");
 	//cargar
 	TwAddButton(bar, "ca", cargar, NULL, 
                 " label='Cargar Modelo' key=o help='Carga el archivo off que contiene al model.' ");
 	TwAddSeparator(bar,"s5","");
 	//traslacion
-	TwAddVarRW(bar, "x", TW_TYPE_FLOAT, &traslacion[0], 
+	TwAddVarRW(bar, "x", TW_TYPE_FLOAT, &trasla.x, 
 		"label='Mover en x' step=0.08 keyIncr='d' keyDecr='a' help='Permite mover el objeto en el eje x.' group='Traslacion'");
-	TwAddVarRW(bar, "y", TW_TYPE_FLOAT, &traslacion[1], 
+	TwAddVarRW(bar, "y", TW_TYPE_FLOAT, &trasla.y, 
 		"label='Mover en y' step=0.08 keyIncr='q' keyDecr='e' help='Permite mover el objeto en el eje y.' group='Traslacion'");
-	TwAddVarRW(bar, "z", TW_TYPE_FLOAT, &traslacion[2], 
+	TwAddVarRW(bar, "z", TW_TYPE_FLOAT, &trasla.z, 
 		"label='Mover en z' step=0.08 keyIncr='w' keyDecr='s' help='Permite mover el objeto en el eje z.' group='Traslacion'");
 	TwAddSeparator(bar,"s2","");
 	//zoom
@@ -137,15 +177,17 @@ void genMenu(TwBar *bar)
 	//bloque linea*/
 	TwAddVarRW(bar, "a1", TW_TYPE_BOOLCPP, &bools[0],
 		" label='Activar' help='Activa dibujar las lineas del objeto.' key=l group='Line' ");
-	TwAddVarRW(bar, "c1", TW_TYPE_COLOR4F, &c_line, 
+	TwAddVarRW(bar, "c1", TW_TYPE_COLOR4F, glm::value_ptr(c_line), 
 		"label='Color' help='Cambia el color de las lineas.' group='Line' ");
-	TwAddVarRW(bar, "c2", TW_TYPE_COLOR3F, &c_fill, 
+	TwAddVarRW(bar, "c2", TW_TYPE_COLOR3F, glm::value_ptr(c_fill), 
 		"label='Color' help='Cambia el color del relleno.' group='Fill' ");
 	TwAddSeparator(bar,"s3","");
 	TwAddButton(bar, "co", next, NULL, " label='Colapso' key=n help='Colapso' ");
 	TwAddVarRW(bar, "ang", TW_TYPE_FLOAT, &angulo, 
 		"label='Offset para el colapso' max=45.0 min=5.0 step=1.00 keyIncr='d' keyDecr='a' help='Angulo para la comprobacion'");
 	TwAddSeparator(bar,"s4","");
+	
+	TwAddVarRW(bar, "asdf", TW_TYPE_UINT32, &asdf, "label='asdf' step=1 min=1 help='asdf' ");
 	
 	
 	TwEnumVal sombra[2] = { { FLAT , "Flat"}, { GOURAUD, "Gouraud"} };

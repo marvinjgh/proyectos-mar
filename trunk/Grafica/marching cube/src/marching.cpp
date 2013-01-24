@@ -46,18 +46,45 @@ public:
 		Vec3D normal;
 	};
 
-	void calcular_0_5(GLubyte *data){
+	void calcular_0_5(Celda grids[4],int i,int j,int k){
 
-		for (int z = 0; z < dimz ; z++){
-			for ( int y = 0; y < dimy; y++){
-				for ( int x = 0; x < dimx; x++){
+		grids[0].p[0].coord[0] = (float)i;
+		grids[0].p[0].coord[1] = (float)j;
+		grids[0].p[0].coord[2] = (float)dimz-k;
+		grids[0].val[0] = final[i][j][k];
+		grids[0].p[1].coord[0] = (float)i+1;
+		grids[0].p[1].coord[1] = (float)j;
+		grids[0].p[1].coord[2] = (float)dimz-k; 
+		grids[0].val[1] = final[i+1][j][k];
+		grids[0].p[2].coord[0] = (float)i+1;
+		grids[0].p[2].coord[1] = (float)j+1;
+		grids[0].p[2].coord[2] = (float)dimz-k;
+		grids[0].val[2] = final[i+1][j+1][k];
+		grids[0].p[3].coord[0] = (float)i;
+		grids[0].p[3].coord[1] = (float)j+1;
+		grids[0].p[3].coord[2] = (float)dimz-k;
+		grids[0].val[3] = final[i][j+1][k];
+		grids[0].p[4].coord[0] = (float)i;
+		grids[0].p[4].coord[1] = (float)j;
+		grids[0].p[4].coord[2] = (float)dimz-k+1;
+		grids[0].val[4] = final[i][j][k+1];
+		grids[0].p[5].coord[0] = (float)i+1;
+		grids[0].p[5].coord[1] = (float)j;
+		grids[0].p[5].coord[2] = (float)dimz-k+1;
+		grids[0].val[5] = final[i+1][j][k+1];
+		grids[0].p[6].coord[0] = (float)i+1;
+		grids[0].p[6].coord[1] = (float)j+1;
+		grids[0].p[6].coord[2] = (float)dimz-k+1;
+		grids[0].val[6] = final[i+1][j+1][k+1];
+		grids[0].p[7].coord[0] = (float)i;
+		grids[0].p[7].coord[1] = (float)j+1;
+		grids[0].p[7].coord[2] = (float)dimz-k+1;
+		grids[0].val[7] = final[i][j+1][k+1];
 
-					final[x][y][z]=data[((z*dimy)+y)*dimz+x];
+	}
 
-				}
-			}
-		}
-
+	Vec3D gradiante(Celda g, Punto3D){
+	
 	}
 
 	Vertice* buscar_vertice(Punto3D* p){
@@ -153,7 +180,7 @@ public:
 	}
 
 	void probar(){
-		Celda grid;
+		Celda grids[4];
 		int n=0,ntri=0,index;
 		Triangulo triangles[10];
 
@@ -179,39 +206,10 @@ public:
 
 					if (index == 0 || index == 255) continue;
 
-					grid.p[0].coord[0] = (float)i;
-					grid.p[0].coord[1] = (float)j;
-					grid.p[0].coord[2] = (float)dimz-k;
-					grid.val[0] = final[i][j][k];
-					grid.p[1].coord[0] = (float)i+1;
-					grid.p[1].coord[1] = (float)j;
-					grid.p[1].coord[2] = (float)dimz-k; 
-					grid.val[1] = final[i+1][j][k];
-					grid.p[2].coord[0] = (float)i+1;
-					grid.p[2].coord[1] = (float)j+1;
-					grid.p[2].coord[2] = (float)dimz-k;
-					grid.val[2] = final[i+1][j+1][k];
-					grid.p[3].coord[0] = (float)i;
-					grid.p[3].coord[1] = (float)j+1;
-					grid.p[3].coord[2] = (float)dimz-k;
-					grid.val[3] = final[i][j+1][k];
-					grid.p[4].coord[0] = (float)i;
-					grid.p[4].coord[1] = (float)j;
-					grid.p[4].coord[2] = (float)dimz-k+1;
-					grid.val[4] = final[i][j][k+1];
-					grid.p[5].coord[0] = (float)i+1;
-					grid.p[5].coord[1] = (float)j;
-					grid.p[5].coord[2] = (float)dimz-k+1;
-					grid.val[5] = final[i+1][j][k+1];
-					grid.p[6].coord[0] = (float)i+1;
-					grid.p[6].coord[1] = (float)j+1;
-					grid.p[6].coord[2] = (float)dimz-k+1;
-					grid.val[6] = final[i+1][j+1][k+1];
-					grid.p[7].coord[0] = (float)i;
-					grid.p[7].coord[1] = (float)j+1;
-					grid.p[7].coord[2] = (float)dimz-k+1;
-					grid.val[7] = final[i][j+1][k+1];
-					n = PolygoniseCube(grid,triangles,index);
+					calcular_0_5(grids,i,j,k);
+
+
+					n = PolygoniseCube(grids[0],triangles,index);
 					for (int l=0;l<n;l++)
 						finales.push_back(triangles[l]);
 					ntri += n;
@@ -314,8 +312,15 @@ public:
 				printf("OK: read .raw file successed\n");   
 		}
 
+		for (int z = 0; z < dimz ; z++){
+			for ( int y = 0; y < dimy; y++){
+				for ( int x = 0; x < dimx; x++){
 
-		calcular_0_5(data);
+					final[x][y][z]=data[((z*dimy)+y)*dimz+x];
+
+				}
+			}
+		}
 
 		fclose(fp);
 
@@ -412,8 +417,6 @@ void init(void)
 	sl.disable();
 }
 
-
-
 void display (void){
 
 	glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
@@ -425,7 +428,7 @@ void display (void){
 		mod.buffer(GOURAUD);
 	}
 
-	//glutSolidCube(64);
+	
 
 	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
 	m =( p * (MatTranslate(0,0,-2)* m));
@@ -517,7 +520,8 @@ void genMenu(TwBar *bar)
 	TwAddVarRW(bar, "umbral", TW_TYPE_INT32, &umbral, 
 		"label='umbral' min=1 max=255 step=1  keyIncr='+' keyDecr='-'");
 	TwAddButton(bar,"Boton_1", cargar,NULL,"label='Cargar raw' ");
-
+	TwAddVarRW(bar, "ba", TW_TYPE_BOOLCPP, &bools[0], 
+		" label='Activar' help='Activa'");
 	/*TwAddVarRW(bar, "c1", TW_TYPE_COLOR4F, &c_line, 
 	"label='Color' help='Cambia el color de las lineas.' group='Lineas' ");*/
 
