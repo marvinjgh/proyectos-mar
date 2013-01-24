@@ -48,6 +48,18 @@
     <ClInclude Include="include\mod\ModeloOff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\mod\Modelo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mod\Vertice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mod\Arista.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mod\Triangulo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mat4x4.cpp">
@@ -72,6 +84,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ModeloOff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modelo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vertice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Arista.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triangulo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

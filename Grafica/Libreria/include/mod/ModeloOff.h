@@ -6,10 +6,6 @@
 #include <vector>
 #include <stack>
 #include <cfloat>
-#include <omp.h>
-
-enum Sombreado 
-{ FLAT , GOURAUD };
 
 double calcularAngulo(Vec3D a, Vec3D b);
 

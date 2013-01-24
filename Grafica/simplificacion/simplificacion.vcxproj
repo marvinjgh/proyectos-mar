@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)Libreria\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)Libreria\include;$(SolutionDir)colectivo\glm-0.9.3.4</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Off.cpp" />
     <ClCompile Include="src\simplificacion.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -101,13 +102,16 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <None Include="color.frag" />
-    <None Include="color.vert" />
+    <None Include="file\color.frag" />
+    <None Include="file\color.vert" />
     <None Include="file\cubo.off" />
     <None Include="file\cubo2.off" />
     <None Include="file\dragon.off" />
     <None Include="file\dragon_head.off" />
     <None Include="file\plano.off" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Off.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

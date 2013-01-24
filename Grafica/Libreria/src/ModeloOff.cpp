@@ -219,9 +219,6 @@ void ModeloOff::colapse(double offSetAngle){
 				(tr->vertices[1]==b->a)?vertices[b->b]->posicion:vertices[tr->vertices[1]]->posicion,
 				(tr->vertices[2]==b->a)?vertices[b->b]->posicion:vertices[tr->vertices[2]]->posicion);
 			angulos.push_back(calcularAngulo(n,tr->normal));
-
-
-
 			//calculo el punto medio
 
 			//fin calculo
@@ -242,7 +239,6 @@ void ModeloOff::colapse(double offSetAngle){
 				(tr->vertices[1]==b->b)?vertices[b->a]->posicion:vertices[tr->vertices[1]]->posicion,
 				(tr->vertices[2]==b->b)?vertices[b->a]->posicion:vertices[tr->vertices[2]]->posicion);
 			angulos.push_back(calcularAngulo(n,tr->normal));
-
 			angulos.push_back(0);//como a no tiene interaccion con este triangulo lo coloco tal cual
 
 			//fin calculo
@@ -287,7 +283,6 @@ void ModeloOff::colapse(double offSetAngle){
 		triangulos[b->t1]->activo=false;
 		if (triangulos[b->t2]->activo){ total--; tra--;}
 		triangulos[b->t2]->activo=false;
-		//ba.a = *VERTRES[b->a];
 		if (vertices[b->b]->activo)	vea--;
 		vertices[b->b]->activo=false;
 		b->activo=false;
@@ -303,14 +298,11 @@ void ModeloOff::colapse(double offSetAngle){
 		vertices[b->a]->posicion = vertices[b->b]->posicion;
 	}
 
-
 	for(i = vertices[b->a]->trians.begin(); i < vertices[b->a]->trians.end(); i++){
 		if (*i == b->t1 || *i == b->t2 ) continue;
 		if (!triangulos[*i]->activo) continue;
 		asdf.push_back(*i);
 	}
-
-
 
 	for(i = vertices[b->b]->trians.begin(); i < vertices[b->b]->trians.end(); i++){
 		if (*i == b->t1 || *i == b->t2 ) continue;

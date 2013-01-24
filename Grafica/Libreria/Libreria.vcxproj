@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)colectivo\glm-0.9.3.4</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
@@ -96,17 +96,25 @@
     <ClInclude Include="include\Geom\Vec3D.h" />
     <ClInclude Include="include\Geom\Vec4D.h" />
     <ClInclude Include="include\glsl\Shader.h" />
+    <ClInclude Include="include\mod\Arista.h" />
+    <ClInclude Include="include\mod\Modelo.h" />
     <ClInclude Include="include\mod\ModeloOff.h" />
+    <ClInclude Include="include\mod\Triangulo.h" />
+    <ClInclude Include="include\mod\Vertice.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Arista.cpp" />
     <ClCompile Include="src\mat4x4.cpp" />
+    <ClCompile Include="src\Modelo.cpp" />
     <ClCompile Include="src\ModeloOff.cpp" />
     <ClCompile Include="src\Punto2D.cpp" />
     <ClCompile Include="src\Punto3D.cpp" />
     <ClCompile Include="src\Punto4D.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\Triangulo.cpp" />
     <ClCompile Include="src\Vec3D.cpp" />
     <ClCompile Include="src\Vec4D.cpp" />
+    <ClCompile Include="src\Vertice.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
