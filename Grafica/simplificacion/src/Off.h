@@ -27,7 +27,7 @@ public:
 
 	friend ostream& operator<< (ostream& os, const Off& m){
 		FOR(i,m.triangulos.size()){
-			os<<"id "<< i << " "<<m.triangulos.at(i);
+			os<<"id "<< i << " "<<m.aristas.at(i);
 		}
 
 		return os<<"\n";
