@@ -14,20 +14,17 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Librerias">
-      <UniqueIdentifier>{65e7084f-16d6-4fed-a13a-b2661695fc01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="off">
-      <UniqueIdentifier>{b574c371-5ee7-4bd8-8610-ca1ffd40c7ed}</UniqueIdentifier>
+      <UniqueIdentifier>{9445686a-71d1-4738-917b-5dbdf88a917a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader files">
-      <UniqueIdentifier>{1c9a2da6-f64e-466b-a36f-71b8f5595ca8}</UniqueIdentifier>
+      <UniqueIdentifier>{fec3aed3-5e9a-4c08-9d73-0be7611649f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\simplificacion.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Off.cpp">
+    <ClCompile Include="src\Modelo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -46,34 +43,19 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <None Include="file\cubo.off">
-      <Filter>off</Filter>
-    </None>
-    <None Include="file\plano.off">
-      <Filter>off</Filter>
-    </None>
-    <None Include="file\cubo2.off">
-      <Filter>off</Filter>
-    </None>
-    <None Include="file\dragon_head.off">
-      <Filter>off</Filter>
-    </None>
-    <None Include="file\dragon.off">
-      <Filter>off</Filter>
-    </None>
-    <None Include="file\color.frag">
-      <Filter>Shader files</Filter>
-    </None>
-    <None Include="file\color.vert">
-      <Filter>Shader files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Off.h">
+    <ClInclude Include="src\Header.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modelo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="file\triangulos.txt" />
+    <None Include="files\color.frag">
+      <Filter>Shader files</Filter>
+    </None>
+    <None Include="files\color.vert">
+      <Filter>Shader files</Filter>
+    </None>
   </ItemGroup>
 </Project>
