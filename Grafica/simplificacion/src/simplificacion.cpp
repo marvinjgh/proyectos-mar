@@ -3,6 +3,7 @@
 #include <Commdlg.h>
 #include <windows.h>
 #include <glm\gtc\quaternion.hpp>
+#include <fstream>
 
 GLuint positionBufferObject,p2,p3;
 
@@ -53,7 +54,7 @@ void init(void)
 	s.disable();
 
 	modelview = glm::translate(glm::mat4(),glm::vec3(0,0,-5));
-	
+
 }
 
 void display (void){
@@ -67,40 +68,40 @@ void display (void){
 	m = glm::translate(m,trasla);
 	m =	glm::scale(m,glm::vec3(zoom));
 	m = m*glm::mat4_cast(q);
-	
+
 
 	m = modelview*m*mod.centro;
 	n=glm::transpose(glm::inverse(m));
-	
-	
+
+
 	if (mod.isLoad()){
 		s.enable();
 		glUniformMatrix4fv(s["modelview"],1,GL_FALSE,glm::value_ptr(m));
 		glUniformMatrix4fv(s["proyect"],1,GL_FALSE,glm::value_ptr(Projection));
 		glUniformMatrix4fv(s["normalmatriz"],1,GL_FALSE,glm::value_ptr(n));
-		
-		
+
+
 		glUniform4fv(s["incolor"],1,glm::value_ptr(c_fill));
 
 		glUniform3fv(s["sol.direccion"],1,glm::value_ptr(luz));
 		glUniform1f(s["sol.intensidad"],0.0f);
 
-		#pragma region
+#pragma region
 		if (actual!=shadow){
 			mod.updateBuffer(shadow);
 			actual = shadow;
 		}
 		glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-	
+
 		mod.pintar(asdf);
 		if (bools[0]){
 			glUniform4fv(s["incolor"],1,glm::value_ptr(c_line));
 			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 			mod.pintar(asdf);
 		}
-		#pragma endregion pinto
-	
-	
+#pragma endregion pinto
+
+
 		s.disable();
 	}
 	TwDraw();
@@ -126,6 +127,9 @@ void reshape (int width, int height)
 void TW_CALL next(void *clientData){
 	mod.simplificar(angulo);
 	mod.updateBuffer(shadow);
+	ofstream out("triangulos.txt",ios::app);
+	out<<mod;
+	out.close();
 }
 
 void TW_CALL cargar(void *clientData){
@@ -133,23 +137,26 @@ void TW_CALL cargar(void *clientData){
 	char Path[512]="";
 	memset(&ofn, 0, sizeof(ofn));
 
-    ofn.lStructSize = sizeof(OPENFILENAME);
-    ofn.hwndOwner = NULL;
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = NULL;
 	ofn.lpstrFile = Path;
 	ofn.nMaxFile = 255;
 	ofn.lpstrTitle = "Load Model...";
-    ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
 	ofn.lpstrFilter = "OFF Files\0*.off\0OBJ Files\0*.obj\0\0";//hago que solo muestre archivos .off
-    ofn.lpstrDefExt = "off";
-	
+	ofn.lpstrDefExt = "off";
+
 	if (GetOpenFileName(&ofn)){
 
 		mod.cargarModelo(Path);
 		mod.updateBuffer(shadow);
 		actual=shadow;
 		asdf = mod.nTri;
+		ofstream out("triangulos.txt",ios::out);
+		out<<mod;
+		out.close();
 	}
-		
+
 }
 
 void genMenu(TwBar *bar)
@@ -161,7 +168,7 @@ void genMenu(TwBar *bar)
 	TwAddSeparator(bar,"s1","");
 	//cargar
 	TwAddButton(bar, "ca", cargar, NULL, 
-                " label='Cargar Modelo' key=o help='Carga el archivo off que contiene al model.' ");
+		" label='Cargar Modelo' key=o help='Carga el archivo off que contiene al model.' ");
 	TwAddSeparator(bar,"s5","");
 	//traslacion
 	TwAddVarRW(bar, "x", TW_TYPE_FLOAT, &trasla.x, 
@@ -186,10 +193,10 @@ void genMenu(TwBar *bar)
 	TwAddVarRW(bar, "ang", TW_TYPE_FLOAT, &angulo, 
 		"label='Offset para el colapso' max=45.0 min=5.0 step=1.00 keyIncr='d' keyDecr='a' help='Angulo para la comprobacion'");
 	TwAddSeparator(bar,"s4","");
-	
+
 	TwAddVarRW(bar, "asdf", TW_TYPE_UINT32, &asdf, "label='asdf' step=1 min=1 help='asdf' ");
-	
-	
+
+
 	TwEnumVal sombra[2] = { { FLAT , "Flat"}, { GOURAUD, "Gouraud"} };
 	TwType shadowType = TwDefineEnum("shadowType", sombra, 2);
 	TwAddVarRW (bar, "sombra", shadowType, &shadow, " label=' Tipo de sombra' keyIncr='<' keyDecr='>' help='Cambia el tipo de sombreado.' ");
