@@ -1,6 +1,5 @@
 #include "Off.h"
 
-
 Off::Off(void)
 {
 }
@@ -219,7 +218,7 @@ void Off::simplificar(float offset){
 		glm::vec3 n(0.0f);
 		s[0]=false;s[1]=false;
 		if (!a.estaActivo()) continue;
-		if (a.getTrian_1()>nTri || a.getTrian_2()>nTri) continue;
+		if (a.getTrian_1()>triangulos.size() || a.getTrian_2()>triangulos.size()) continue;
 		//if(!faces[b->t1]->activo && !faces[b->t2]->activo) continue;
 		angulos.clear();
 
@@ -338,6 +337,7 @@ void Off::simplificar(float offset){
 		//b->activo=false;
 		a.cambiarEstado();
 	}else{
+		std::cout<<"esto por que pasa\n";
 		return;
 	}
 
@@ -426,33 +426,8 @@ size_t* Off::actualizar(size_t t,size_t a, size_t b){
 			}
 		}
 		//backup
-		
-		/*if (triangulos.at(ar.getTrian_1()).estaActivo() && triangulos.at(ar.getTrian_2()).estaActivo()) continue;
 
-		if (triangulos.at(ar.getTrian_1()).estaActivo()){
-			busqueda = siguiente(ar.getTrian_1(), ar.getTrian_2());
-			ar.setTrian_2(busqueda);
-		}else{
-			busqueda = siguiente(ar.getTrian_2(), ar.getTrian_1());
-			ar.setTrian_1(busqueda);
-		}
-		*/
 	}
 	return NULL;
 }
 
-size_t Off::siguiente(size_t t, size_t t2){
-	size_t asd;
-	FOR(i,3){
-		Arista & ar = aristas.at(triangulos.at(t2).getArista(i));
-		if (!triangulos.at(ar.getTrian_1()).estaActivo() && !triangulos.at(ar.getTrian_2()).estaActivo()) continue;
-		if (triangulos.at(ar.getTrian_1()).estaActivo() && ar.getTrian_1()!=t){
-			return ar.getTrian_1();
-		}
-		if (triangulos.at(ar.getTrian_2()).estaActivo() && ar.getTrian_2()!=t){
-			return ar.getTrian_2();
-		}
-	}
-
-	return asd;
-}

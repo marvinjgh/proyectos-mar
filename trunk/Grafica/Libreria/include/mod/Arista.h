@@ -19,6 +19,8 @@ public:
 	size_t getTrian_2();
 	bool estaActivo();
 	void cambiarEstado();
+	friend ostream& operator<< (ostream& os, const Arista& a);
+
 private:
 
 	bool activo;

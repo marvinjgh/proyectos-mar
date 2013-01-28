@@ -62,3 +62,7 @@ bool Arista::estaActivo(){
 void Arista::cambiarEstado(){
 	activo=!activo;
 }
+
+ostream& operator<< (ostream& os,const Arista& a){
+	return os << "Arista " <<a.activo << " v0 " << a.vert_a <<" v1 "<< a.vert_b <<" t1 "<< a.trian_1 <<" t2 "<<a.trian_2 <<"\n";
+}
