@@ -26,7 +26,7 @@ public:
 	size_t siguiente(size_t ,size_t );
 
 	friend ostream& operator<< (ostream& os, const Off& m){
-		FOR(i,m.triangulos.size()){
+		FOR(i,m.aristas.size()){
 			os<<"id "<< i << " "<<m.aristas.at(i);
 		}
 
