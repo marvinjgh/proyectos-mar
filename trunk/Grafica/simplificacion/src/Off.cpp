@@ -232,7 +232,7 @@ void Off::simplificar(float offset){
 		FOR(j, v0.getSizetrian())
 		{
 			if (v0.getTriangulo(j) == t1 || v0.getTriangulo(j) == t2 ) continue;
-			//if (!faces[*i]->activo) continue;
+			if (!triangulos.at(j).estaActivo()) continue;
 			Triangulo & tr = triangulos.at(v0.getTriangulo(j));
 			angulos.push_back(0);
 
@@ -349,7 +349,8 @@ void Off::simplificar(float offset){
 	}
 	 
 	//agrego los triangulos del vertice a
-	Vertice v0 = vertices.at(va);
+	
+Vertice v0 = vertices.at(va);
 	FOR(i,v0.getSizetrian()){
 		if (v0.getTriangulo(i) == t1 || v0.getTriangulo(i) == t2 ) continue;
 		if (!triangulos.at(v0.getTriangulo(i)).estaActivo()) continue;
