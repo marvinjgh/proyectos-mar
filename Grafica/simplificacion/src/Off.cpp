@@ -402,7 +402,7 @@ size_t* Off::actualizar(size_t t,size_t a, size_t b){
 				triangulos.at(t).setArista(i, busqueda);
 				ar.cambiarEstado();
 				nAri--;
-				if (triangulos.at(ar.getTrian_1()).estaActivo()){
+				if (triangulos.at(aristas.at(busqueda).getTrian_1()).estaActivo()){
 					aristas.at(busqueda).setTrian_2(t);
 				}else{
 					aristas.at(busqueda).setTrian_1(t);
@@ -418,7 +418,7 @@ size_t* Off::actualizar(size_t t,size_t a, size_t b){
 				//ar=busqueda
 				triangulos.at(t).setArista(i, busqueda);
 				ar.cambiarEstado();
-				if (triangulos.at(ar.getTrian_1()).estaActivo()){
+				if (triangulos.at(aristas.at(busqueda).getTrian_1()).estaActivo()){
 					aristas.at(busqueda).setTrian_2(t);
 				}else{
 					aristas.at(busqueda).setTrian_1(t);
