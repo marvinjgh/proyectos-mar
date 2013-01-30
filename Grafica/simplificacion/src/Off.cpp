@@ -232,11 +232,11 @@ void Off::simplificar(float offset){
 		FOR(j, v0.getSizetrian())
 		{
 			if (v0.getTriangulo(j) == t1 || v0.getTriangulo(j) == t2 ) continue;
-			if (!triangulos.at(j).estaActivo()) continue;
+			if (!triangulos.at(v0.getTriangulo(j)).estaActivo()) continue;
 			Triangulo & tr = triangulos.at(v0.getTriangulo(j));
 			angulos.push_back(0);
 
-			//el vertice a se sustituido por b
+			//el vertice a se sustituido por b(posicion)
 			glm::vec3 na,nb,nc;
 			if (tr.getVertice(0) == va){
 				na = glm::vec3(vertices.at(vb).getPosicion());
@@ -263,7 +263,7 @@ void Off::simplificar(float offset){
 		FOR(j, v0.getSizetrian())
 		{
 			if (v0.getTriangulo(j) == t1 || v0.getTriangulo(j) == t2 ) continue;
-			//if (!faces[*i]->activo) continue;
+			if (!triangulos.at(v0.getTriangulo(j)).estaActivo()) continue;
 			Triangulo & tr = triangulos.at(v0.getTriangulo(j));
 
 			//el vertice b se sustituido por a
@@ -336,6 +336,7 @@ void Off::simplificar(float offset){
 		//vertices[vb].activo=false;
 		//b->activo=false;
 		a.cambiarEstado();
+		nAri--;
 	}else{
 		std::cout<<"esto por que pasa\n";
 		return;
@@ -400,6 +401,7 @@ size_t* Off::actualizar(size_t t,size_t a, size_t b){
 				//ar=busqueda
 				triangulos.at(t).setArista(i, busqueda);
 				ar.cambiarEstado();
+				nAri--;
 				if (triangulos.at(ar.getTrian_1()).estaActivo()){
 					aristas.at(busqueda).setTrian_2(t);
 				}else{

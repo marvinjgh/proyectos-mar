@@ -128,7 +128,7 @@ void TW_CALL next(void *clientData){
 	mod.simplificar(angulo);
 	mod.updateBuffer(shadow);
 	ofstream out("triangulos.txt",ios::app);
-	out<<mod;
+	//out<<mod;
 	out.close();
 }
 
