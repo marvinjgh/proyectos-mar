@@ -39,7 +39,10 @@ void Off::cargarModelo(char* file){
 		triangulos.clear();
 		vertices.clear();
 		aristas.clear();
+		colisiones.clear();
 		nVer = 0; nTri = 0;
+		minp=glm::vec3();
+		maxp=glm::vec3();
 	}
 #pragma endregion limpiar los vectores
 
@@ -141,7 +144,8 @@ void Off::centrar(){
 	float d = std::max(std::max(y.x,y.y),y.z);
 	glm::vec3 s(2.0/d,2.0/d,2.0/d);
 	glm::vec3 r(0.0,1.0,0.0);
-	centro = glm::scale(glm::mat4(),s);
+	centro = glm::mat4();
+	centro = glm::scale(centro,s);
 	centro = glm::translate(centro,-x);
 }
 
@@ -211,7 +215,7 @@ void Off::simplificar(float offset){
 	size_t c=-1,mejor;
 
 
-#pragma region
+#pragma region verificacion de posible colapso
 	FOR(i,aristas.size()){
 		Arista & a = aristas.at(i);
 		double a1=0.0, a2=0.0;
@@ -223,7 +227,7 @@ void Off::simplificar(float offset){
 		angulos.clear();
 
 		//for de los triangulos de a
-#pragma region
+#pragma region calculo el angulo de los triangulos de a
 
 		size_t t1=a.getTrian_1(), t2=a.getTrian_2();
 		size_t va=a.getVert_a(), vb=a.getVert_b();
@@ -255,10 +259,10 @@ void Off::simplificar(float offset){
 			n = glm::normalize(glm::cross(nc - na, nb - na));
 			angulos.push_back(glm::angle(n, tr.getNormal()));
 		}
-#pragma endregion calculo el angulo de los triangulos de a
+#pragma endregion 
 
 		//for de los triangulos de b
-#pragma region
+#pragma region calculo el angulo de los triangulos de b
 		v0 = vertices.at(vb);
 		FOR(j, v0.getSizetrian())
 		{
@@ -287,7 +291,7 @@ void Off::simplificar(float offset){
 
 			angulos.push_back(0);
 		}
-#pragma endregion calculo el angulo de los triangulos de b
+#pragma endregion 
 
 		//calcualar el error
 		FOR(j,angulos.size()){
@@ -312,50 +316,71 @@ void Off::simplificar(float offset){
 		}
 		if (mejor_a == 0.0) break;
 	}
-#pragma endregion verificacion de posible colapso
+#pragma endregion 
 
 	//backup
 
 	if (c==-1){return;}
 
-	//backup ba;
 	Arista & a = aristas.at(mejor);
 	size_t t1=a.getTrian_1(), t2=a.getTrian_2();
 	size_t va=a.getVert_a(), vb=a.getVert_b();
-	//ba.b=*mejor;
 
+	backup b;
 
-	std::cout<<"a.a "<<a.getVert_a()<<" a.b "<<a.getVert_b()<<" a.t1 "<<a.getTrian_1()<<" a.t2 "<<a.getTrian_2()<<" c "<<c <<" mejor "<<mejor<<endl;
+	//std::cout<<"a.a "<<a.getVert_a()<<" a.b "<<a.getVert_b()<<" a.t1 "<<a.getTrian_1()<<" a.t2 "<<a.getTrian_2()<<" c "<<c <<" mejor "<<mejor<<endl;
 
 	if (angulos.size()>2){
-		if (triangulos.at(t1).estaActivo()){ nTri--; triangulos.at(t1).cambiarEstado();}
-		
-		if (triangulos.at(t2).estaActivo()){ nTri--;triangulos.at(t2).cambiarEstado();}
-		
-		//if (vertices[b->b]->activo)	vea--;
-		//vertices[vb].activo=false;
-		//b->activo=false;
+#pragma region desabilito los triangulos y la arista 
+		if (triangulos.at(t1).estaActivo()){ 
+			nTri--; 
+			triangulos.at(t1).cambiarEstado();
+			accion t;
+			t.e=TRI_ACT;
+			t.param.push_back(t1);
+			b.estado_anterior.push_back(t);
+		}
+
+		if (triangulos.at(t2).estaActivo()){ 
+			nTri--;
+			triangulos.at(t2).cambiarEstado();
+			accion t;
+			t.e=TRI_ACT;
+			t.param.push_back(t2);
+			b.estado_anterior.push_back(t);
+		}
+
+		accion t;
+		t.e=ARIS_ACT;
+		t.param.push_back(mejor);
+		b.estado_anterior.push_back(t);
+
 		a.cambiarEstado();
-		nAri--;
+
+#pragma endregion 
 	}else{
 		std::cout<<"esto por que pasa\n";
 		return;
 	}
 
-	if (c==1){
-		//nada
-	}
 	if (c==2){
-		vertices[va].setPosicion(vertices[vb].getPosicion());
+
+		accion v;
+		v.e=VERT_MOV;
+		v.pos=vertices.at(va).getPosicion();
+		vertices.at(va).setPosicion(vertices[vb].getPosicion());
+		b.estado_anterior.push_back(v);
 	}
-	 
+
 	//agrego los triangulos del vertice a
-	
-Vertice v0 = vertices.at(va);
+
+	Vertice v0 = vertices.at(va);
 	FOR(i,v0.getSizetrian()){
 		if (v0.getTriangulo(i) == t1 || v0.getTriangulo(i) == t2 ) continue;
 		if (!triangulos.at(v0.getTriangulo(i)).estaActivo()) continue;
 		asdf.push_back(v0.getTriangulo(i));
+		//guadarlos triangulos para actualizar las normales
+
 	}
 
 	//agrego los triangulos del vertice b y modifico los vertices ser necesario
@@ -369,12 +394,24 @@ Vertice v0 = vertices.at(va);
 		buscado=buscarVertice(v0.getTriangulo(i),vb);
 
 		if (buscado == -1 ) cout << "esto es raro";
-		std::cout << v0.getTriangulo(i)<< " ";
+		//std::cout << v0.getTriangulo(i)<< " ";
+		accion t;
+		t.e=TRI_VER;
+		t.param.push_back(v0.getTriangulo(i));
+		t.param.push_back(buscado);
+		t.param.push_back(triangulos.at(v0.getTriangulo(i)).getVertice(buscado));
+		b.estado_anterior.push_back(t);
 		triangulos.at(v0.getTriangulo(i)).setVertice(buscado,va);
-		actualizar(v0.getTriangulo(i),va,vb);
+		actualizar(v0.getTriangulo(i),va,vb,b);
 	}
-	std::cout<<"\n";
+
+	accion v;
+	v.e=VER_TRI;
+	v.param = vertices.at(va).getTriangulos();
+	v.param.push_back(va);
 	vertices.at(va).setTrian(asdf);
+	b.estado_anterior.push_back(v);
+	colisiones.push_back(b);
 }
 
 //dado un triangulo y un vertice determina la posicion de 
@@ -389,7 +426,7 @@ size_t Off::buscarVertice(size_t t,size_t v){
 	return -1;
 }
 
-size_t* Off::actualizar(size_t t,size_t a, size_t b){
+void Off::actualizar(size_t t,size_t a, size_t b,backup & bk){
 	FOR(i,3){
 		Arista & ar = aristas.at(triangulos.at(t).getArista(i));
 		size_t busqueda;
@@ -399,16 +436,43 @@ size_t* Off::actualizar(size_t t,size_t a, size_t b){
 			busqueda = findArista(Arista(a,ar.getVert_b()));
 			if (busqueda != -1){
 				//ar=busqueda
+				accion t1;
+				t1.e=TRI_ARI;
+				t1.param.push_back(t);
+				t1.param.push_back(i);
+				t1.param.push_back(triangulos.at(t).getArista(i));
+				bk.estado_anterior.push_back(t1);
 				triangulos.at(t).setArista(i, busqueda);
 				ar.cambiarEstado();
-				nAri--;
+				accion x;
+				x.e=ARIS_ACT;
+				x.param.push_back(triangulos.at(t).getArista(i));
+				bk.estado_anterior.push_back(x);
 				if (triangulos.at(aristas.at(busqueda).getTrian_1()).estaActivo()){
+					accion t1;
+					t1.e=ARIS_TRI;
+					t1.param.push_back(busqueda);
+					t1.param.push_back(1);
+					t1.param.push_back(aristas.at(busqueda).getTrian_2());
+					bk.estado_anterior.push_back(t1);
 					aristas.at(busqueda).setTrian_2(t);
 				}else{
+					accion t1;
+					t1.e=ARIS_TRI;
+					t1.param.push_back(busqueda);
+					t1.param.push_back(0);
+					t1.param.push_back(aristas.at(busqueda).getTrian_1());
+					bk.estado_anterior.push_back(t1);
 					aristas.at(busqueda).setTrian_1(t);
 				}
 			}else{
 				//ar->a= a
+				accion t1;
+				t1.e=ARIS_VER;
+				t1.param.push_back(triangulos.at(t).getArista(i));
+				t1.param.push_back(0);
+				t1.param.push_back(aristas.at(triangulos.at(t).getArista(i)).getVert_a());
+				bk.estado_anterior.push_back(t1);
 				ar.setVert_a(a);
 			}
 		}
@@ -416,21 +480,87 @@ size_t* Off::actualizar(size_t t,size_t a, size_t b){
 			busqueda = findArista(Arista(ar.getVert_a(),a));
 			if (busqueda != -1){
 				//ar=busqueda
+				accion t1;
+				t1.e=TRI_ARI;
+				t1.param.push_back(t);
+				t1.param.push_back(i);
+				t1.param.push_back(triangulos.at(t).getArista(i));
+				bk.estado_anterior.push_back(t1);
 				triangulos.at(t).setArista(i, busqueda);
 				ar.cambiarEstado();
+				accion x;
+				x.e=ARIS_ACT;
+				x.param.push_back(triangulos.at(t).getArista(i));
+				bk.estado_anterior.push_back(x);
 				if (triangulos.at(aristas.at(busqueda).getTrian_1()).estaActivo()){
+					accion t1;
+					t1.e=ARIS_TRI;
+					t1.param.push_back(busqueda);
+					t1.param.push_back(1);
+					t1.param.push_back(aristas.at(busqueda).getTrian_2());
+					bk.estado_anterior.push_back(t1);
 					aristas.at(busqueda).setTrian_2(t);
 				}else{
+					accion t1;
+					t1.e=ARIS_TRI;
+					t1.param.push_back(busqueda);
+					t1.param.push_back(0);
+					t1.param.push_back(aristas.at(busqueda).getTrian_1());
+					bk.estado_anterior.push_back(t1);
 					aristas.at(busqueda).setTrian_1(t);
 				}
 			}else{
 				//ar->b = a
+				accion t1;
+				t1.e=ARIS_VER;
+				t1.param.push_back(triangulos.at(t).getArista(i));
+				t1.param.push_back(1);
+				t1.param.push_back(aristas.at(triangulos.at(t).getArista(i)).getVert_b());
 				ar.setVert_b(a);
 			}
 		}
 		//backup
 
 	}
-	return NULL;
 }
 
+void Off::undo(){
+	backup bk = colisiones.at(colisiones.size()-1);
+
+	FOR(i,bk.estado_anterior.size()){
+		resolver(bk.estado_anterior.at(i));
+	}
+}
+
+void Off::resolver(accion a){
+	size_t aux;
+	switch (a.e)
+	{
+	case VERT_MOV : break;
+	case VER_TRI:
+		aux = a.param.at(a.param.size()-1);
+		a.param.pop_back();
+		vertices.at(aux).setTrian(a.param);
+		break;
+	case ARIS_TRI: 
+		
+		break;
+	case ARIS_VER : break;
+	case ARIS_ACT : 
+		aristas.at(a.param.at(0)).cambiarEstado();
+		break;
+	case TRI_ACT : 
+		triangulos.at(a.param.at(0)).cambiarEstado();
+		break;
+	case TRI_ARI : break;
+		aux = a.param.at(1);
+		triangulos.at(a.param.at(0)).setArista(aux,a.param.at(2));
+		break;
+	case TRI_VER : 
+		aux = a.param.at(1);
+		triangulos.at(a.param.at(0)).setVertice(aux,a.param.at(2));
+		break;
+	default:
+		break;
+	}
+}

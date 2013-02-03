@@ -108,7 +108,6 @@
     <None Include="file\cubo2.off" />
     <None Include="file\dragon.off" />
     <None Include="file\dragon_head.off" />
-    <None Include="file\plano.off" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Off.h" />

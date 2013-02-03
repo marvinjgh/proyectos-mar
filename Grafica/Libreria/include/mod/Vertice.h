@@ -14,6 +14,7 @@ public:
 	glm::vec4& getPosicion();
 	glm::vec3& getNormal();
 	size_t getTriangulo(size_t);
+	vector<size_t> getTriangulos();
 	void setPosicion(float , float , float );
 	void setPosicion(glm::vec4 &);
 	void setNormal(glm::vec3 &);
