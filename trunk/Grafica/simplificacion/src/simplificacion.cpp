@@ -127,9 +127,6 @@ void reshape (int width, int height)
 void TW_CALL next(void *clientData){
 	mod.simplificar(angulo);
 	mod.updateBuffer(shadow);
-	ofstream out("triangulos.txt",ios::app);
-	//out<<mod;
-	out.close();
 }
 
 void TW_CALL cargar(void *clientData){
@@ -152,9 +149,6 @@ void TW_CALL cargar(void *clientData){
 		mod.updateBuffer(shadow);
 		actual=shadow;
 		asdf = mod.nTri;
-		ofstream out("triangulos.txt",ios::out);
-		out<<mod;
-		out.close();
 	}
 
 }

@@ -57,3 +57,7 @@ void Vertice::setTrian(vector<size_t> v){
 	trian.clear();
 	trian=v;
 }
+
+vector<size_t> Vertice::getTriangulos(){
+	return trian;
+}
