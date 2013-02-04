@@ -1,6 +1,6 @@
-#pragma comment (lib, "lib/freeglut.lib")
 
-#include "GL/freeglut.h"
+
+#include <GL/freeglut.h>
 #include <vector>
 #include <cstdio>
 #include <cstdlib>

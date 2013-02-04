@@ -18,9 +18,10 @@ Shader sl;
 GLfloat q_rotate[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat traslacion[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat c_fill[]={ 0.0f, 0.0f, 1.0f,1.0f };
+GLfloat luz[]={-0.57735f,-0.57735f,-0.57735f};
 GLfloat zoom,actual;
 bool bools[]={true,false};
-
+Sombreado shadow,shadow_actual;
 Mat4x4 m,p;
 
 int umbral=128;
@@ -330,7 +331,7 @@ public:
 		Triangulo t;
 		Vertice* v;
 		for (i=0;i < finales.size();i++){
-			t=finales.at(i);
+			Triangulo & t=finales.at(i);
 			Vec3D u(t.p[0]->p,t.p[1]->p);
 			Vec3D v(t.p[0]->p,t.p[2]->p);
 			t.normal=u^v;
@@ -393,6 +394,7 @@ public:
 };
 
 Modelo mod;
+
 void init(void)
 {   
 	glEnable(GL_DEPTH_TEST);
@@ -404,8 +406,17 @@ void init(void)
 	sl.create_Link();
 	sl.enable();
 	sl.AddUniform("m");
+	sl.AddUniform("p");
 	sl.AddUniform("incolor");
+
+	//luz
+	sl.AddUniform("sol.ambiental");
+	sl.AddUniform("sol.direccion");
+	sl.AddUniform("sol.intensidad");
+
 	sl.disable();
+
+	shadow_actual = shadow;
 }
 
 void display (void){
@@ -416,15 +427,22 @@ void display (void){
 	if (umbral!=(int)actual){
 		mod.probar();
 		mod.calcular_normales();
-		mod.buffer(GOURAUD);
+		mod.buffer(shadow);
+	}
+	if (shadow!=shadow_actual){
+		mod.buffer(shadow);
+		shadow_actual=shadow;
 	}
 
 	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
-	m =( p * (MatTranslate(0,0,-2)* m));
+	m =((MatTranslate(0,0,-2)* m));
 
 	sl.enable();
 	glUniformMatrix4fv(sl["m"],1,0,m.mat);
+	glUniformMatrix4fv(sl["p"],1,0,p.mat);
 	glUniform4fv(sl["incolor"],1,c_fill);
+
+	glUniform3fv(sl["sol.direccion"],1,luz);
 
 	glBindBuffer(GL_ARRAY_BUFFER, mod.BufferObject);
 	glEnableVertexAttribArray(0);
@@ -495,6 +513,7 @@ void genMenu(TwBar *bar)
 	//bloque de la rotacion
 	TwAddVarRW(bar, "ObjRotation", TW_TYPE_QUAT4F, &q_rotate, 
 		" label='Object rotation' opened=true help='Change the object orientation.' ");
+	TwAddVarRW(bar,"luz", TW_TYPE_DIR3F, luz, "label='luz' help='Direccion de la luz.'");
 
 	//traslacion
 	TwAddVarRW(bar, "x", TW_TYPE_FLOAT, &traslacion[0], 
@@ -513,7 +532,9 @@ void genMenu(TwBar *bar)
 		" label='Activar' help='Activa'");
 	/*TwAddVarRW(bar, "c1", TW_TYPE_COLOR4F, &c_line, 
 	"label='Color' help='Cambia el color de las lineas.' group='Lineas' ");*/
-
+	TwEnumVal sombra[2] = { { FLAT , "Flat"}, { GOURAUD, "Gouraud"} };
+	TwType shadowType = TwDefineEnum("shadowType", sombra, 2);
+	TwAddVarRW (bar, "sombra", shadowType, &shadow, " label=' Tipo de sombra' keyIncr='<' keyDecr='>' help='Cambia el tipo de sombreado.' ");
 }
 
 int main(int argc,char **argv){
