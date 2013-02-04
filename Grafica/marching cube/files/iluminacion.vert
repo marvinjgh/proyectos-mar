@@ -7,9 +7,10 @@ uniform mat4 m;
 uniform vec4 incolor;
 
 out vec4 color;
-
+out vec3 vnormal;
 void main()
 {
     gl_Position = m*vec4(position,1.0f);
 	color = incolor;
+	vnormal=normal;
 }

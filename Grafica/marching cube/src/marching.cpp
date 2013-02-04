@@ -26,8 +26,6 @@ Mat4x4 m,p;
 int umbral=128;
 float*** final;
 
-enum Sombreado { FLAT , GOURAUD };
-
 class Modelo{
 public:
 	struct Vertice{
@@ -360,7 +358,6 @@ public:
 	}
 
 	void buffer(Sombreado x){
-
 		int asd=0;
 		Triangulo t;
 		Vec3D v3;
@@ -370,26 +367,20 @@ public:
 
 		for (int i = 0; i < finales.size(); i++)
 		{
-
 			t = finales.at(i);
-
 			for (int k = 0; k < 3; k++)
 			{
 				v3=(x)? t.p[k]->n:t.normal;
-
 				memcpy(b+asd,t.p[k]->p.coord,sizeof(t.p[k]->p.coord));
 				memcpy(b+asd+3,v3.coord,sizeof(v3.coord));
-
 				asd+=6;
 			} 
 		}
-
 		glGenBuffers(1, &BufferObject);
 		glBindBuffer(GL_ARRAY_BUFFER, BufferObject);
 		glBufferDataARB(GL_ARRAY_BUFFER_ARB, datasize, 0, GL_STREAM_DRAW_ARB);
 		glBufferSubDataARB(GL_ARRAY_BUFFER,0, datasize,b);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 	}
 
 	GLuint BufferObject;
@@ -427,8 +418,6 @@ void display (void){
 		mod.calcular_normales();
 		mod.buffer(GOURAUD);
 	}
-
-	
 
 	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
 	m =( p * (MatTranslate(0,0,-2)* m));
