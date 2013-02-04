@@ -129,6 +129,11 @@ void TW_CALL next(void *clientData){
 	mod.updateBuffer(shadow);
 }
 
+void TW_CALL undo(void *clientData){
+	mod.undo();
+	mod.updateBuffer(shadow);
+}
+
 void TW_CALL cargar(void *clientData){
 	OPENFILENAME ofn;
 	char Path[512]="";
@@ -184,6 +189,7 @@ void genMenu(TwBar *bar)
 		"label='Color' help='Cambia el color del relleno.' group='Fill' ");
 	TwAddSeparator(bar,"s3","");
 	TwAddButton(bar, "co", next, NULL, " label='Colapso' key=n help='Colapso' ");
+	TwAddButton(bar, "un", undo, NULL, " label='Undo' key=b help='Restaura una de los colapsos' ");
 	TwAddVarRW(bar, "ang", TW_TYPE_FLOAT, &angulo, 
 		"label='Offset para el colapso' max=45.0 min=5.0 step=1.00 keyIncr='d' keyDecr='a' help='Angulo para la comprobacion'");
 	TwAddSeparator(bar,"s4","");

@@ -37,6 +37,8 @@ public:
 	void undo();
 	void resolver(accion);
 
+	void recalcular(vector<size_t>);
+
 	void actualizar(size_t t,size_t a, size_t b, backup&);
 
 	friend ostream& operator<< (ostream& os, const Off& m){

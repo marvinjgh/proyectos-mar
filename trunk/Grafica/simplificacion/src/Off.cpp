@@ -367,20 +367,20 @@ void Off::simplificar(float offset){
 
 		accion v;
 		v.e=VERT_MOV;
+		v.param.push_back(va);
 		v.pos=vertices.at(va).getPosicion();
 		vertices.at(va).setPosicion(vertices[vb].getPosicion());
 		b.estado_anterior.push_back(v);
 	}
 
 	//agrego los triangulos del vertice a
-
+	vector<size_t> vt;
 	Vertice v0 = vertices.at(va);
 	FOR(i,v0.getSizetrian()){
 		if (v0.getTriangulo(i) == t1 || v0.getTriangulo(i) == t2 ) continue;
 		if (!triangulos.at(v0.getTriangulo(i)).estaActivo()) continue;
 		asdf.push_back(v0.getTriangulo(i));
 		//guadarlos triangulos para actualizar las normales
-
 	}
 
 	//agrego los triangulos del vertice b y modifico los vertices ser necesario
@@ -412,6 +412,7 @@ void Off::simplificar(float offset){
 	vertices.at(va).setTrian(asdf);
 	b.estado_anterior.push_back(v);
 	colisiones.push_back(b);
+	recalcular(asdf);
 }
 
 //dado un triangulo y un vertice determina la posicion de 
@@ -525,32 +526,48 @@ void Off::actualizar(size_t t,size_t a, size_t b,backup & bk){
 }
 
 void Off::undo(){
+	if (colisiones.empty()) return;
 	backup bk = colisiones.at(colisiones.size()-1);
 
 	FOR(i,bk.estado_anterior.size()){
 		resolver(bk.estado_anterior.at(i));
 	}
+
+	colisiones.pop_back();
 }
 
 void Off::resolver(accion a){
 	size_t aux;
 	switch (a.e)
 	{
-	case VERT_MOV : break;
+	case VERT_MOV : 
+		vertices.at(a.param.at(0)).setPosicion(a.pos);
+		break;
 	case VER_TRI:
 		aux = a.param.at(a.param.size()-1);
 		a.param.pop_back();
 		vertices.at(aux).setTrian(a.param);
 		break;
 	case ARIS_TRI: 
-		
+		aux = a.param.at(1);
+		if (aux)
+			aristas.at(a.param.at(0)).setTrian_2(a.param.at(2));
+		else
+			aristas.at(a.param.at(0)).setTrian_1(a.param.at(2));
 		break;
-	case ARIS_VER : break;
+	case ARIS_VER : 
+		aux = a.param.at(1);
+		if (aux)
+			aristas.at(a.param.at(0)).setVert_b(a.param.at(2));
+		else
+			aristas.at(a.param.at(0)).setVert_a(a.param.at(2));
+		break;
 	case ARIS_ACT : 
 		aristas.at(a.param.at(0)).cambiarEstado();
 		break;
 	case TRI_ACT : 
 		triangulos.at(a.param.at(0)).cambiarEstado();
+		nTri++;
 		break;
 	case TRI_ARI : break;
 		aux = a.param.at(1);
@@ -562,5 +579,31 @@ void Off::resolver(accion a){
 		break;
 	default:
 		break;
+	}
+}
+
+void Off::recalcular(vector<size_t> l){
+	vector<size_t> v;
+	
+	FOR(i,l.size()){
+		Triangulo & t=triangulos.at(l.at(i));
+		v.push_back(t.getVertice(0));
+		v.push_back(t.getVertice(1));
+		v.push_back(t.getVertice(2));
+
+		glm::vec3 a(vertices.at(t.getVertice(0)).getPosicion());
+		glm::vec3 b(vertices.at(t.getVertice(1)).getPosicion());
+		glm::vec3 c(vertices.at(t.getVertice(2)).getPosicion());
+		t.setNormal(glm::normalize(glm::cross(c - a, b - a)));
+	}
+	
+	FOR(i,v.size()){
+		Vertice& ve = vertices.at(v.at(i));
+		glm::vec3 n(0.0f);
+		FOR(j,ve.getSizetrian()){
+			n += triangulos.at(ve.getTriangulo(j)).getNormal();
+		}
+		n = glm::normalize(n);
+		ve.setNormal(n);
 	}
 }
