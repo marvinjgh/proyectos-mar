@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tarea3", "tarea3\tarea3.vcxproj", "{743F079D-71B3-4A49-B6A5-76EBB378F980}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tarea4", "tarea4\tarea4.vcxproj", "{FBD060D1-4069-44F3-BAD0-D7133EE5C892}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tarea5", "tarea5\tarea5.vcxproj", "{87F0D58E-1E40-4A3D-ACA4-F91F1DDCD009}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tarea6", "Tarea6\Tarea6.vcxproj", "{0BB10E70-68A2-4E33-AF12-8BF47E1C5D79}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PD", "PD\PD.vcxproj", "{5210ED17-1A5B-4C08-A78D-8E04AD6A9916}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sudoku", "sudoku\sudoku.vcxproj", "{32FC0580-1423-49CE-AB23-5A75CEFDF766}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{743F079D-71B3-4A49-B6A5-76EBB378F980}.Debug|Win32.ActiveCfg = Debug|Win32
+		{743F079D-71B3-4A49-B6A5-76EBB378F980}.Debug|Win32.Build.0 = Debug|Win32
+		{743F079D-71B3-4A49-B6A5-76EBB378F980}.Release|Win32.ActiveCfg = Release|Win32
+		{743F079D-71B3-4A49-B6A5-76EBB378F980}.Release|Win32.Build.0 = Release|Win32
+		{FBD060D1-4069-44F3-BAD0-D7133EE5C892}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FBD060D1-4069-44F3-BAD0-D7133EE5C892}.Debug|Win32.Build.0 = Debug|Win32
+		{FBD060D1-4069-44F3-BAD0-D7133EE5C892}.Release|Win32.ActiveCfg = Release|Win32
+		{FBD060D1-4069-44F3-BAD0-D7133EE5C892}.Release|Win32.Build.0 = Release|Win32
+		{87F0D58E-1E40-4A3D-ACA4-F91F1DDCD009}.Debug|Win32.ActiveCfg = Debug|Win32
+		{87F0D58E-1E40-4A3D-ACA4-F91F1DDCD009}.Debug|Win32.Build.0 = Debug|Win32
+		{87F0D58E-1E40-4A3D-ACA4-F91F1DDCD009}.Release|Win32.ActiveCfg = Release|Win32
+		{87F0D58E-1E40-4A3D-ACA4-F91F1DDCD009}.Release|Win32.Build.0 = Release|Win32
+		{0BB10E70-68A2-4E33-AF12-8BF47E1C5D79}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0BB10E70-68A2-4E33-AF12-8BF47E1C5D79}.Debug|Win32.Build.0 = Debug|Win32
+		{0BB10E70-68A2-4E33-AF12-8BF47E1C5D79}.Release|Win32.ActiveCfg = Release|Win32
+		{0BB10E70-68A2-4E33-AF12-8BF47E1C5D79}.Release|Win32.Build.0 = Release|Win32
+		{5210ED17-1A5B-4C08-A78D-8E04AD6A9916}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5210ED17-1A5B-4C08-A78D-8E04AD6A9916}.Debug|Win32.Build.0 = Debug|Win32
+		{5210ED17-1A5B-4C08-A78D-8E04AD6A9916}.Release|Win32.ActiveCfg = Release|Win32
+		{5210ED17-1A5B-4C08-A78D-8E04AD6A9916}.Release|Win32.Build.0 = Release|Win32
+		{32FC0580-1423-49CE-AB23-5A75CEFDF766}.Debug|Win32.ActiveCfg = Debug|Win32
+		{32FC0580-1423-49CE-AB23-5A75CEFDF766}.Debug|Win32.Build.0 = Debug|Win32
+		{32FC0580-1423-49CE-AB23-5A75CEFDF766}.Release|Win32.ActiveCfg = Release|Win32
+		{32FC0580-1423-49CE-AB23-5A75CEFDF766}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
