@@ -39,7 +39,7 @@ bbbbbbbbbbbbbbbb
 
 //sudoku
 ent su[81];
-
+ent pasos;
 //cambio el estado de una bandera activa a inactiva
 void cambiar_flag(ent j,ent i){
 	switch (su[i]){
@@ -222,6 +222,7 @@ ent valor(char i){
 }
 
 void sudoku(){
+	pasos++;
 	ent backup[81];
 	char min=10,pos=0,aux=0;
 	bool status;
@@ -238,16 +239,26 @@ void sudoku(){
 			}
 			if (min==1){
 				su[pos]=valor(pos);
-				actualizar(pos);
+				status = actualizar(pos);
 				i=-1;
 				min=10;
 			}
 			aux=0;
 		}
 	}
+	if (min==10)
+		return;
 	memcpy(backup,su,sizeof(backup));
+	FOR(i,9){
+		if ((backup[pos]&(1<<4+i))){
+			su[pos]=i+1;
+			status = actualizar(pos);
+			if (!status) memcpy(su,backup,sizeof(backup));;
+			sudoku();
+		}
+	}
+	
 
-	min=10;
 
 }
 
@@ -263,6 +274,7 @@ int main(){
 	fscanf(entrada,"%d",&n);
 
 	FOR(k,n){
+		pasos=0;
 		c=fgetc(entrada);
 		FOR(i,81){
 			su[i]=0x1ff0;
@@ -273,6 +285,7 @@ int main(){
 			actualizar(i);
 		}
 		sudoku();
+		printf("%d\n",pasos);
 	}
 	fclose(entrada);
 	getchar();
