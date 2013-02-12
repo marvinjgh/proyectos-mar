@@ -1,17 +1,15 @@
 // tarea11.cpp
 //
 #include "poligono.h"
-#include <cstdio>
 
-#define FOR(q,n) for(int q = 0; q < n; q++)
+std::vector<Poligono>ps;
 
-int main(int argc, char* argv[]){
-
+void lectura(){
 	int c=0, n=0, p=0;
 	punto ini, des;
 	float x,y;
 	scanf("%d",&c);//numero de casos
-	std::vector<Poligono>ps;
+
 	FOR(i,c){
 		scanf("%d",&p);//numero de poligonos
 		ps.clear();
@@ -20,7 +18,12 @@ int main(int argc, char* argv[]){
 			Poligono po(n);
 			FOR(k,n){
 				scanf("%f %f",&x,&y);
-				po.agregarPunto(x,y);
+				punto p;
+				p.x=x;
+				p.y=y;
+				puntos.push_back(p);
+
+				po.agregarPunto(puntos.size()-1);
 			}
 			ps.push_back(po);
 		}
@@ -32,6 +35,9 @@ int main(int argc, char* argv[]){
 		des.y=y;
 		//aqui debo hace el grafo para luego hacer el distra
 	}
+}
+
+int main(int argc, char* argv[]){
 
 	return 0;
 }

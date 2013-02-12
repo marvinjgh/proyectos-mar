@@ -82,6 +82,8 @@
     <ClCompile Include="tarea11.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="grafo.h" />
+    <ClInclude Include="def.h" />
     <ClInclude Include="poligono.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
