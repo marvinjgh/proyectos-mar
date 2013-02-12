@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PD", "PD\PD.vcxproj", "{521
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sudoku", "sudoku\sudoku.vcxproj", "{32FC0580-1423-49CE-AB23-5A75CEFDF766}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tarea11", "tarea11\tarea11.vcxproj", "{EE3A2B43-2A49-48FA-A0C6-EF7CFDCD8ADB}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -47,6 +49,10 @@ Global
 		{32FC0580-1423-49CE-AB23-5A75CEFDF766}.Debug|Win32.Build.0 = Debug|Win32
 		{32FC0580-1423-49CE-AB23-5A75CEFDF766}.Release|Win32.ActiveCfg = Release|Win32
 		{32FC0580-1423-49CE-AB23-5A75CEFDF766}.Release|Win32.Build.0 = Release|Win32
+		{EE3A2B43-2A49-48FA-A0C6-EF7CFDCD8ADB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EE3A2B43-2A49-48FA-A0C6-EF7CFDCD8ADB}.Debug|Win32.Build.0 = Debug|Win32
+		{EE3A2B43-2A49-48FA-A0C6-EF7CFDCD8ADB}.Release|Win32.ActiveCfg = Release|Win32
+		{EE3A2B43-2A49-48FA-A0C6-EF7CFDCD8ADB}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

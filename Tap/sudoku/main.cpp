@@ -76,8 +76,8 @@ void cambiar_flag(ent j,ent i){
 //llena y actualiza los valores posibles para cada posicion del sudoku
 bool actualizar(ent i){
 	ent aux=0;
+	bool status=true;
 	//i es la posicion actual
-	//FOR(i,81){
 	//verifico si es una posicion vacia para actualizar sus banderas
 	if ((su[i]&0x000f) != 0){
 #pragma region fila
@@ -85,6 +85,10 @@ bool actualizar(ent i){
 		SFOR(j,aux+9,aux){
 			if (j!=i && (0x000f&su[j])==0){
 				cambiar_flag(j,i);
+			}
+			if ((j!=i && su[i]==su[j]) || su[j]==0){
+				status=false;
+				break;
 			}
 		}
 #pragma endregion actualizacion con la fila
@@ -94,6 +98,10 @@ bool actualizar(ent i){
 		SQFOR(j,81,aux,9){
 			if (j!=i && (0x000f&su[j])==0){
 				cambiar_flag(j,i);
+			}
+			if ((j!=i && su[i]==su[j]) || su[j]==0){
+				status=false;
+				break;
 			}
 		}
 #pragma endregion actualizacion con la columna
@@ -108,6 +116,10 @@ bool actualizar(ent i){
 					if (j!=i && (0x000f&su[j])==0){
 						cambiar_flag(j,i);
 					}
+					if ((j!=i && su[i]==su[j]) || su[j]==0){
+						status=false;
+						break;
+					}
 				}
 				break;
 			}
@@ -117,6 +129,10 @@ bool actualizar(ent i){
 				for (ent &j : cubo){
 					if (j!=i && (0x000f&su[j])==0){
 						cambiar_flag(j,i);
+					}
+					if ((j!=i && su[i]==su[j]) || su[j]==0){
+						status=false;
+						break;
 					}
 				}
 				break;
@@ -128,6 +144,10 @@ bool actualizar(ent i){
 					if (j!=i && (0x000f&su[j])==0){
 						cambiar_flag(j,i);
 					}
+					if ((j!=i && su[i]==su[j]) || su[j]==0){
+						status=false;
+						break;
+					}
 				}
 				break;
 			}
@@ -137,6 +157,10 @@ bool actualizar(ent i){
 				for (ent &j : cubo){
 					if (j!=i && (0x000f&su[j])==0){
 						cambiar_flag(j,i);
+					}
+					if ((j!=i && su[i]==su[j]) || su[j]==0){
+						status=false;
+						break;
 					}
 				}
 				break;
@@ -148,6 +172,10 @@ bool actualizar(ent i){
 					if (j!=i && (0x000f&su[j])==0){
 						cambiar_flag(j,i);
 					}
+					if ((j!=i && su[i]==su[j]) || su[j]==0){
+						status=false;
+						break;
+					}
 				}
 				break;
 			}
@@ -157,6 +185,10 @@ bool actualizar(ent i){
 				for (ent &j : cubo){
 					if (j!=i && (0x000f&su[j])==0){
 						cambiar_flag(j,i);
+					}
+					if ((j!=i && su[i]==su[j]) || su[j]==0){
+						status=false;
+						break;
 					}
 				}
 				break;
@@ -168,6 +200,10 @@ bool actualizar(ent i){
 					if (j!=i && (0x000f&su[j])==0){
 						cambiar_flag(j,i);
 					}
+					if ((j!=i && su[i]==su[j]) || su[j]==0){
+						status=false;
+						break;
+					}
 				}
 				break;
 			}
@@ -177,6 +213,10 @@ bool actualizar(ent i){
 				for (ent &j : cubo){
 					if (j!=i && (0x000f&su[j])==0){
 						cambiar_flag(j,i);
+					}
+					if ((j!=i && su[i]==su[j]) || su[j]==0){
+						status=false;
+						break;
 					}
 				}
 				break;
@@ -188,16 +228,17 @@ bool actualizar(ent i){
 					if (j!=i && (0x000f&su[j])==0){
 						cambiar_flag(j,i);
 					}
+					if ((j!=i && su[i]==su[j]) || su[j]==0){
+						status=false;
+						break;
+					}
 				}
 				break;
 			}
 		}
 #pragma endregion actualizo con el cubo interno
-	}else{
-		if (su[i]==0)
-			return false;
 	}
-	return true;
+	return status;
 }
 
 ent valor(char i){
@@ -221,11 +262,11 @@ ent valor(char i){
 		return 9;
 }
 
-void sudoku(){
+bool sudoku(ent paso){
 	pasos++;
-	ent backup[81];
+	
 	char min=10,pos=0,aux=0;
-	bool status;
+	bool status=true;
 	FOR(i,81){
 		if ((su[i]&0x000f)==0){
 			FOR(j,9){
@@ -237,29 +278,45 @@ void sudoku(){
 				min = aux;
 				pos=i;
 			}
+			if (min==0){
+				min=10;
+			}
 			if (min==1){
 				su[pos]=valor(pos);
 				status = actualizar(pos);
+				if (!status) break;
 				i=-1;
 				min=10;
 			}
 			aux=0;
+
 		}
 	}
+	if (!status)
+		return status;
 	if (min==10)
-		return;
+		return true;
+	//respaldo
+	ent backup[81];
 	memcpy(backup,su,sizeof(backup));
 	FOR(i,9){
 		if ((backup[pos]&(1<<4+i))){
 			su[pos]=i+1;
 			status = actualizar(pos);
-			if (!status) memcpy(su,backup,sizeof(backup));;
-			sudoku();
+			//si existe algun error al actualizar(numero repetido, casilla sin valor posible)
+			//restauro el estado del sudoku
+			if (!status) memcpy(su,backup,sizeof(backup));
+			//sino, pruebo el sudoku con un paso extra, si da error restauro
+			//sino retorno que es un final bueno
+			else if (!sudoku(paso+1)) memcpy(su,backup,sizeof(backup));
+			else return true;
 		}
+		//si recorri todos los casos y no hice un return es por que no hay combinacion desde este punto
+		//que logre resolver el sudoku
+		if (i==8 && status)
+			status = false;
 	}
-	
-
-
+	return status;
 }
 
 
@@ -270,9 +327,9 @@ int main(){
 	entrada = fopen("sudoku.in","r");
 	char c;
 	int n,p;
-
+	float t_final;
 	fscanf(entrada,"%d",&n);
-
+	clock_t t;
 	FOR(k,n){
 		pasos=0;
 		c=fgetc(entrada);
@@ -284,10 +341,12 @@ int main(){
 			su[i]= c=='0'? su[i] : 0x000f&c;
 			actualizar(i);
 		}
-		sudoku();
-		printf("%d\n",pasos);
+		t=clock();
+		sudoku(1);
+		t=clock()-t;
+		t_final = ((float)t)/CLOCKS_PER_SEC;
+		printf("pasos %d tiempo %ld seg\n",pasos,t);
 	}
 	fclose(entrada);
-	getchar();
 	return 0;
 }
