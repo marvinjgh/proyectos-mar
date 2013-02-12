@@ -81,6 +81,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="marvingonzalez-v-1.cpp" />
+    <ClCompile Include="marvingonzalez-v-2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="sudoku.in" />
