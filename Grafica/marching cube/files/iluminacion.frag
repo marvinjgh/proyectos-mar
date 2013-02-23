@@ -20,7 +20,7 @@ void main()
 	aux.xy = -aux.xy;
     float fDiffuseIntensity = max(0.0, dot(normalize(vnormal), aux));
     
-	outputColor = color*vec4(vec3(1.0,1.0,1.0)*(0.0+fDiffuseIntensity), 1.0);
+	outputColor = color*vec4(vec3(1.0,1.0,1.0)*(0.25+fDiffuseIntensity), 1.0);
     
 }
 
