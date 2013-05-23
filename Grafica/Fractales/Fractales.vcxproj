@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h" />
+    <ClInclude Include="paleta.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\colectivo\lib\AntTweakBar.lib">
