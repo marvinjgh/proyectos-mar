@@ -1,31 +1,37 @@
-#include <glsl\Shader.h>
-#include <AntTweakBar.h>
+#include "paleta.h"
 #include <Windows.h>
 enum fractal_t
 {
 	MANDELBROT, JULIA
 } fractal;
 
+
+
 Shader man, jul;
 
+int color;
 
-float cx, cy;
+float cx, cy, tr;
 int iter = 60;
 int interactive = 0;
 
 void display(){
-	glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 
-	if(!interactive) {
-		float t = (float) GetTickCount() / 1000.0;
-		cx =(float) (sin(cos(t / 10) * 10) + cos(t * 2.0) / 4.0 + sin(t * 3.0) / 6.0) * 0.7;
-		cy =(float) (cos(sin(t / 10) * 10) + sin(t * 2.0) / 4.0 + cos(t * 3.0) / 6.0) * 0.7;
-	}
-		
+	float t = (float) GetTickCount() / 1000.0;
+		//cout<<t<<endl;
+	t=tr;
+	cx =(float) (sin(cos(t / 10) * 10) + cos(t * 2.0) / 4.0 + sin(t * 3.0) / 6.0) * 0.7;
+	cy =(float) (cos(sin(t / 10) * 10) + sin(t * 2.0) / 4.0 + cos(t * 3.0) / 6.0) * 0.7;
+
+
+	glEnable(GL_TEXTURE_1D);
+	glBindTexture(GL_TEXTURE_1D,textura);	
 	jul.enable();
 	glUniform2fARB(jul.getLocation("c"),cx,cy);
-	
+	glUniform1i(jul.getLocation("iter"),iter);
+
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0);
 	glVertex2f(-1, -1);
@@ -36,7 +42,8 @@ void display(){
 	glTexCoord2f(0, 1);
 	glVertex2f(-1, 1);
 	glEnd();
-
+	
+	glDisable(GL_TEXTURE_1D);
 	jul.disable();
 	TwDraw();
 	glutSwapBuffers();
@@ -59,33 +66,7 @@ void reshape (int width, int height)
 	glutSwapBuffers();
 }
 
-void TW_CALL cargar(void *clientData){
-	/*
-	OPENFILENAME ofn;
-	char Path[512]="";
-	memset(&ofn, 0, sizeof(ofn));
 
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = NULL;
-	ofn.lpstrFile = Path;
-	ofn.nMaxFile = 255;
-	ofn.lpstrTitle = "Load Model...";
-	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
-	ofn.lpstrFilter = "Raw Files\0*.raw\0\0";//hago que solo muestre archivos .off
-	ofn.lpstrDefExt = "raw";
-
-	if (GetOpenFileName(&ofn)){
-
-		//printf("%s\n",ofn.lpstrFile+ofn.nFileOffset); saber el nombre con extencion (nFileExtension solo ext)
-
-		//printf("%d",ofn.nFilterIndex); saber el filtro usado
-		if (mod.setDims(Path)){
-			mod.readRaw(Path);//funcion que carga el modelo apartir del path
-			mod.centrar();
-		}
-	}
-	*/
-}
 
 void genMenu(TwBar *bar)
 {
@@ -93,10 +74,20 @@ void genMenu(TwBar *bar)
 	TwEnumVal frac[2] = { { MANDELBROT , "Mandelbrot"}, { JULIA, "Julia"} };
 	TwType shadowType = TwDefineEnum("fractalType", frac, 2);
 	TwAddVarRW (bar, "Fractal", shadowType, &fractal, " label=' Tipo de fractal' keyIncr='<' keyDecr='>' help='Cambia el tipo de fractal.' ");
+	//TwAddVarRW(bar, "c0", TW_TYPE_COLOR3F, control.at(0).color, "help='Cambia el color de los puntos.' opened=true");
+	TwAddVarRW(bar, "f", TW_TYPE_FLOAT, &tr, " min=0 max=100 step=0.01 label='T para julia' help='este valor permite probar diferentes t de entrada para la generacion del julia'");
+	TwAddVarRW(bar, "it", TW_TYPE_INT32, &iter, " min=0 label='Iteracion' help='a'");
 }
 
 void init(){
-	
+
+	textura=-1;
+
+	tr=0.0f;
+}
+
+void initShader(){
+
 	jul.loadShader(FRAGMENT_SHADER,"julia.glsl");
 	jul.create_Link();
 	jul.enable();
@@ -106,13 +97,12 @@ void init(){
 	jul.disable();
 	man.loadShader(FRAGMENT_SHADER,"mbrot.glsl");
 
-
 }
 
  void mouseMove(int x, int y) {
 	 float deltaAngle;
-	 if (!TwEventMouseMotionGLUT(x,y)){
-		cout<<x<<" "<<y<<" "<<GetTickCount()/1000<<endl;
+		if (!TwEventMouseMotionGLUT(x,y)){
+		
 	 }
  }
 
