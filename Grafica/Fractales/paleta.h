@@ -20,12 +20,12 @@ void crear_textura(){
 	GLuint width(0), height(0);
 
 
-	fif = FreeImage_GetFileType("u.ppm", 0);
+	fif = FreeImage_GetFileType("pal.ppm", 0);
 	if(fif == FIF_UNKNOWN) 
-		fif = FreeImage_GetFIFFromFilename("u.ppm");
+		fif = FreeImage_GetFIFFromFilename("pal.ppm");
 
 	if(FreeImage_FIFSupportsReading(fif))
-		dib = FreeImage_Load(fif, "u.ppm");
+		dib = FreeImage_Load(fif, "pal.ppm");
 
 	if	(dib != NULL){
 
