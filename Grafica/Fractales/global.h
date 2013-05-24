@@ -171,7 +171,7 @@ void mouse_handler(int x, int y) {
 		float fx = 2.0 * ((float)x / (float)xres - 0.5);
 		float fy = 2.0 * ((float)y / (float)yres - 0.5);
 
-		if(which_bn == 0) {
+		if(which_bn == 1) {
 			cmx += (fx - px) * scale / 2.0;
 			cmy -= (fy - py) * scale / 2.0;
 		}
