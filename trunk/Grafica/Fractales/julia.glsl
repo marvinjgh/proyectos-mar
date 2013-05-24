@@ -3,13 +3,14 @@
 uniform sampler1D tex;
 uniform vec2 c;
 uniform int iter;
+uniform float scale;
 
 out vec4 outputColor;
 
 void main() {
 	vec2 z;
-	z.x = 3.0 * (gl_TexCoord[0].x - 0.5);
-	z.y = 3.0 * (gl_TexCoord[0].y - 0.5);
+	z.x = (gl_TexCoord[0].x - 0.5) * scale;
+	z.y = (gl_TexCoord[0].y - 0.5) * scale;
 
 	int i;
 	for(i=0; i<iter; i++) {
@@ -22,5 +23,5 @@ void main() {
 	}
 	
 	float d = float(i)/float(iter);
-	gl_FragColor = (i== iter ? vec4(1,0,0,1) : texture1D(tex, float(i) / float(iter)));
+	outputColor = (i== iter ? vec4(0,0,0,1) : texture1D(tex, float(i) / float(iter)));
 }
