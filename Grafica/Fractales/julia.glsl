@@ -9,8 +9,8 @@ out vec4 outputColor;
 
 void main() {
 	vec2 z;
-	z.x = (gl_TexCoord[0].x - 0.5) * scale;
-	z.y = (gl_TexCoord[0].y - 0.5) * scale;
+	z.x = (gl_TexCoord[0].x - 0.5) * scale -c.x;
+	z.y = (gl_TexCoord[0].y - 0.5) * scale -c.y;
 
 	int i;
 	for(i=0; i<iter; i++) {

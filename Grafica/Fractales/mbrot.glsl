@@ -12,7 +12,7 @@ void main() {
 
 	c2.x = 1.3333 * (gl_TexCoord[0].x - 0.5) * scale - c.x;
 	c2.y = (gl_TexCoord[0].y - 0.5) * scale - c.y;
-
+	
 	int i;
 	z = c2;
 	float x, y;
@@ -25,5 +25,5 @@ void main() {
 		z.y = y;
 	}
 
-	outputColor = (i== iter ? vec4(0,0,0,1) : texture1D(tex, float(i) / float(iter)));
+	outputColor = (i== iter ? vec4(0,0,0,1) : texture(tex, float(i) / float(iter)));
 }

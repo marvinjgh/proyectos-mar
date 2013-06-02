@@ -8,13 +8,27 @@
     <ClInclude Include="paleta.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\colectivo\lib\AntTweakBar.lib" />
-    <Library Include="..\colectivo\lib\freeglut.lib" />
-    <Library Include="..\colectivo\lib\FreeImage.lib" />
-    <Library Include="..\colectivo\lib\glew32.lib" />
+    <Library Include="..\colectivo\lib\AntTweakBar.lib">
+      <Filter>Librerias</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\freeglut.lib">
+      <Filter>Librerias</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\FreeImage.lib">
+      <Filter>Librerias</Filter>
+    </Library>
+    <Library Include="..\colectivo\lib\glew32.lib">
+      <Filter>Librerias</Filter>
+    </Library>
   </ItemGroup>
   <ItemGroup>
     <None Include="julia.glsl" />
     <None Include="mbrot.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Librerias">
+      <UniqueIdentifier>{2302101f-53e2-447e-9b70-96b526fffce2}</UniqueIdentifier>
+      <Extensions>lib</Extensions>
+    </Filter>
   </ItemGroup>
 </Project>
