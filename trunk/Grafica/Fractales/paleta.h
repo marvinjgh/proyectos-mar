@@ -2,14 +2,14 @@
 #include <AntTweakBar.h>
 #include <FreeImage.h>
 #include <vector>
+#include <Commdlg.h>
+#include <windows.h>
 
 #define aporte(x1, x2, x) ((x2-x)/(x2-x1))
 
 GLuint textura;
 
-void crear_textura();
-
-void crear_textura(){
+void crear_textura(char* file){
 
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 
@@ -20,12 +20,12 @@ void crear_textura(){
 	GLuint width(0), height(0);
 
 
-	fif = FreeImage_GetFileType("pal.ppm", 0);
+	fif = FreeImage_GetFileType(file, 0);
 	if(fif == FIF_UNKNOWN) 
-		fif = FreeImage_GetFIFFromFilename("pal.ppm");
+		fif = FreeImage_GetFIFFromFilename(file);
 
 	if(FreeImage_FIFSupportsReading(fif))
-		dib = FreeImage_Load(fif, "pal.ppm");
+		dib = FreeImage_Load(fif, file);
 
 	if	(dib != NULL){
 
@@ -47,4 +47,23 @@ void crear_textura(){
 	}
 
 	FreeImage_Unload(dib);
+}
+
+void TW_CALL cargar(void *clientData){
+	OPENFILENAME ofn;
+	char Path[512]="";
+	memset(&ofn, 0, sizeof(ofn));
+
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = NULL;
+	ofn.lpstrFile = Path;
+	ofn.nMaxFile = 255;
+	ofn.lpstrTitle = "Load PPM...";
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+	ofn.lpstrFilter = "Raw Files\0*.ppm\0\0";
+	ofn.lpstrDefExt = "raw";
+
+	if (GetOpenFileName(&ofn)){
+		crear_textura(Path);
+	}	
 }
