@@ -48,8 +48,8 @@ void Modelo::cargarModelo(const char* file){
 				f>>aux[0]>>aux[1]>>aux[2];
 				pos.push_back(new Vec4D(aux));
 				++p;
-				minp=minp.minp(aux);
-				maxp=maxp.maxp(aux);
+				minp.min(aux);
+				maxp.max(aux);
 			}
 			if (str=="vt"){
 				f>>aux[0]>>aux[1];

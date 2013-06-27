@@ -27,6 +27,12 @@
     <ClCompile Include="src\Modelo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\StereoCameraParallel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StereoCameraToedin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\colectivo\lib\AntTweakBar.lib">
@@ -49,6 +55,15 @@
     <ClInclude Include="src\Modelo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\StereoCameraParallel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StereoCameraToedin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\anaglyph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="files\color.frag">
@@ -57,5 +72,6 @@
     <None Include="files\color.vert">
       <Filter>Shader files</Filter>
     </None>
+    <None Include="color.geom" />
   </ItemGroup>
 </Project>

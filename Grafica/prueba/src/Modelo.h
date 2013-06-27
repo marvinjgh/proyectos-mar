@@ -5,9 +5,7 @@
 #include <cfloat>
 #include <FreeImage.h>
 
-#include <glm\glm.hpp>
-#include <glm\gtc\matrix_transform.hpp>
-
+/*
 class Modelo
 {
 public:
@@ -32,3 +30,4 @@ public:
 
 void min(glm::vec3*,float*);
 void max(glm::vec3*,float*);
+*/
