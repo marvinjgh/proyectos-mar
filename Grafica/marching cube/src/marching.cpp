@@ -37,6 +37,7 @@ public:
 
 	struct Celda{
 		Punto3D p[8];
+		Punto3D g[8];
 		double val[8];
 	};
 
@@ -45,40 +46,40 @@ public:
 		Vec3D normal;
 	};
 
-	void calcular_0_5(Celda grids[4],int i,int j,int k){
+	void calcular_0_5(Celda* grids,int i,int j,int k){
 
-		grids[0].p[0].coord[0] = (float)i;
-		grids[0].p[0].coord[1] = (float)j;
-		grids[0].p[0].coord[2] = (float)dimz-k+1;
-		grids[0].val[0] = final[i][j][k];
-		grids[0].p[1].coord[0] = (float)i+1;
-		grids[0].p[1].coord[1] = (float)j;
-		grids[0].p[1].coord[2] = (float)dimz-k+1; 
-		grids[0].val[1] = final[i+1][j][k];
-		grids[0].p[2].coord[0] = (float)i+1;
-		grids[0].p[2].coord[1] = (float)j+1;
-		grids[0].p[2].coord[2] = (float)dimz-k+1;
-		grids[0].val[2] = final[i+1][j+1][k];
-		grids[0].p[3].coord[0] = (float)i;
-		grids[0].p[3].coord[1] = (float)j+1;
-		grids[0].p[3].coord[2] = (float)dimz-k+1;
-		grids[0].val[3] = final[i][j+1][k];
-		grids[0].p[4].coord[0] = (float)i;
-		grids[0].p[4].coord[1] = (float)j;
-		grids[0].p[4].coord[2] = (float)dimz-k;
-		grids[0].val[4] = final[i][j][k+1];
-		grids[0].p[5].coord[0] = (float)i+1;
-		grids[0].p[5].coord[1] = (float)j;
-		grids[0].p[5].coord[2] = (float)dimz-k;
-		grids[0].val[5] = final[i+1][j][k+1];
-		grids[0].p[6].coord[0] = (float)i+1;
-		grids[0].p[6].coord[1] = (float)j+1;
-		grids[0].p[6].coord[2] = (float)dimz-k;
-		grids[0].val[6] = final[i+1][j+1][k+1];
-		grids[0].p[7].coord[0] = (float)i;
-		grids[0].p[7].coord[1] = (float)j+1;
-		grids[0].p[7].coord[2] = (float)dimz-k;
-		grids[0].val[7] = final[i][j+1][k+1];
+		grids->p[0].coord[0] = (float)i;
+		grids->p[0].coord[1] = (float)j;
+		grids->p[0].coord[2] = (float)dimz-k+1;
+		grids->val[0] = final[i][j][k];
+		grids->p[1].coord[0] = (float)i+1;
+		grids->p[1].coord[1] = (float)j;
+		grids->p[1].coord[2] = (float)dimz-k+1; 
+		grids->val[1] = final[i+1][j][k];
+		grids->p[2].coord[0] = (float)i+1;
+		grids->p[2].coord[1] = (float)j+1;
+		grids->p[2].coord[2] = (float)dimz-k+1;
+		grids->val[2] = final[i+1][j+1][k];
+		grids->p[3].coord[0] = (float)i;
+		grids->p[3].coord[1] = (float)j+1;
+		grids->p[3].coord[2] = (float)dimz-k+1;
+		grids->val[3] = final[i][j+1][k];
+		grids->p[4].coord[0] = (float)i;
+		grids->p[4].coord[1] = (float)j;
+		grids->p[4].coord[2] = (float)dimz-k;
+		grids->val[4] = final[i][j][k+1];
+		grids->p[5].coord[0] = (float)i+1;
+		grids->p[5].coord[1] = (float)j;
+		grids->p[5].coord[2] = (float)dimz-k;
+		grids->val[5] = final[i+1][j][k+1];
+		grids->p[6].coord[0] = (float)i+1;
+		grids->p[6].coord[1] = (float)j+1;
+		grids->p[6].coord[2] = (float)dimz-k;
+		grids->val[6] = final[i+1][j+1][k+1];
+		grids->p[7].coord[0] = (float)i;
+		grids->p[7].coord[1] = (float)j+1;
+		grids->p[7].coord[2] = (float)dimz-k;
+		grids->val[7] = final[i][j+1][k+1];
 
 	}
 
@@ -179,7 +180,7 @@ public:
 	}
 
 	void probar(){
-		Celda grids[4];
+		Celda grids;
 		int n=0,ntri=0,index;
 		Triangulo triangles[10];
 
@@ -205,10 +206,10 @@ public:
 
 					if (index == 0 || index == 255) continue;
 
-					calcular_0_5(grids,i,j,k);
+					calcular_0_5(&grids,i,j,k);
 
 
-					n = PolygoniseCube(grids[0],triangles,index);
+					n = PolygoniseCube(grids,triangles,index);
 					for (int l=0;l<n;l++)
 						finales.push_back(triangles[l]);
 					ntri += n;
