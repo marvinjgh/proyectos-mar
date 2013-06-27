@@ -29,4 +29,5 @@ Mat4x4 MatTranslate(const Punto3D& p);	//crea una matriz de traslacion
 Mat4x4 MatScale(float x, float y, float z);	//crea una matriz de traslacion
 Mat4x4 MatScale(const Punto3D& p);	//crea una matriz de traslacion
 Mat4x4 MatRotar(const float* quat);
-Mat4x4 buildPerpectiva(float angulo,float aspect, float near, float far);
+Mat4x4 buildPerpectiva(float angulo,float aspect, float znear, float zfar);
+Mat4x4 buildFrustrum(float angulo,float aspect, float znear, float zfar);

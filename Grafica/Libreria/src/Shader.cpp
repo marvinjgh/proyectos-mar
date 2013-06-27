@@ -1,9 +1,11 @@
 #include "..\include\glsl\Shader.h"
-
+#define _STATIC_CPPLIB
+#define _DISABLE_DEPRECATE_STATIC_CPPLIB
 Shader::Shader(void)
 {
 	shaders[VERTEX_SHADER]=0;
 	shaders[FRAGMENT_SHADER]=0;
+	shaders[GEOMETRY_SHADER]=0;
 	locationList.clear();
 }
 
@@ -32,8 +34,8 @@ void Shader::loadShader(GLenum type, const char* source) {
 		}
 		fclose(file);
 	}
-	
-	shaders[type] = (type==VERTEX_SHADER)?glCreateShaderObjectARB(GL_VERTEX_SHADER): glCreateShaderObjectARB(GL_FRAGMENT_SHADER);
+
+	shaders[type] = (type==VERTEX_SHADER)?glCreateShaderObjectARB(GL_VERTEX_SHADER): (type==FRAGMENT_SHADER)?glCreateShaderObjectARB(GL_FRAGMENT_SHADER) : glCreateShaderObjectARB(GL_GEOMETRY_SHADER);
 	CheckSLError(shaders[type]);
 	if (shaders[type]==GL_FALSE){
 		perror("error Creando el shader\n");
@@ -52,14 +54,13 @@ void Shader::loadShader(GLenum type, const char* source) {
 		glDeleteObjectARB(shaders[type]);
 	}
 	free(shaderReaded);
-	
+
 }
 
 void Shader::create() {
-	
+
 	if (shaders[0]==0 || shaders[1]==0){
-		fprintf(stderr,"falta Vertex/Fragment shaderSource");
-		return;
+		fprintf(stderr,"falta Vertex/Fragment/Geomerty shaderSource");
 	}
 	program = glCreateProgramObjectARB ();
 	if (program==GL_FALSE){
@@ -70,6 +71,8 @@ void Shader::create() {
 	glAttachObjectARB(program, shaders[VERTEX_SHADER]);
 	CheckSLError(program);
 	glAttachObjectARB(program, shaders[FRAGMENT_SHADER]);
+	CheckSLError(program);
+	glAttachObjectARB(program, shaders[GEOMETRY_SHADER]);
 	CheckSLError(program);
 
 }
@@ -83,15 +86,16 @@ void Shader::link() {
 	glDeleteShader(shaders[VERTEX_SHADER]);
 	glDetachObjectARB(program,shaders[FRAGMENT_SHADER]);
 	glDeleteShader(shaders[FRAGMENT_SHADER]);
+	glDetachObjectARB(program,shaders[GEOMETRY_SHADER]);
+	glDeleteShader(shaders[GEOMETRY_SHADER]);
 }
 
 void Shader::create_Link() {
-	
-	if (shaders[0]==0 || shaders[1]==0){
-		fprintf(stderr,"falta Vertex/Fragment shaderSource");
-		return;
+
+	if (shaders[0]==0 || shaders[1]==0 || shaders[2]==0){
+		fprintf(stderr,"falta Vertex/Fragment/Geomerty shaderSource\n");
 	}
-	program = glCreateProgramObjectARB ();
+	program = glCreateProgramObjectARB();
 	CheckSLError(program);
 	if (program==GL_FALSE){
 		perror("error Creando el programa\n");
@@ -102,6 +106,9 @@ void Shader::create_Link() {
 	CheckSLError(program);
 	glAttachObjectARB(program, shaders[FRAGMENT_SHADER]);
 	CheckSLError(program);
+	glAttachObjectARB(program, shaders[GEOMETRY_SHADER]);
+	CheckSLError(program);
+
 	glLinkProgramARB (program);
 	CheckSLError(program);
 
@@ -109,6 +116,8 @@ void Shader::create_Link() {
 	glDeleteShader(shaders[VERTEX_SHADER]);
 	glDetachShader(program,shaders[FRAGMENT_SHADER]);
 	glDeleteShader(shaders[FRAGMENT_SHADER]);
+	glDetachObjectARB(program,shaders[GEOMETRY_SHADER]);
+	glDeleteShader(shaders[GEOMETRY_SHADER]);
 }
 
 void Shader::enable() {

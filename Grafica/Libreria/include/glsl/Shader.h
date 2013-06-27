@@ -1,12 +1,12 @@
 #pragma once
-#include "..\Geom\Defs.h"
+#include "..\Defs.h"
 #include <map>
 #include <string>
 #include <cstdio>
 #include <cstdlib>
 using namespace std;
 
-enum ShaderType {VERTEX_SHADER, FRAGMENT_SHADER};
+enum ShaderType {VERTEX_SHADER, FRAGMENT_SHADER, GEOMETRY_SHADER};
 
 class Shader
 {
@@ -46,7 +46,7 @@ public:
 private:
 
 	GLhandleARB	program;
-	GLhandleARB shaders[2];//0->vertexshader, 1->fragmentshader
+	GLhandleARB shaders[3];//0->vertex shader, 1->fragment shader, 2->geometry shader
 	map<string,GLuint> locationList;
 };
 
