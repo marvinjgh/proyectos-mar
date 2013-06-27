@@ -15,6 +15,7 @@
     </Filter>
     <Filter Include="Librerias">
       <UniqueIdentifier>{f11d2bf2-05fe-4076-ab37-00d7966252e4}</UniqueIdentifier>
+      <Extensions>lib</Extensions>
     </Filter>
     <Filter Include="Raw Files">
       <UniqueIdentifier>{d1887324-d00e-48ec-8969-b0f99e8420da}</UniqueIdentifier>

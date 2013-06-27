@@ -20,11 +20,11 @@ GLfloat traslacion[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat c_fill[]={ 0.0f, 0.0f, 1.0f,1.0f };
 GLfloat luz[]={-0.57735f,-0.57735f,-0.57735f};
 GLfloat zoom,actual;
-bool bools[]={true,false};
+bool bools[]={false,false};
 Sombreado shadow,shadow_actual;
 Mat4x4 m,p;
 
-int umbral=128;
+int umbral=1;
 float*** final;
 
 class Modelo{
@@ -49,35 +49,35 @@ public:
 
 		grids[0].p[0].coord[0] = (float)i;
 		grids[0].p[0].coord[1] = (float)j;
-		grids[0].p[0].coord[2] = (float)dimz-k;
+		grids[0].p[0].coord[2] = (float)dimz-k+1;
 		grids[0].val[0] = final[i][j][k];
 		grids[0].p[1].coord[0] = (float)i+1;
 		grids[0].p[1].coord[1] = (float)j;
-		grids[0].p[1].coord[2] = (float)dimz-k; 
+		grids[0].p[1].coord[2] = (float)dimz-k+1; 
 		grids[0].val[1] = final[i+1][j][k];
 		grids[0].p[2].coord[0] = (float)i+1;
 		grids[0].p[2].coord[1] = (float)j+1;
-		grids[0].p[2].coord[2] = (float)dimz-k;
+		grids[0].p[2].coord[2] = (float)dimz-k+1;
 		grids[0].val[2] = final[i+1][j+1][k];
 		grids[0].p[3].coord[0] = (float)i;
 		grids[0].p[3].coord[1] = (float)j+1;
-		grids[0].p[3].coord[2] = (float)dimz-k;
+		grids[0].p[3].coord[2] = (float)dimz-k+1;
 		grids[0].val[3] = final[i][j+1][k];
 		grids[0].p[4].coord[0] = (float)i;
 		grids[0].p[4].coord[1] = (float)j;
-		grids[0].p[4].coord[2] = (float)dimz-k+1;
+		grids[0].p[4].coord[2] = (float)dimz-k;
 		grids[0].val[4] = final[i][j][k+1];
 		grids[0].p[5].coord[0] = (float)i+1;
 		grids[0].p[5].coord[1] = (float)j;
-		grids[0].p[5].coord[2] = (float)dimz-k+1;
+		grids[0].p[5].coord[2] = (float)dimz-k;
 		grids[0].val[5] = final[i+1][j][k+1];
 		grids[0].p[6].coord[0] = (float)i+1;
 		grids[0].p[6].coord[1] = (float)j+1;
-		grids[0].p[6].coord[2] = (float)dimz-k+1;
+		grids[0].p[6].coord[2] = (float)dimz-k;
 		grids[0].val[6] = final[i+1][j+1][k+1];
 		grids[0].p[7].coord[0] = (float)i;
 		grids[0].p[7].coord[1] = (float)j+1;
-		grids[0].p[7].coord[2] = (float)dimz-k+1;
+		grids[0].p[7].coord[2] = (float)dimz-k;
 		grids[0].val[7] = final[i][j+1][k+1];
 
 	}
@@ -87,15 +87,15 @@ public:
 	}
 
 	Vertice* buscar_vertice(Punto3D* p){
-		int i=0;
+		size_t i=puntos.size() - 1;
 		Vertice* aux = NULL;
-		for (; i < puntos.size(); i++)
+		for (; i >= 0 && i!=-1; --i)
 		{
 			if (puntos.at(i)->p==*p)
-				return puntos[i];
+				puntos.at(i);
 		}
 
-		if (i==puntos.size()){
+		if (i==-1){
 			aux = new Vertice;
 			aux->p=*p;
 			aux->count=0;
@@ -183,8 +183,8 @@ public:
 		int n=0,ntri=0,index;
 		Triangulo triangles[10];
 
-		glDeleteBuffers(1,&BufferObject);
-		delete b;
+		//glDeleteBuffers(1,&BufferObject);
+		//delete b;
 		finales.clear();
 		puntos.clear();
 
@@ -274,7 +274,7 @@ public:
 
 		FILE *fp;
 
-		size_t size = dimx * dimy * dimz;   
+		size_t size = dimx * dimy * dimz, asd;   
 		GLubyte *data = new GLubyte[size];            // 8bit   
 
 		final = new float**[dimx];
@@ -293,7 +293,7 @@ public:
 			printf("OK: open .raw file successed\n");   
 
 		if (maximo == 256){
-			if ( fread(data, sizeof(char), size, fp)!= size)   
+			if ( (asd=fread(data, sizeof(char), size, fp))!= size)   
 			{  
 				printf("Error: read .raw file failed\n");   
 				//exit(1);   
@@ -302,7 +302,7 @@ public:
 				printf("OK: read .raw file successed\n");   
 
 		}else{
-			if ( fread(data, sizeof(short), size, fp)!= size)   
+			if ( (asd=fread(data, sizeof(char), size, fp))!= size)   
 			{  
 				printf("Error: read .raw file failed\n");   
 				//exit(1);   
@@ -364,8 +364,18 @@ public:
 		Vec3D v3;
 		Punto3D p3;
 		GLintptr datasize=(finales.size()*(18))*sizeof(float);
-		b = new float[finales.size()*18];
-
+		if (b==NULL){
+			b = new float[finales.size()*18];
+			glGenBuffers(1, &BufferObject);
+			glBindBuffer(GL_ARRAY_BUFFER, BufferObject);
+			glBufferDataARB(GL_ARRAY_BUFFER_ARB, datasize, 0, GL_DYNAMIC_COPY_ARB);
+		}else{
+			delete b;
+			b = new float[finales.size()*18];
+			glBindBuffer(GL_ARRAY_BUFFER, BufferObject);
+			glBufferDataARB(GL_ARRAY_BUFFER_ARB, datasize, 0, GL_DYNAMIC_COPY_ARB);
+		}
+		
 		for (int i = 0; i < finales.size(); i++)
 		{
 			t = finales.at(i);
@@ -377,9 +387,7 @@ public:
 				asd+=6;
 			} 
 		}
-		glGenBuffers(1, &BufferObject);
-		glBindBuffer(GL_ARRAY_BUFFER, BufferObject);
-		glBufferDataARB(GL_ARRAY_BUFFER_ARB, datasize, 0, GL_STREAM_DRAW_ARB);
+		
 		glBufferSubDataARB(GL_ARRAY_BUFFER,0, datasize,b);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -417,6 +425,24 @@ void init(void)
 	sl.disable();
 
 	shadow_actual = shadow;
+
+	mod.dimx=mod.dimy=mod.dimz=64;
+	mod.maximo=256;
+
+	final = new float**[mod.dimx];
+		for (int i = 0; i < mod.dimx; ++i) {
+			final[i] = new float*[mod.dimy];
+			for (int j = 0; j < mod.dimy; ++j)
+				final[i][j] = new float[mod.dimz];
+		}
+	
+	for(int k=0; k<mod.dimz; k++)
+	for(int j=0; j<mod.dimy; j++)
+	for(int i=0; i<mod.dimx; i++){
+		float d= sqrt( pow(i-31.f, 2) + pow(j-31.f, 2) + pow(k-31.f, 2));
+		final[i][j][k]=d;//[i+j*dataSize.x+k*dataSize.x*dataSize.y]=d;//+(rand()%100-50)/200.0f*d;
+	}
+	mod.centrar();
 }
 
 void display (void){
@@ -565,7 +591,7 @@ int main(int argc,char **argv){
 	TwDefine(" GLOBAL help='Aqui se encuentra .' ");
 	TwDefine(" Barra label='Barra' refresh=0.5 position='16 16' size='230 450' alpha=0 color='0 0 0'");
 	genMenu(bar);
-
+	
 	glutMainLoop();
 	TwTerminate();
 	return 0;
