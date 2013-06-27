@@ -1,5 +1,5 @@
 #pragma once
-#include "..\Geom\Defs.h"
+#include "..\Defs.h"
 #include <glm\glm.hpp>
 #include <glm\gtc\type_ptr.hpp>
 

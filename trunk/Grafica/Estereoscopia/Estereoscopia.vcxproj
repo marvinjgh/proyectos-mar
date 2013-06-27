@@ -11,23 +11,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4AD08F4F-F8F1-4B18-AC49-94D0FA81B502}</ProjectGuid>
+    <ProjectGuid>{222E6B29-0D8A-4936-A614-14DBBE577674}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Libreria</RootNamespace>
+    <RootNamespace>Estereoscopia</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -40,10 +40,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(ProjecDir)lib\</OutDir>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(ProjecDir)lib\</OutDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -51,18 +51,13 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)colectivo\glm</AdditionalIncludeDirectories>
-      <OpenMPSupport>true</OpenMPSupport>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)Libreria\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Lib>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -72,49 +67,43 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)colectivo\glm</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Defs.h" />
-    <ClInclude Include="include\Geom\mat4x4.h" />
-    <ClInclude Include="include\Geom\Punto.h" />
-    <ClInclude Include="include\Geom\Punto2D.h" />
-    <ClInclude Include="include\Geom\Punto3D.h" />
-    <ClInclude Include="include\Geom\Punto4D.h" />
-    <ClInclude Include="include\Geom\Vec3D.h" />
-    <ClInclude Include="include\Geom\Vec4D.h" />
-    <ClInclude Include="include\glsl\Shader.h" />
-    <ClInclude Include="include\mod\Arista.h" />
-    <ClInclude Include="include\mod\Modelo.h" />
-    <ClInclude Include="include\mod\ModeloOff.h" />
-    <ClInclude Include="include\mod\Triangulo.h" />
-    <ClInclude Include="include\mod\Vertice.h" />
+    <ClCompile Include="Estereoscopia.cpp" />
+    <ClCompile Include="mc.cpp" />
+    <ClCompile Include="mpVector.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Arista.cpp" />
-    <ClCompile Include="src\mat4x4.cpp" />
-    <ClCompile Include="src\Modelo.cpp" />
-    <ClCompile Include="src\ModeloOff.cpp" />
-    <ClCompile Include="src\Punto2D.cpp" />
-    <ClCompile Include="src\Punto3D.cpp" />
-    <ClCompile Include="src\Punto4D.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\Triangulo.cpp" />
-    <ClCompile Include="src\Vec3D.cpp" />
-    <ClCompile Include="src\Vec4D.cpp" />
-    <ClCompile Include="src\Vertice.cpp" />
+    <ClInclude Include="mc.h" />
+    <ClInclude Include="global.h" />
+    <ClInclude Include="mpVector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\colectivo\lib\AntTweakBar.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\colectivo\lib\freeglut.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\colectivo\lib\glew32.lib">
+      <FileType>Document</FileType>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libreria\Libreria.vcxproj">
+      <Project>{4ad08f4f-f8f1-4b18-ac49-94d0fa81b502}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
