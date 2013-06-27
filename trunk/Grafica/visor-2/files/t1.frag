@@ -33,4 +33,5 @@ void main()
 			outputColor = texture(mysampler5,UV);
 		}
 	}
+	//outputColor *= vec4(0,1,1,1);
 }

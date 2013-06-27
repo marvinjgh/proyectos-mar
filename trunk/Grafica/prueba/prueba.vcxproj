@@ -51,8 +51,8 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)colectivo\glm-0.9.3.4;$(SolutionDir)Libreria\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -79,6 +79,8 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Modelo.cpp" />
+    <ClCompile Include="src\StereoCameraParallel.cpp" />
+    <ClCompile Include="src\StereoCameraToedin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Libreria\Libreria.vcxproj">
@@ -100,10 +102,14 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\anaglyph.h" />
     <ClInclude Include="src\Header.hpp" />
     <ClInclude Include="src\Modelo.h" />
+    <ClInclude Include="src\StereoCameraParallel.h" />
+    <ClInclude Include="src\StereoCameraToedin.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="color.geom" />
     <None Include="files\color.frag" />
     <None Include="files\color.vert" />
   </ItemGroup>

@@ -20,6 +20,90 @@ const GLuint index[] =
 	1,0,2,1,2,3
 };
 
+class StereoCamera
+{
+public:
+    StereoCamera(   
+        float Convergence, 
+        float EyeSeparation, 
+        float AspectRatio, 
+        float FOV, 
+        float NearClippingDistance, 
+        float FarClippingDistance
+        )
+    {
+        mConvergence            = Convergence; 
+        mEyeSeparation          = EyeSeparation; 
+        mAspectRatio            = AspectRatio; 
+        mFOV                    = FOV * PI / 180.0f; 
+        mNearClippingDistance   = NearClippingDistance;
+        mFarClippingDistance    = FarClippingDistance;
+    }
+
+    void ApplyLeftFrustum()
+    {
+        float top, bottom, left, right;
+
+        top     = mNearClippingDistance * tan(mFOV/2);
+        bottom  = -top;
+
+        float a = mAspectRatio * tan(mFOV/2) * mConvergence;
+
+        float b = a - mEyeSeparation/2;
+        float c = a + mEyeSeparation/2;
+
+        left    = -b * mNearClippingDistance/mConvergence;
+        right   =  c * mNearClippingDistance/mConvergence;
+
+        // Set the Projection Matrix
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();   
+        glFrustum(left, right, bottom, top, 
+                  mNearClippingDistance, mFarClippingDistance);
+
+        // Displace the world to right
+        glMatrixMode(GL_MODELVIEW);                     
+        glLoadIdentity();   
+        glTranslatef(mEyeSeparation/2, 0.0f, 0.0f);
+    }
+
+    void ApplyRightFrustum()
+    {
+        float top, bottom, left, right;
+
+        top     = mNearClippingDistance * tan(mFOV/2);
+        bottom  = -top;
+
+        float a = mAspectRatio * tan(mFOV/2) * mConvergence;
+
+        float b = a - mEyeSeparation/2;
+        float c = a + mEyeSeparation/2;
+
+        left    =  -c * mNearClippingDistance/mConvergence;
+        right   =   b * mNearClippingDistance/mConvergence;
+
+        // Set the Projection Matrix
+        glMatrixMode(GL_PROJECTION);                        
+        glLoadIdentity();   
+        glFrustum(left, right, bottom, top, 
+                  mNearClippingDistance, mFarClippingDistance);
+
+        // Displace the world to left
+        glMatrixMode(GL_MODELVIEW);                     
+        glLoadIdentity();   
+        glTranslatef(-mEyeSeparation/2, 0.0f, 0.0f);
+    }
+
+private:
+    float mConvergence;
+    float mEyeSeparation;
+    float mAspectRatio;
+    float mFOV;
+    float mNearClippingDistance;
+    float mFarClippingDistance;
+
+};
+
 void init(void)
 {   
 	glEnable(GL_DEPTH_TEST);
@@ -45,18 +129,37 @@ void init(void)
 	t.disable();
 
 	mod.cargarModelo("files/daedric.obj");
-	//mod.cargarModelo("files/plano.obj");
 
 }
 
-void display (void){
+void PlaceSceneElements()
+{
+	
+    // translate to appropriate depth along -Z
+    glTranslatef(0.0f, 0.0f, -800.0f);
 
-	glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
-	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-	//Model
-	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
-	m =( p * (MatTranslate(0,0,-3)* m));
-	//MVP
+    // rotate the scene for viewing
+    glRotatef(-60.0f, 1.0f, 0.0f, 0.0f);
+    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+
+    // draw intersecting tori
+    glPushMatrix();
+        glTranslatef(0.0f, 0.0f, 140.0f);
+        glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+        glColor3f(0.2, 0.2, 0.2);
+        glutSolidTorus(40, 200, 20, 30);
+        glColor3f(0.7f, 0.7f, 0.7f);
+        glutWireTorus(40, 200, 20, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(240.0f, 0.0f, 140.0f);
+        glColor3f(0.2, 0.2, 0.2);
+        glutSolidTorus(40, 200, 20, 30);
+        glColor3f(0.7f, 0.7f, 0.7f);
+        glutWireTorus(40, 200, 20, 30);
+    glPopMatrix();
+	/*
 	t.enable();
 	glUniformMatrix4fv(t["m"],1,0,m.mat);
 	
@@ -83,6 +186,8 @@ void display (void){
 	if (bools[0]){
 		glUniform4fv(t["tc"],1,c_line);
 		glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+		glEnable(GL_PROGRAM_POINT_SIZE);
+		glPointSize(2.f);
 	}
 	glDrawArrays(GL_TRIANGLES,0,mod.total*3);
 
@@ -94,6 +199,43 @@ void display (void){
 	t.disable();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	*/
+}
+
+
+void display (void){
+
+	glClearColor(0.2f, 0.2f, 0.2f,1.f);
+	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+	//Model
+	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
+	m =( p * (MatTranslate(0,0,-3)* m));
+	//MVP
+	
+	StereoCamera cam(
+        2000.0f,     // Convergence 
+        35.0f,       // Eye Separation
+        1.3333f,     // Aspect Ratio
+        45.0f,       // FOV along Y in degrees
+        1.0f,       // Near Clipping Distance
+        2000.0f);   // Far Clipping Distance
+
+	cam.ApplyLeftFrustum();
+    glColorMask(true, false, false, false);
+
+    PlaceSceneElements();
+
+    glClear(GL_DEPTH_BUFFER_BIT) ;
+
+    cam.ApplyRightFrustum();
+    glColorMask(false, true, true, false);
+
+    PlaceSceneElements();
+
+    glColorMask(true, true, true, true);
+
+	/**/
+
 	TwDraw();
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -186,7 +328,7 @@ int main(int argc, char **argv)
 		cin.get();
 		exit(1);
 	}
-
+	printf("%d\n",sizeof(short));
 	init();
 	genMenu(bar);
 	glutMainLoop();

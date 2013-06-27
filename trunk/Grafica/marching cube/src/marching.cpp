@@ -27,6 +27,15 @@ Mat4x4 m,p;
 int umbral=1;
 float*** final;
 
+#define CALC_GRAD_VERT_0(verts) Punto3D(final[i-1][j][k]-grids->val[1],		points[i][j-1][k]-grids->val[3],			points[ind-1].val-(verts[3]).val);
+#define CALC_GRAD_VERT_1(verts) Punto3D(grids->val[1]-final[i+2][j][k],		points[i+1][j-1][k]-grids->val[2],	points[ind+YtimeZ-1].val-(verts[2]).val);
+#define CALC_GRAD_VERT_2(verts) Punto3D(grids->val[3]-final[i+2][j+1][k],	points[ind+YtimeZ-ncellsZ]-(verts[6]).val,	(verts[1]).val-points[ind+YtimeZ+2].val);
+#define CALC_GRAD_VERT_3(verts) Punto3D(final[i-1][j+1][k]-grids->val[2],	points[ind-ncellsZ].val-(verts[7]).val,			(verts[0]).val-points[ind+2].val);
+#define CALC_GRAD_VERT_4(verts) Punto3D(final[i-1][j][k+1]-grids->val[5],	(verts[0]).val-points[ind+2*pointsZ].val,		points[ind+ncellsZ].val-(verts[7]).val);
+#define CALC_GRAD_VERT_5(verts) Punto3D(grids->val[4]-final[i+2][j][k+1],	(verts[1]).val-points[ind+YtimeZ+2*pointsZ].val,points[ind+YtimeZ+ncellsZ].val-(verts[6]).val);
+#define CALC_GRAD_VERT_6(verts) Punto3D(grids->val[7]-final[i+2][j+1][k+1],	(verts[2]).val-points[ind+YtimeZ+2*ncellsZ+3].val,(verts[5]).val-points[ind+YtimeZ+ncellsZ+3].val);
+#define CALC_GRAD_VERT_7(verts) Punto3D(final[i-1][j+1][k+1]-grids->val[6],	(verts[3]).val-points[ind+2*ncellsZ+3].val,(verts[4]).val-points[ind+ncellsZ+3].val);
+
 class Modelo{
 public:
 	struct Vertice{
@@ -81,10 +90,12 @@ public:
 		grids->p[7].coord[2] = (float)dimz-k;
 		grids->val[7] = final[i][j+1][k+1];
 
+
+
 	}
 
 	Vec3D gradiante(Celda g, Punto3D){
-	
+
 	}
 
 	Vertice* buscar_vertice(Punto3D* p){
@@ -376,7 +387,7 @@ public:
 			glBindBuffer(GL_ARRAY_BUFFER, BufferObject);
 			glBufferDataARB(GL_ARRAY_BUFFER_ARB, datasize, 0, GL_DYNAMIC_COPY_ARB);
 		}
-		
+
 		for (int i = 0; i < finales.size(); i++)
 		{
 			t = finales.at(i);
@@ -388,7 +399,7 @@ public:
 				asd+=6;
 			} 
 		}
-		
+
 		glBufferSubDataARB(GL_ARRAY_BUFFER,0, datasize,b);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -431,19 +442,19 @@ void init(void)
 	mod.maximo=256;
 
 	final = new float**[mod.dimx];
-		for (int i = 0; i < mod.dimx; ++i) {
-			final[i] = new float*[mod.dimy];
-			for (int j = 0; j < mod.dimy; ++j)
-				final[i][j] = new float[mod.dimz];
-		}
-	
-	for(int k=0; k<mod.dimz; k++)
-	for(int j=0; j<mod.dimy; j++)
-	for(int i=0; i<mod.dimx; i++){
-		float d= sqrt( pow(i-31.f, 2) + pow(j-31.f, 2) + pow(k-31.f, 2));
-		final[i][j][k]=d;//[i+j*dataSize.x+k*dataSize.x*dataSize.y]=d;//+(rand()%100-50)/200.0f*d;
+	for (int i = 0; i < mod.dimx; ++i) {
+		final[i] = new float*[mod.dimy];
+		for (int j = 0; j < mod.dimy; ++j)
+			final[i][j] = new float[mod.dimz];
 	}
-	mod.centrar();
+
+	for(int k=0; k<mod.dimz; k++)
+		for(int j=0; j<mod.dimy; j++)
+			for(int i=0; i<mod.dimx; i++){
+				float d= sqrt( pow(i-31.f, 2) + pow(j-31.f, 2) + pow(k-31.f, 2));
+				final[i][j][k]=d;//[i+j*dataSize.x+k*dataSize.x*dataSize.y]=d;//+(rand()%100-50)/200.0f*d;
+			}
+			mod.centrar();
 }
 
 void display (void){
@@ -592,7 +603,7 @@ int main(int argc,char **argv){
 	TwDefine(" GLOBAL help='Aqui se encuentra .' ");
 	TwDefine(" Barra label='Barra' refresh=0.5 position='16 16' size='230 450' alpha=0 color='0 0 0'");
 	genMenu(bar);
-	
+
 	glutMainLoop();
 	TwTerminate();
 	return 0;
