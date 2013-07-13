@@ -14,13 +14,14 @@
     <ProjectGuid>{222E6B29-0D8A-4936-A614-14DBBE577674}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Estereoscopia</RootNamespace>
+    <ProjectName>Estereoscopia y mc</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -52,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)Libreria\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)colectivo\include;$(SolutionDir)colectivo\glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,16 +81,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Estereoscopia.cpp" />
-    <ClCompile Include="mc.cpp" />
-    <ClCompile Include="mpVector.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="mc.h" />
-    <ClInclude Include="global.h" />
-    <ClInclude Include="mpVector.h" />
-  </ItemGroup>
-  <ItemGroup>
     <Library Include="..\colectivo\lib\AntTweakBar.lib">
       <FileType>Document</FileType>
     </Library>
@@ -101,9 +92,32 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Libreria\Libreria.vcxproj">
-      <Project>{4ad08f4f-f8f1-4b18-ac49-94d0fa81b502}</Project>
-    </ProjectReference>
+    <ClCompile Include="src\Array_bin.cpp" />
+    <ClCompile Include="src\lectura.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\mc.cpp" />
+    <ClCompile Include="src\Punto3D.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Array_bin.h" />
+    <ClInclude Include="src\estereoscopia.h" />
+    <ClInclude Include="src\lectura.h" />
+    <ClInclude Include="src\mc.h" />
+    <ClInclude Include="src\Punto3D.h" />
+    <ClInclude Include="src\Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragment.glsl" />
+    <None Include="geometry.glsl" />
+    <None Include="vertex.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex2.glsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

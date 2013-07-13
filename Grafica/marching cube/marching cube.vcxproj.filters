@@ -57,9 +57,15 @@
     <ClInclude Include="src\casos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\lectura.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\marching.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lectura.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

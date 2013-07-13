@@ -1,6 +1,6 @@
 #version 330
 
-in vec3 vnormal;
+in smooth vec3 vnormal;
 in vec4 color;
 struct LuzSimple
 {

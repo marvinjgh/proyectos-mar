@@ -1,5 +1,3 @@
-#include <cstdlib>
-#include <cstdio>
 #include <AntTweakBar.h>
 #include <glsl\Shader.h>
 #include <Geom\Punto3D.h>
@@ -10,6 +8,7 @@
 #include <vector>
 #include <Geom\Vec3D.h>
 #include <Geom\mat4x4.h>
+#include "lectura.h"
 
 #define ABS(x) (x < 0 ? -(x) : (x))
 
@@ -18,23 +17,13 @@ Shader sl;
 GLfloat q_rotate[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat traslacion[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat c_fill[]={ 0.0f, 0.0f, 1.0f,1.0f };
-GLfloat luz[]={-0.57735f,-0.57735f,-0.57735f};
+GLfloat luz[]={0.f,0.f,-1.f};
 GLfloat zoom,actual;
+size_t limita;
 bool bools[]={false,false};
-Sombreado shadow,shadow_actual;
 Mat4x4 m,p;
 
-int umbral=1;
-float*** final;
-
-#define CALC_GRAD_VERT_0(verts) Punto3D(final[i-1][j][k]-grids->val[1],		points[i][j-1][k]-grids->val[3],			points[ind-1].val-(verts[3]).val);
-#define CALC_GRAD_VERT_1(verts) Punto3D(grids->val[1]-final[i+2][j][k],		points[i+1][j-1][k]-grids->val[2],	points[ind+YtimeZ-1].val-(verts[2]).val);
-#define CALC_GRAD_VERT_2(verts) Punto3D(grids->val[3]-final[i+2][j+1][k],	points[ind+YtimeZ-ncellsZ]-(verts[6]).val,	(verts[1]).val-points[ind+YtimeZ+2].val);
-#define CALC_GRAD_VERT_3(verts) Punto3D(final[i-1][j+1][k]-grids->val[2],	points[ind-ncellsZ].val-(verts[7]).val,			(verts[0]).val-points[ind+2].val);
-#define CALC_GRAD_VERT_4(verts) Punto3D(final[i-1][j][k+1]-grids->val[5],	(verts[0]).val-points[ind+2*pointsZ].val,		points[ind+ncellsZ].val-(verts[7]).val);
-#define CALC_GRAD_VERT_5(verts) Punto3D(grids->val[4]-final[i+2][j][k+1],	(verts[1]).val-points[ind+YtimeZ+2*pointsZ].val,points[ind+YtimeZ+ncellsZ].val-(verts[6]).val);
-#define CALC_GRAD_VERT_6(verts) Punto3D(grids->val[7]-final[i+2][j+1][k+1],	(verts[2]).val-points[ind+YtimeZ+2*ncellsZ+3].val,(verts[5]).val-points[ind+YtimeZ+ncellsZ+3].val);
-#define CALC_GRAD_VERT_7(verts) Punto3D(final[i-1][j+1][k+1]-grids->val[6],	(verts[3]).val-points[ind+2*ncellsZ+3].val,(verts[4]).val-points[ind+ncellsZ+3].val);
+float umbral=1.f;
 
 class Modelo{
 public:
@@ -47,91 +36,110 @@ public:
 	struct Celda{
 		Punto3D p[8];
 		Punto3D g[8];
-		double val[8];
+		float val[8];
 	};
+
+	Modelo(){
+		dimx=dimy=dimz=0;
+		b=NULL;
+		vol=NULL;
+	}
 
 	struct Triangulo{
 		Vertice* p[3];	/* Vertices */
 		Vec3D normal;
 	};
 
-	void calcular_0_5(Celda* grids,int i,int j,int k){
-
+	void inline calcular(Celda* grids,int i,int j,int k){
+		Punto3D p(0.f,0.f,0.f);
 		grids->p[0].coord[0] = (float)i;
 		grids->p[0].coord[1] = (float)j;
 		grids->p[0].coord[2] = (float)dimz-k+1;
-		grids->val[0] = final[i][j][k];
+		grids->val[0] = vol[i][j][k];
 		grids->p[1].coord[0] = (float)i+1;
 		grids->p[1].coord[1] = (float)j;
 		grids->p[1].coord[2] = (float)dimz-k+1; 
-		grids->val[1] = final[i+1][j][k];
+		grids->val[1] = vol[i+1][j][k];
 		grids->p[2].coord[0] = (float)i+1;
 		grids->p[2].coord[1] = (float)j+1;
 		grids->p[2].coord[2] = (float)dimz-k+1;
-		grids->val[2] = final[i+1][j+1][k];
+		grids->val[2] = vol[i+1][j+1][k];
 		grids->p[3].coord[0] = (float)i;
 		grids->p[3].coord[1] = (float)j+1;
 		grids->p[3].coord[2] = (float)dimz-k+1;
-		grids->val[3] = final[i][j+1][k];
+		grids->val[3] = vol[i][j+1][k];
 		grids->p[4].coord[0] = (float)i;
 		grids->p[4].coord[1] = (float)j;
 		grids->p[4].coord[2] = (float)dimz-k;
-		grids->val[4] = final[i][j][k+1];
+		grids->val[4] = vol[i][j][k+1];
 		grids->p[5].coord[0] = (float)i+1;
 		grids->p[5].coord[1] = (float)j;
 		grids->p[5].coord[2] = (float)dimz-k;
-		grids->val[5] = final[i+1][j][k+1];
+		grids->val[5] = vol[i+1][j][k+1];
 		grids->p[6].coord[0] = (float)i+1;
 		grids->p[6].coord[1] = (float)j+1;
 		grids->p[6].coord[2] = (float)dimz-k;
-		grids->val[6] = final[i+1][j+1][k+1];
+		grids->val[6] = vol[i+1][j+1][k+1];
 		grids->p[7].coord[0] = (float)i;
 		grids->p[7].coord[1] = (float)j+1;
 		grids->p[7].coord[2] = (float)dimz-k;
-		grids->val[7] = final[i][j+1][k+1];
+		grids->val[7] = vol[i][j+1][k+1];
 
-
+		grids->g[0]=(i!=0 && j!=0 && k!=0)?CALC_GRAD_VERT_0():p;
+		grids->g[1]=(i!=dimx-2 && j!=0 && k!=0)?CALC_GRAD_VERT_1():p;
+		grids->g[2]=(i!=dimx-2 && j!=dimy-2 && k!=0)?CALC_GRAD_VERT_2():p;
+		grids->g[3]=(i!=0 && j!=dimy-2 && k!=0)?CALC_GRAD_VERT_3():p;
+		grids->g[4]=(i!=0 && j!=0 && k!=dimz-2)?CALC_GRAD_VERT_4():p;
+		grids->g[5]=(i!=dimx-2 && j!=0 && k!=dimz-2)?CALC_GRAD_VERT_5():p;
+		grids->g[6]=(i!=dimx-2 && j!=dimy-2 && k!=dimz-2)?CALC_GRAD_VERT_6():p;
+		grids->g[7]=(i!=0 && j!=dimy-2 && k!=dimz-2)?CALC_GRAD_VERT_7():p;
 
 	}
 
-	Vec3D gradiante(Celda g, Punto3D){
-
-	}
-
-	Vertice* buscar_vertice(Punto3D* p){
-		size_t i=puntos.size() - 1;
+	Vertice* buscar_vertice(Vertice* p){
+		size_t i= - 1;
 		Vertice* aux = NULL;
-		for (; i >= 0 && i!=-1; --i)
+		/*for (; i >= 0 && i!=-1; --i)
 		{
-			if (puntos.at(i)->p==*p)
+			if (puntos.at(i)->p==p->p)
 				puntos.at(i);
-		}
+		}*/
 
 		if (i==-1){
 			aux = new Vertice;
-			aux->p=*p;
+			aux->p=p->p;
+			aux->n=p->n;
 			aux->count=0;
 			puntos.push_back(aux);
 		}
 		return aux;
 	}
 
-	Vertice* VertexInterp(Punto3D* p1,Punto3D* p2,double valp1,double valp2)
+	Vertice* VertexInterp(Punto3D* p1,Punto3D* p2,Punto3D* g1,Punto3D* g2,double valp1,double valp2)
 	{
 		float mu;
-		Punto3D *p;
-
+		Vertice *p,aux;
+		aux.p=*p1;
+		aux.n=*g1;
 		if (ABS(umbral-valp1) < 0.00001)
-			return buscar_vertice(p1);
+			return buscar_vertice(&aux);
+		aux.p=*p2;
+		aux.n=*g2;
 		if (ABS(umbral-valp2) < 0.00001)
-			return buscar_vertice(p2);
+			return buscar_vertice(&aux);
+		aux.p=*p1;
+		aux.n=*g1;
 		if (ABS(valp1-valp2) < 0.00001)
-			return buscar_vertice(p1);
+			return buscar_vertice(&aux);
 
-		p=new Punto3D(*p1);
-		mu = (float)(umbral - valp1) / (valp2 - valp1);
+		p=new Vertice();
+		p->p=*p1;
+		p->n=*g1;
 
-		*p+= mu * (*p2 - *p1);
+		mu = (float)((umbral - valp1) / (valp2 - valp1));
+
+		p->p += mu * (*p2 - *p1);
+		p->n += mu * (*g2 - *g1);
 
 		return buscar_vertice(p);
 	}
@@ -143,40 +151,40 @@ public:
 
 		/* Find the vertices where the surface intersects the cube */
 		if (edgeTable[index] & 1) {
-			vertlist[0] = VertexInterp(&g.p[0],&g.p[1],g.val[0],g.val[1]);
+			vertlist[0] = VertexInterp(&g.p[0],&g.p[1],&g.g[0],&g.g[1],g.val[0],g.val[1]);
 		}
 		if (edgeTable[index] & 2) {
-			vertlist[1] = VertexInterp(&g.p[1],&g.p[2],g.val[1],g.val[2]);
+			vertlist[1] = VertexInterp(&g.p[1],&g.p[2],&g.g[1],&g.g[2],g.val[1],g.val[2]);
 		}
 		if (edgeTable[index] & 4) {
-			vertlist[2] = VertexInterp(&g.p[2],&g.p[3],g.val[2],g.val[3]);
+			vertlist[2] = VertexInterp(&g.p[2],&g.p[3],&g.g[2],&g.g[3],g.val[2],g.val[3]);
 		}
 		if (edgeTable[index] & 8) {
-			vertlist[3] = VertexInterp(&g.p[3],&g.p[0],g.val[3],g.val[0]);
+			vertlist[3] = VertexInterp(&g.p[3],&g.p[0],&g.g[3],&g.g[0],g.val[3],g.val[0]);
 		}
 		if (edgeTable[index] & 16) {
-			vertlist[4] = VertexInterp(&g.p[4],&g.p[5],g.val[4],g.val[5]);
+			vertlist[4] = VertexInterp(&g.p[4],&g.p[5],&g.g[4],&g.g[5],g.val[4],g.val[5]);
 		}
 		if (edgeTable[index] & 32) {
-			vertlist[5] = VertexInterp(&g.p[5],&g.p[6],g.val[5],g.val[6]);
+			vertlist[5] = VertexInterp(&g.p[5],&g.p[6],&g.g[5],&g.g[6],g.val[5],g.val[6]);
 		}
 		if (edgeTable[index] & 64) {
-			vertlist[6] = VertexInterp(&g.p[6],&g.p[7],g.val[6],g.val[7]);
+			vertlist[6] = VertexInterp(&g.p[6],&g.p[7],&g.g[6],&g.g[7],g.val[6],g.val[7]);
 		}
 		if (edgeTable[index] & 128) {
-			vertlist[7] = VertexInterp(&g.p[7],&g.p[4],g.val[7],g.val[4]);
+			vertlist[7] = VertexInterp(&g.p[7],&g.p[4],&g.g[7],&g.g[4],g.val[7],g.val[4]);
 		}
 		if (edgeTable[index] & 256) {
-			vertlist[8] = VertexInterp(&g.p[0],&g.p[4],g.val[0],g.val[4]);
+			vertlist[8] = VertexInterp(&g.p[0],&g.p[4],&g.g[0],&g.g[4],g.val[0],g.val[4]);
 		}
 		if (edgeTable[index] & 512) {
-			vertlist[9] = VertexInterp(&g.p[1],&g.p[5],g.val[1],g.val[5]);
+			vertlist[9] = VertexInterp(&g.p[1],&g.p[5],&g.g[1],&g.g[5],g.val[1],g.val[5]);
 		}
 		if (edgeTable[index] & 1024) {
-			vertlist[10] = VertexInterp(&g.p[2],&g.p[6],g.val[2],g.val[6]);
+			vertlist[10] = VertexInterp(&g.p[2],&g.p[6],&g.g[2],&g.g[6],g.val[2],g.val[6]);
 		}
 		if (edgeTable[index] & 2048) {
-			vertlist[11] = VertexInterp(&g.p[3],&g.p[7],g.val[3],g.val[7]);
+			vertlist[11] = VertexInterp(&g.p[3],&g.p[7],&g.g[3],&g.g[7],g.val[3],g.val[7]);
 		}
 
 		/* Create the triangles */
@@ -190,34 +198,35 @@ public:
 		return(ntri);
 	}
 
-	void probar(){
+	void mc(){
 		Celda grids;
 		int n=0,ntri=0,index;
 		Triangulo triangles[10];
 
-		//glDeleteBuffers(1,&BufferObject);
-		//delete b;
 		finales.clear();
 		puntos.clear();
 
 		for (int i=0;i<dimx-1;i++) {
 			//if (i % (dimx/10) == 0)
+			if(i%25 == 0){
+				printf("slite %d\n",i);
+			}
 			for (int j=0;j<dimy-1;j++) {
 				for (int k=0;k<dimz-1;k++) {
 					index=0;
 
-					if (final[i][j][k] < umbral) index |= 1;
-					if (final[i+1][j][k] < umbral) index |= 2;
-					if (final[i+1][j+1][k] < umbral) index |= 4;
-					if (final[i][j+1][k] < umbral) index |= 8;
-					if (final[i][j][k+1] < umbral) index |= 16;
-					if (final[i+1][j][k+1] < umbral) index |= 32;
-					if (final[i+1][j+1][k+1] < umbral) index |= 64;
-					if (final[i][j+1][k+1] < umbral) index |= 128;
+					if (vol[i][j][k] < umbral) index |= 1;
+					if (vol[i+1][j][k] < umbral) index |= 2;
+					if (vol[i+1][j+1][k] < umbral) index |= 4;
+					if (vol[i][j+1][k] < umbral) index |= 8;
+					if (vol[i][j][k+1] < umbral) index |= 16;
+					if (vol[i+1][j][k+1] < umbral) index |= 32;
+					if (vol[i+1][j+1][k+1] < umbral) index |= 64;
+					if (vol[i][j+1][k+1] < umbral) index |= 128;
 
 					if (index == 0 || index == 255) continue;
 
-					calcular_0_5(&grids,i,j,k);
+					calcular(&grids,i,j,k);
 
 
 					n = PolygoniseCube(grids,triangles,index);
@@ -225,142 +234,118 @@ public:
 						finales.push_back(triangles[l]);
 					ntri += n;
 
+					if (ntri >= limita){
+						if (dimx>0){
+							actual = umbral;
+							printf("////////////////////////////////////////////\n");
+							printf("Triangulos generados %d\n",ntri);
+							printf("////////////////////////////////////////////\n");
+						}
+						return;
+					}
+
 				}
 			}
+
 		}
 
 		if (dimx>0){
+			printf("////////////////////////////////////////////\n");
+			printf("Triangulos generados %d\n",ntri);
+			printf("////////////////////////////////////////////\n");
 			actual = umbral;
 		}
 	}
 
-	bool setDims(char* str){
-		char keys[] = "1234567890",*ptr;
-		size_t i;
-		string a = str,name;
-
-		int m=0;
-
-		a = strrchr(str,'\\')+1;
-
-		if (a.empty())
-			a = str;
-
-		i = a.find_first_of(keys);
-		name = str;
-		a = a.substr(i, a.find_first_of(".raw")-i);
-		i = a.find_first_of("x");
-
-		ptr=strtok ((char*)a.c_str(),"x");
-		if (ptr != NULL){
-			dimx = atoi(ptr);
-		}else{
-			dimx = 0;
-			return false;
-		}
-		if ((ptr = strtok (NULL, "x") )!= NULL){
-			dimy = atoi(ptr);
-		}else{
-			dimy = 0;
-			return false;
-		}
-		if ((ptr = strtok (NULL, "x") )!= NULL){
-			dimz = atoi(ptr);
-		}else{
-			dimz = 0;
-			return false;
-		}
-
-		m = (dimx>dimy)? dimx : dimy;
-		m = (m<dimz)? dimz : m;
-		dimmx=m;
-		if (m <= 256)
-			maximo = 256;
-		else
-			maximo = 512;
-
-		return true;
-	}
-
 	void readRaw(char* file){
 
-		FILE *fp;
+		int dx,dy,dz,c;
+		GLubyte *data = ReadRawVolume(file,&dx,&dy,&dz,&c);
 
-		size_t size = dimx * dimy * dimz, asd;   
-		GLubyte *data = new GLubyte[size];            // 8bit   
+		if (data == NULL)
+			return;
+		if (vol != NULL){
 
-		final = new float**[dimx];
-		for (int i = 0; i < dimx; ++i) {
-			final[i] = new float*[dimy];
-			for (int j = 0; j < dimy; ++j)
-				final[i][j] = new float[dimz];
+			FOR(i,dimx){
+				FOR(j,dimy)
+					delete vol[i][j];
+				delete vol[i];
+			}
+			delete vol;
+		}
+		dimx=dx;dimy=dy;dimz=dz;comp=c;
+		dx<<=1; dy<<=1;dz<<=1;
+		dimmx = max(max(dx,dy),dz);
+
+		vol = new float**[dimx];
+		FOR(i,dimx){
+			vol[i] = new float*[dimy];
+			FOR(j,dimy)
+				vol[i][j] = new float[dimz];
 		}
 
-		if (!(fp = fopen(file, "rb")))   
-		{   
-			printf("Error: opening .raw file failed\n");   
-			//exit(1);   
-		}   
-		else   
-			printf("OK: open .raw file successed\n");   
 
-		if (maximo == 256){
-			if ( (asd=fread(data, sizeof(char), size, fp))!= size)   
-			{  
-				printf("Error: read .raw file failed\n");   
-				//exit(1);   
-			}   
-			else   
-				printf("OK: read .raw file successed\n");   
-
-		}else{
-			if ( (asd=fread(data, sizeof(char), size, fp))!= size)   
-			{  
-				printf("Error: read .raw file failed\n");   
-				//exit(1);   
-			}   
-			else   
-				printf("OK: read .raw file successed\n");   
-		}
-
-		for (int z = 0; z < dimz ; z++){
-			for ( int y = 0; y < dimy; y++){
-				for ( int x = 0; x < dimx; x++){
-
-					final[x][y][z]=data[((z*dimy)+y)*dimz+x];
+		FOR(z,dimz){
+			FOR(y,dimy){
+				FOR(x,dimx){
+					if (c==1)
+					{
+						vol[x][y][z]=data[dimx*((z*dimy+y)+1)-(x+1)];
+					}else{
+						c=dx*((z*dy+y)+1)-((x-1)<<1);
+						vol[x][z][y]=(data[c]<<8)+data[c+1];
+					}
 
 				}
 			}
 		}
 
-		fclose(fp);
-
-		delete[] data;
+		delete data;
 	}
 
-	void calcular_normales(){
-		int i;
-		Triangulo t;
-		Vertice* v;
-		for (i=0;i < finales.size();i++){
-			Triangulo & t=finales.at(i);
-			Vec3D u(t.p[0]->p,t.p[1]->p);
-			Vec3D v(t.p[0]->p,t.p[2]->p);
-			t.normal=u^v;
-			t.normal.Normalizar();
+	void readPvm(char* file){
 
-			t.p[0]->n+=t.normal;
-			t.p[0]->count++;
-			t.p[1]->n+=t.normal;
-			t.p[1]->count++;
-			t.p[2]->n+=t.normal;
-			t.p[2]->count++;
+		size_t dx,dy,dz,c;
+		float sx,sy,sz;
+		GLubyte *data = readPVMvolume(file,&dx,&dy,&dz,&c,&sx,&sy,&sz);
+
+		if (data == NULL)
+			return;
+		if (vol != NULL){
+			FOR(i,dimx){
+				FOR(j,dimy)
+					delete vol[i][j];
+				delete vol[i];
+			}
+			delete vol;
+		}
+		dimx=dx;dimy=dy;dimz=dz;comp=c;
+		dx<<=1; dy<<=1;dz<<=1;
+		dimmx = max(max(dx,dy),dz);
+
+		vol = new float**[dimx];
+		FOR(i,dimx){
+			vol[i] = new float*[dimy];
+			FOR(j,dimy)
+				vol[i][j] = new float[dimz];
 		}
 
-		for (i=0;i < puntos.size();i++){
-			v=puntos.at(i);
-			v->n/=v->count;
+		FOR(z,dimz){
+			FOR(y,dimy){
+				FOR(x,dimx){
+					if (c==1)
+					{
+						vol[x][y][z]=data[dimx*((z*dimy+y)+1)-(x+1)];
+					}else{
+						c=dx*((z*dy+y)+1)-((x-1)<<1);
+						vol[x][z][y]=(data[c]<<8)+data[c+1];
+					}
+
+				}
+			}
 		}
+
+		delete data;
 	}
 
 	void centrar(){
@@ -370,7 +355,7 @@ public:
 		centro = MatScale(2/d,2/d,2/d)*MatTranslate(-x);
 	}
 
-	void buffer(Sombreado x){
+	void buffer(){
 		int asd=0;
 		Triangulo t;
 		Vec3D v3;
@@ -388,14 +373,14 @@ public:
 			glBufferDataARB(GL_ARRAY_BUFFER_ARB, datasize, 0, GL_DYNAMIC_COPY_ARB);
 		}
 
-		for (int i = 0; i < finales.size(); i++)
+		for (size_t i = 0; i < finales.size(); i++)
 		{
 			t = finales.at(i);
 			for (int k = 0; k < 3; k++)
 			{
-				v3=(x)? t.p[k]->n:t.normal;
+				//v3=t.p[k]->n;
 				memcpy(b+asd,t.p[k]->p.coord,sizeof(t.p[k]->p.coord));
-				memcpy(b+asd+3,v3.coord,sizeof(v3.coord));
+				memcpy(b+asd+3,t.p[k]->n.coord,sizeof(t.p[k]->n.coord));
 				asd+=6;
 			} 
 		}
@@ -408,9 +393,10 @@ public:
 	vector<Triangulo> finales;
 	vector<Vertice*> puntos;
 	int dimx,dimy,dimz,size;
-	int maximo,dimmx;
+	int comp,dimmx;
 	Mat4x4 centro;
 	float *b;
+	float*** vol;
 };
 
 Modelo mod;
@@ -418,8 +404,9 @@ Modelo mod;
 void init(void)
 {   
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
+
 	zoom=1;
+	limita = 10000;
 
 	sl.loadShader(VERTEX_SHADER,"files/iluminacion.vert");
 	sl.loadShader(FRAGMENT_SHADER,"files/iluminacion.frag");
@@ -435,26 +422,8 @@ void init(void)
 	sl.AddUniform("sol.intensidad");
 
 	sl.disable();
+	actual=umbral;
 
-	shadow_actual = shadow;
-
-	mod.dimx=mod.dimy=mod.dimz=64;
-	mod.maximo=256;
-
-	final = new float**[mod.dimx];
-	for (int i = 0; i < mod.dimx; ++i) {
-		final[i] = new float*[mod.dimy];
-		for (int j = 0; j < mod.dimy; ++j)
-			final[i][j] = new float[mod.dimz];
-	}
-
-	for(int k=0; k<mod.dimz; k++)
-		for(int j=0; j<mod.dimy; j++)
-			for(int i=0; i<mod.dimx; i++){
-				float d= sqrt( pow(i-31.f, 2) + pow(j-31.f, 2) + pow(k-31.f, 2));
-				final[i][j][k]=d;//[i+j*dataSize.x+k*dataSize.x*dataSize.y]=d;//+(rand()%100-50)/200.0f*d;
-			}
-			mod.centrar();
 }
 
 void display (void){
@@ -463,13 +432,8 @@ void display (void){
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 
 	if (umbral!=(int)actual){
-		mod.probar();
-		mod.calcular_normales();
-		mod.buffer(shadow);
-	}
-	if (shadow!=shadow_actual){
-		mod.buffer(shadow);
-		shadow_actual=shadow;
+		mod.mc();
+		mod.buffer();
 	}
 
 	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
@@ -513,8 +477,6 @@ void reshape (int width, int height)
 	glLoadIdentity();
 
 	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
-	//gluPerspective(45.0, (float)width / (float)height,0.5, 200.0);
-	// Set the correct perspective.
 	p=buildPerpectiva(45.0,ratio,1.0,100.0);
 	TwWindowSize(width, height);
 	glutSwapBuffers();
@@ -531,18 +493,30 @@ void TW_CALL cargar(void *clientData){
 	ofn.nMaxFile = 255;
 	ofn.lpstrTitle = "Load Model...";
 	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
-	ofn.lpstrFilter = "Raw Files\0*.raw\0\0";//hago que solo muestre archivos .off
+	ofn.lpstrFilter = "Raw Files\0*.raw\0Pvm Files\0*.pvm\0\0";//hago que solo muestre archivos del filtro
 	ofn.lpstrDefExt = "raw";
 
 	if (GetOpenFileName(&ofn)){
 
-		//printf("%s\n",ofn.lpstrFile+ofn.nFileOffset); saber el nombre con extencion (nFileExtension solo ext)
+		//printf("%s\n",ofn.lpstrFile+ofn.nFileOffset);// saber el nombre con extencion (nFileExtension solo ext)
+		//printf("%d",ofn.nFilterIndex);// saber el filtro usado
 
-		//printf("%d",ofn.nFilterIndex); saber el filtro usado
-		if (mod.setDims(Path)){
+		switch (ofn.nFilterIndex)
+		{
+		case 1:
 			mod.readRaw(Path);//funcion que carga el modelo apartir del path
 			mod.centrar();
+			actual--;
+			break;
+		case 2:
+			mod.readPvm(Path);//funcion que carga el modelo apartir del path
+			mod.centrar();
+			actual--;
+			break;
+		default:
+			break;
 		}
+
 	}	
 }
 
@@ -551,7 +525,7 @@ void genMenu(TwBar *bar)
 	//bloque de la rotacion
 	TwAddVarRW(bar, "ObjRotation", TW_TYPE_QUAT4F, &q_rotate, 
 		" label='Object rotation' opened=true help='Change the object orientation.' ");
-	TwAddVarRW(bar,"luz", TW_TYPE_DIR3F, luz, "label='luz' help='Direccion de la luz.'");
+	TwAddVarRW(bar,"luz", TW_TYPE_DIR3F, luz, "label='luz' help='Direccion de la luz.' opened=true");
 
 	//traslacion
 	TwAddVarRW(bar, "x", TW_TYPE_FLOAT, &traslacion[0], 
@@ -563,16 +537,16 @@ void genMenu(TwBar *bar)
 	//zoom
 	TwAddVarRW(bar, "zoom", TW_TYPE_FLOAT, &zoom, 
 		"label='Zoom' min=0.01 max=2.5 step=0.01 help='Escalamiento de la figura.'");
-	TwAddVarRW(bar, "umbral", TW_TYPE_INT32, &umbral, 
-		"label='umbral' min=1 max=255 step=1  keyIncr='+' keyDecr='-'");
+	TwAddVarRW(bar, "umbral", TW_TYPE_FLOAT, &umbral, 
+		"label='umbral' min=1 step=1  keyIncr='+' keyDecr='-'");
+	TwAddVarRW(bar, "limite", TW_TYPE_UINT32, &limita, 
+		"label='Limite de poligonos' min=1 step=1 ");
 	TwAddButton(bar,"Boton_1", cargar,NULL,"label='Cargar raw' ");
 	TwAddVarRW(bar, "ba", TW_TYPE_BOOLCPP, &bools[0], 
 		" label='Activar' help='Activa'");
 	/*TwAddVarRW(bar, "c1", TW_TYPE_COLOR4F, &c_line, 
 	"label='Color' help='Cambia el color de las lineas.' group='Lineas' ");*/
-	TwEnumVal sombra[2] = { { FLAT , "Flat"}, { GOURAUD, "Gouraud"} };
-	TwType shadowType = TwDefineEnum("shadowType", sombra, 2);
-	TwAddVarRW (bar, "sombra", shadowType, &shadow, " label=' Tipo de sombra' keyIncr='<' keyDecr='>' help='Cambia el tipo de sombreado.' ");
+
 }
 
 int main(int argc,char **argv){

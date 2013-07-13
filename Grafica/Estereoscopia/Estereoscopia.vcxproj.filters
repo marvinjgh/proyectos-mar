@@ -16,31 +16,13 @@
     <Filter Include="Librerias">
       <UniqueIdentifier>{ee5e2354-6ee5-441c-9113-19a072991a1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{0f7d11eb-360b-44e4-8cab-ad1a517d2407}</UniqueIdentifier>
+      <Extensions>glsl;vert;geom;frac</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Estereoscopia.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mpVector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mpVector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\colectivo\lib\AntTweakBar.lib">
@@ -52,5 +34,59 @@
     <Library Include="..\colectivo\lib\glew32.lib">
       <Filter>Librerias</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\lectura.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Punto3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Array_bin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\lectura.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Punto3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\estereoscopia.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Array_bin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="fragment.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="geometry.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="vertex2.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

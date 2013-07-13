@@ -205,7 +205,7 @@ void PlaceSceneElements()
 
 void display (void){
 
-	glClearColor(0.2f, 0.2f, 0.2f,1.f);
+	glClearColor(0.0f, 0.0f, 0.0f,0.f);
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	//Model
 	m=MatTranslate(traslacion[0],traslacion[1],traslacion[2])* (MatScale(zoom,zoom,zoom) * (MatRotar(q_rotate)*mod.centro ));
@@ -214,7 +214,7 @@ void display (void){
 	
 	StereoCamera cam(
         2000.0f,     // Convergence 
-        35.0f,       // Eye Separation
+        15.0f,       // Eye Separation
         1.3333f,     // Aspect Ratio
         45.0f,       // FOV along Y in degrees
         1.0f,       // Near Clipping Distance
@@ -224,11 +224,13 @@ void display (void){
     glColorMask(true, false, false, false);
 
     PlaceSceneElements();
-
+	
+	
+	
     glClear(GL_DEPTH_BUFFER_BIT) ;
 
     cam.ApplyRightFrustum();
-    glColorMask(false, true, true, false);
+    glColorMask(false, false, true, false);
 
     PlaceSceneElements();
 
