@@ -8,7 +8,7 @@ uniform mat4 p;
 uniform vec4 incolor;
 
 out vec4 color;
-out vec3 vnormal;
+out smooth vec3 vnormal;
 void main()
 {
     gl_Position = p*m*vec4(position,1.0f);

@@ -712,7 +712,7 @@ void HandleDisplay(void)
 
    /* Clear things */
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   glClear(GL_ACCUM_BUFFER_BIT); /* Not strictly necessary */
+   //glClear(GL_ACCUM_BUFFER_BIT); /* Not strictly necessary */
 
    glViewport(0,0,camera.screenwidth,camera.screenheight);
 
@@ -1528,7 +1528,7 @@ void CameraHome(int mode)
    case 0:
    case 2:
    case 4:
-      camera.focallength = 10;
+      camera.focallength = 30;
       break;
    case 1:
       camera.focallength = 5;
@@ -1738,6 +1738,33 @@ private:
     float mFarClippingDistance;
 
 };
+void PlaceSceneElements()
+{
+    // translate to appropriate depth along -Z
+    glTranslatef(0.0f, 0.0f, -1800.0f);
+
+    // rotate the scene for viewing
+    glRotatef(-60.0f, 1.0f, 0.0f, 0.0f);
+    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+
+    // draw intersecting tori
+    glPushMatrix();
+        glTranslatef(0.0f, 0.0f, 240.0f);
+        glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+        glColor3f(0.2, 0.2, 0.6);
+        glutSolidTorus(40, 200, 20, 30);
+        glColor3f(0.7f, 0.7f, 0.7f);
+        glutWireTorus(40, 200, 20, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(240.0f, 0.0f, 240.0f);
+        glColor3f(0.2, 0.2, 0.6);
+        glutSolidTorus(40, 200, 20, 30);
+        glColor3f(0.7f, 0.7f, 0.7f);
+        glutWireTorus(40, 200, 20, 30);
+    glPopMatrix();
+}
 
 // main rendering function
 void DrawGLScene(GLvoid)                                    
@@ -1769,30 +1796,3 @@ void DrawGLScene(GLvoid)
 }
 
 
-void PlaceSceneElements()
-{
-    // translate to appropriate depth along -Z
-    glTranslatef(0.0f, 0.0f, -1800.0f);
-
-    // rotate the scene for viewing
-    glRotatef(-60.0f, 1.0f, 0.0f, 0.0f);
-    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
-
-    // draw intersecting tori
-    glPushMatrix();
-        glTranslatef(0.0f, 0.0f, 240.0f);
-        glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-        glColor3f(0.2, 0.2, 0.6);
-        glutSolidTorus(40, 200, 20, 30);
-        glColor3f(0.7f, 0.7f, 0.7f);
-        glutWireTorus(40, 200, 20, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslatef(240.0f, 0.0f, 240.0f);
-        glColor3f(0.2, 0.2, 0.6);
-        glutSolidTorus(40, 200, 20, 30);
-        glColor3f(0.7f, 0.7f, 0.7f);
-        glutWireTorus(40, 200, 20, 30);
-    glPopMatrix();
-}

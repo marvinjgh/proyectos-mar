@@ -349,3 +349,12 @@ static int triTable[256][16] ={
 {0, 3, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
 };
+
+#define CALC_GRAD_VERT_0() Punto3D( (vol[i-1][j][k]-grids->val[1])/2.f,(vol[i][j-1][k]-grids->val[3])/2.f,(vol[i][j][k-1]-grids->val[4])/2.f)
+#define CALC_GRAD_VERT_1() Punto3D( (grids->val[0]-vol[i+2][j][k])/2.f,(vol[i+1][j-1][k]-grids->val[2])/2.f,(vol[i+1][j][k-1]-grids->val[5])/2.f)
+#define CALC_GRAD_VERT_2() Punto3D( (grids->val[3]-vol[i+2][j+1][k])/2.f,(grids->val[1]-vol[i+1][j+2][k])/2.f,(vol[i+1][j+1][k-1]-grids->val[6])/2.f)
+#define CALC_GRAD_VERT_3() Punto3D( (vol[i-1][j+1][k]-grids->val[2])/2.f,(grids->val[0]-vol[i][j+2][k])/2.f,(vol[i][j+1][k-1]-grids->val[7])/2.f)
+#define CALC_GRAD_VERT_4() Punto3D( (vol[i-1][j][k+1]-grids->val[5])/2.f,(vol[i][j-1][k+1]-grids->val[7])/2.f,(grids->val[0]-vol[i][j][k+2])/2.f)
+#define CALC_GRAD_VERT_5() Punto3D( (grids->val[4]-vol[i+2][j][k+1])/2.f,(vol[i+1][j-1][k+1]-grids->val[6])/2.f,(grids->val[1]-vol[i+1][j][k+2])/2.f)
+#define CALC_GRAD_VERT_6() Punto3D( (grids->val[7]-vol[i+2][j+1][k+1])/2.f,(grids->val[5]-vol[i+1][j+2][k+1])/2.f,(grids->val[2]-vol[i+1][j+1][k+2])/2.f)
+#define CALC_GRAD_VERT_7() Punto3D( (vol[i-1][j+1][k+1]-grids->val[6])/2.f,(grids->val[4]-vol[i][j+2][k+1])/2.f,(grids->val[3]-vol[i][j+1][k+2])/2.f)
